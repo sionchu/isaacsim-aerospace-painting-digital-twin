@@ -1,0 +1,17 @@
+surface:
+  y_range_m: [-1.50, 1.50]
+  z_range_m: [1.65, 2.55]
+  y_samples: 61
+  z_samples: 19
+
+process:
+  nominal_stand_off_m: 0.32
+  spray_cone_half_angle_deg: 18.0
+  coverage_threshold: 0.10
+  sweep_rows_z_m: [1.80, 2.10, 2.40]
+
+scene_contract:
+  base_scene_env: AEROSPACE_PAINTING_BASE_USD
+  isaac_sim_root_env: ISAAC_SIM_ROOT
+  robot_asset_policy: reference_official_asset
+  aircraft_geometry_policy: generic_course_owned_only

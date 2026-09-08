@@ -530,7 +530,10 @@ def _stats(values_um: np.ndarray, masses: np.ndarray, area_weights: np.ndarray, 
     band = (values >= 0.8 * mean) & (values <= 1.2 * mean) if mean > 0.0 else np.zeros_like(values, dtype=bool)
     threshold = values >= 0.10 * mean if mean > 0.0 else np.zeros_like(values, dtype=bool)
     return {
+        "min_um": float(np.min(values)) if len(values) else 0.0,
+        "max_um": float(np.max(values)) if len(values) else 0.0,
         "mean_um": mean,
+        "std_um": float(math.sqrt(max(weighted_var, 0.0))),
         "cv": float(cv),
         "p05_um": float(np.percentile(positive, 5.0)) if len(positive) else 0.0,
         "p50_um": float(np.percentile(positive, 50.0)) if len(positive) else 0.0,

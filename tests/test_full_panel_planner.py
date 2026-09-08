@@ -48,6 +48,9 @@ def test_film_statistics_keep_wft_primary_and_dft_explicitly_illustrative():
     areas = np.ones_like(masses)
     result = film_statistics(masses, areas, liquid_density_kg_m3=1000.0, volume_solids_fraction=0.5)
     assert result["wft_um"]["mean_um"] == pytest.approx(2.5e-3)
+    assert result["wft_um"]["min_um"] == pytest.approx(1.0e-3)
+    assert result["wft_um"]["max_um"] == pytest.approx(4.0e-3)
+    assert result["wft_um"]["std_um"] == pytest.approx(np.std(masses / 1000.0) * 1.0e6)
     assert result["wft_um"]["total_mass_kg"] == pytest.approx(1.0e-5)
     assert result["dft_um"]["assumed_volume_solids_fraction"] == 0.5
     assert "Illustrative DFT estimate" in result["dft_um"]["label"]

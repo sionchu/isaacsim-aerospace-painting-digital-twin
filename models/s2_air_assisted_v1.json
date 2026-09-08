@@ -1,0 +1,100 @@
+{
+  "calibrated_incidence_deg": [
+    0.0,
+    15.0
+  ],
+  "endpoints": {
+    "0_deg": {
+      "case": "medium",
+      "centroid_uv_m": [
+        -0.0004935400618006563,
+        -3.623301208662972e-05
+      ],
+      "covariance_uv_m2": [
+        [
+          0.0004302575149976908,
+          -5.557545491797765e-06
+        ],
+        [
+          -5.557545491797765e-06,
+          0.00038183076044217114
+        ]
+      ],
+      "deposited_mass_kg": 1.000000000024e-06,
+      "transfer_efficiency": 1.0
+    },
+    "15_deg": {
+      "case": "medium_incidence_15deg",
+      "centroid_uv_m": [
+        0.07969718794914857,
+        -0.0005540851375074549
+      ],
+      "covariance_uv_m2": [
+        [
+          0.0007091386760671378,
+          -1.5316218873924092e-05
+        ],
+        [
+          -1.5316218873924092e-05,
+          0.00042058136630670904
+        ]
+      ],
+      "deposited_mass_kg": 9.69281800814e-07,
+      "transfer_efficiency": 0.969281800814
+    }
+  },
+  "holdout": {
+    "case": "medium_incidence_7p5deg",
+    "field_pass": true,
+    "frozen_prediction_file_sha256": "30890457e2e9be65d18c05719119b29feb9311f6b8e47926cc366badf88dfba7",
+    "parameter_pass": true,
+    "status": "S2_HOLDOUT_VALIDATED"
+  },
+  "model_id": "s2_air_assisted_v1",
+  "model_sha256": "ce0a9f2d4adfe13d2fdba5ba6cf85bdf7bf05a2968b03930686938ba82c22f43",
+  "model_type": "S2_SINGLE_GAUSSIAN",
+  "operating_point": {
+    "air_velocity_m_s": 18.0,
+    "canonical_injected_mass_kg": 1e-06,
+    "droplet_bins_m": [
+      4e-05,
+      7e-05,
+      0.0001,
+      0.00015,
+      0.00022
+    ],
+    "droplet_initial_speed_m_s": 12.0,
+    "mass_flow_kg_s": 0.0001,
+    "mass_fraction": [
+      0.1,
+      0.2,
+      0.3,
+      0.25,
+      0.15
+    ],
+    "reference_duration_s": 0.01,
+    "stand_off_m": 0.24
+  },
+  "schema_version": "s2_runtime_model_v1",
+  "source_hashes": {
+    "air_assisted_config": "8b961347dcb29f31f5acc92a41185b77295b2198ffd16b47e952fa52d6c7f86d",
+    "fifteen_degree_metrics": "a53c969e5945604b83adcd52364029c6471c6a28691abbf587356f1582e44075",
+    "holdout_validation": "be2de6442013c5ab11dc12811c89c8d615b9c73a1a1f69f0d257730ce3d2f8ef",
+    "zero_degree_metrics": "1dd87eb8d241557d4ce4a5ea4e28a3d99582997a2afa32895f24cf0a6ab38c0d"
+  },
+  "source_paths": {
+    "air_assisted_config": "configs/air_assisted_spray.yaml",
+    "fifteen_degree_metrics": "results/air_assisted/openfoam_v2606/flat_plate/medium_incidence_15deg/metrics.json",
+    "holdout_validation": "results/air_assisted/s2/holdout_validation.json",
+    "zero_degree_metrics": "results/air_assisted/openfoam_v2606/flat_plate/medium/metrics.json"
+  },
+  "teacher": {
+    "openfoam_version": "v2606",
+    "solver": "sprayFoam",
+    "teacher_case_paths": [
+      "results/air_assisted/openfoam_v2606/flat_plate/medium/metrics.json",
+      "results/air_assisted/openfoam_v2606/flat_plate/medium_incidence_15deg/metrics.json"
+    ],
+    "validated_commit": "ae724ac534c89a8d8ee9a3093608e6efcbea878c"
+  }
+}

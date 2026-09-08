@@ -1,0 +1,248 @@
+{
+  "capture": {
+    "output_framerate_hz": 30.0,
+    "resolution": [
+      1920,
+      1080
+    ],
+    "source_frame_count": 181,
+    "source_framerate_hz": 7.5
+  },
+  "events": [],
+  "generated_at_epoch_s": 1788869296.0562701,
+  "isaac_sim": {
+    "launcher": "native Isaac Sim python.bat",
+    "version": "6.0.1-rc.7+release.42383.32955d8d.gl"
+  },
+  "ledger": {
+    "balance_error_kg": -5.624298769768554e-18,
+    "deposited_kg": 0.0014790155388649218,
+    "events": [],
+    "injected_kg": 0.0015020862308762096,
+    "out_of_domain_steps": 0,
+    "overspray_kg": 2.3070692011293342e-05,
+    "rejected_or_overspray_kg": 0.0,
+    "spray_on_time_s": 15.020862308762087,
+    "surface_integrated_kg": 0.0014790155388649238,
+    "surface_integration_error_kg": 1.951563910473908e-18,
+    "surface_map_closure_error_kg": 1.951563910473908e-18,
+    "transfer_efficiency": 0.9846409004110037
+  },
+  "media": {
+    "deposition": "media/air_assisted_spray/isaac_s2_runtime_deposition.png",
+    "hero": "media/air_assisted_spray/isaac_s2_runtime_hero.png",
+    "video": "media/air_assisted_spray/isaac_s2_runtime_demo.mp4"
+  },
+  "model": {
+    "calibrated_angle_deg": [
+      0.0,
+      15.0
+    ],
+    "model_id": "s2_air_assisted_v1",
+    "model_sha256": "ce0a9f2d4adfe13d2fdba5ba6cf85bdf7bf05a2968b03930686938ba82c22f43",
+    "path": "models/s2_air_assisted_v1.json",
+    "stand_off_m": 0.24
+  },
+  "performance": {
+    "frame_count": 720,
+    "real_time_ratio": 0.2505152715535218,
+    "runtime_fps": 7.515458146605655,
+    "s2_updates": {
+      "count": 720,
+      "max_seconds": 0.0007466999813914299,
+      "mean_seconds": 0.00021775694072453513,
+      "min_seconds": 6.569991819560528e-05,
+      "p95_seconds": 0.00039829990128055216,
+      "spray_count": 450
+    },
+    "simulated_duration_s": 24.0,
+    "surface_element_count": 1159,
+    "visualization": {
+      "interval_sim_seconds": 0.03337969401947149,
+      "rate_sim_hz": 30.0,
+      "rate_wall_hz": 7.515458146605655,
+      "update_count": 720
+    },
+    "wall_seconds": 95.80254269996658
+  },
+  "scene": {
+    "flange": "/World/AerospacePaintingCell/LinearTrack/Carriage/PaintRobot/FANUC/Asset/J6_link/flange",
+    "overlay": "/World/AerospacePaintingCell/S2DepositionOverlay",
+    "path": "../visual_prototypes/scenes/aircraft_painting_cell.usda",
+    "process_tool": "/World/AerospacePaintingCell/LinearTrack/Carriage/PaintRobot/FANUC/Asset/J6_link/flange/ProcessTool",
+    "rail": "/World/AerospacePaintingCell/LinearTrack/Carriage",
+    "robot": "/World/AerospacePaintingCell/LinearTrack/Carriage/PaintRobot/FANUC",
+    "root": "/World/AerospacePaintingCell",
+    "spray_tool": "/World/AerospacePaintingCell/LinearTrack/Carriage/PaintRobot/FANUC/Asset/J6_link/flange/ProcessTool/SprayGun",
+    "workpiece": "/World/Aircraft/Panel/Asset"
+  },
+  "schema_version": "isaac_s2_runtime_metrics_v1",
+  "states": {
+    "0.0": {
+      "commanded_incidence_deg": 0.0,
+      "frames": 240,
+      "measured_incidence_deg": {
+        "max": -1.93155989709559e-14,
+        "mean": -4.3335638457818564e-08,
+        "min": -2.2158816756709307e-07
+      },
+      "spray_frames": 150,
+      "spray_measured_incidence_deg": {
+        "max": -4.471751615474277e-11,
+        "mean": -4.4813297674702043e-11,
+        "min": -4.490971987372459e-11
+      },
+      "spray_stand_off_error_m": {
+        "max": 6.017991660556277e-12,
+        "mean": 6.0178732367669834e-12,
+        "min": 6.017769615951352e-12
+      },
+      "spray_stand_off_m": {
+        "max": 0.24000000000601798,
+        "mean": 0.24000000000601787,
+        "min": 0.24000000000601776
+      },
+      "spray_tcp_error_m": {
+        "max": 7.472165644368101e-12,
+        "mean": 7.471793336895964e-12,
+        "min": 7.471440404162932e-12
+      },
+      "spray_tool_tcp_axis_alignment": {
+        "max": 1.0000000000000002,
+        "mean": 1.0000000000000002,
+        "min": 0.9999999999999998
+      },
+      "spray_transfer_efficiency": {
+        "max": 1.0,
+        "mean": 1.0,
+        "min": 1.0
+      },
+      "stand_off_error_m": {
+        "max": 0.41000000000000014,
+        "mean": 0.07762239661672604,
+        "min": 6.017769615951352e-12
+      },
+      "stand_off_m": {
+        "max": 0.6500000000000001,
+        "mean": 0.31762239661672603,
+        "min": 0.24000000000601776
+      },
+      "tcp_error_m": {
+        "max": 4.662445636568779e-09,
+        "mean": 9.537153848688177e-10,
+        "min": 2.220446049250313e-16
+      }
+    },
+    "15.0": {
+      "commanded_incidence_deg": 15.0,
+      "frames": 270,
+      "measured_incidence_deg": {
+        "max": 15.000105025497426,
+        "mean": 15.000000135050813,
+        "min": 14.999895764652575
+      },
+      "spray_frames": 150,
+      "spray_measured_incidence_deg": {
+        "max": 14.999999953365398,
+        "mean": 14.999999558179551,
+        "min": 14.99994067549577
+      },
+      "spray_stand_off_error_m": {
+        "max": 3.4639309892670056e-08,
+        "mean": 2.5892432327830524e-10,
+        "min": 2.8183372302592602e-11
+      },
+      "spray_stand_off_m": {
+        "max": 0.24000003463930988,
+        "mean": 0.24000000025892432,
+        "min": 0.24000000002818336
+      },
+      "spray_tcp_error_m": {
+        "max": 1.708474602963029e-07,
+        "mean": 1.2821071128100066e-09,
+        "min": 1.4408453121616915e-10
+      },
+      "spray_tool_tcp_axis_alignment": {
+        "max": 1.0000000000000002,
+        "mean": 1.0000000000000002,
+        "min": 0.9999999999999998
+      },
+      "spray_transfer_efficiency": {
+        "max": 0.969281800814,
+        "mean": 0.9692818008140001,
+        "min": 0.969281800814
+      },
+      "stand_off_error_m": {
+        "max": 0.40999999995740033,
+        "mean": 0.09174378226893924,
+        "min": 2.8183372302592602e-11
+      },
+      "stand_off_m": {
+        "max": 0.6499999999574003,
+        "mean": 0.33174378226893925,
+        "min": 0.24000000002818336
+      },
+      "tcp_error_m": {
+        "max": 2.0199029182105217e-06,
+        "mean": 1.4984092409568104e-07,
+        "min": 1.2495643587640768e-11
+      }
+    },
+    "7.5": {
+      "commanded_incidence_deg": 7.5,
+      "frames": 210,
+      "measured_incidence_deg": {
+        "max": 14.905979548415518,
+        "mean": 7.498508886654066,
+        "min": 0.08344900558870624
+      },
+      "spray_frames": 150,
+      "spray_measured_incidence_deg": {
+        "max": 7.499999999983929,
+        "mean": 7.499999989892772,
+        "min": 7.499998486318165
+      },
+      "spray_stand_off_error_m": {
+        "max": 1.3755624694855584e-09,
+        "mean": 9.187788122903365e-12,
+        "min": 1.7291723608536813e-14
+      },
+      "spray_stand_off_m": {
+        "max": 0.24000000137556246,
+        "mean": 0.24000000000918778,
+        "min": 0.24000000000001728
+      },
+      "spray_tcp_error_m": {
+        "max": 3.252741188623364e-09,
+        "mean": 2.173079273238715e-11,
+        "min": 4.60596731770014e-14
+      },
+      "spray_tool_tcp_axis_alignment": {
+        "max": 1.0000000000000002,
+        "mean": 1.0,
+        "min": 0.9999999999999999
+      },
+      "spray_transfer_efficiency": {
+        "max": 0.9846409004190001,
+        "mean": 0.984640900419,
+        "min": 0.9846409004190001
+      },
+      "stand_off_error_m": {
+        "max": 8.983986204968986e-08,
+        "mean": 2.4084236899786438e-09,
+        "min": 1.7291723608536813e-14
+      },
+      "stand_off_m": {
+        "max": 0.24000008983986204,
+        "mean": 0.24000000041674968,
+        "min": 0.23999997514625165
+      },
+      "tcp_error_m": {
+        "max": 4.359961093205164e-07,
+        "mean": 1.1319414824243785e-08,
+        "min": 4.60596731770014e-14
+      }
+    }
+  },
+  "status": "ISAAC_S2_RUNTIME_VALIDATED"
+}

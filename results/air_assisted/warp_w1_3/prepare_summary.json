@@ -1,0 +1,983 @@
+{
+  "OPENFOAM_10DEG_NOT_READ_AT_PREDICTION_TIME": true,
+  "fixed_grid_coverage": {
+    "10_deg": {
+      "inside_fraction": 1.0,
+      "out_of_field_count": 0,
+      "pass": true
+    },
+    "7.5_deg": {
+      "inside_fraction": 1.0,
+      "out_of_field_count": 0,
+      "pass": true
+    }
+  },
+  "fixed_grid_domain": {
+    "C_coordinate_sha256": {
+      "0.0": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+      "15.0": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+      "7.5": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca"
+    },
+    "blockMeshDict_sha256": {
+      "0.0": "33560288f8a33d87f9546e4bccc7b09256b276903d7884292d9abc4bc991c51c",
+      "15.0": "33560288f8a33d87f9546e4bccc7b09256b276903d7884292d9abc4bc991c51c",
+      "7.5": "33560288f8a33d87f9546e4bccc7b09256b276903d7884292d9abc4bc991c51c"
+    },
+    "canonical_coordinate_array_sha256": {
+      "0.0": "b22211128e613892165bed139d9cfd0d5425af6409b4f9391d5358f7c8424302",
+      "15.0": "b22211128e613892165bed139d9cfd0d5425af6409b4f9391d5358f7c8424302",
+      "7.5": "b22211128e613892165bed139d9cfd0d5425af6409b4f9391d5358f7c8424302"
+    },
+    "cases": {
+      "0.0": "medium",
+      "15.0": "medium_incidence_15deg",
+      "7.5": "medium_incidence_7p5deg"
+    },
+    "conclusion": "FIXED_EULERIAN_DOMAIN = true",
+    "finite_volume_bounds_m": {
+      "0.0": {
+        "max_m": [
+          0.14999999999999963,
+          0.14999999999999963,
+          0.23999999999999996
+        ],
+        "min_m": [
+          -0.14999999999999997,
+          -0.14999999999999997,
+          4.336808689942018e-19
+        ]
+      },
+      "15.0": {
+        "max_m": [
+          0.14999999999999963,
+          0.14999999999999963,
+          0.23999999999999996
+        ],
+        "min_m": [
+          -0.14999999999999997,
+          -0.14999999999999997,
+          4.336808689942018e-19
+        ]
+      },
+      "7.5": {
+        "max_m": [
+          0.14999999999999963,
+          0.14999999999999963,
+          0.23999999999999996
+        ],
+        "min_m": [
+          -0.14999999999999997,
+          -0.14999999999999997,
+          4.336808689942018e-19
+        ]
+      }
+    },
+    "fixed_eulerian_domain": true,
+    "grid_dimensions_nx_ny_nz": {
+      "0.0": [
+        24,
+        24,
+        48
+      ],
+      "15.0": [
+        24,
+        24,
+        48
+      ],
+      "7.5": [
+        24,
+        24,
+        48
+      ]
+    },
+    "intended_input_diffs": {
+      "15.0": {
+        "expected_changes": [
+          {
+            "count": 1,
+            "field": "airInlet.value",
+            "file": "0/U",
+            "incidence": [
+              4.658742,
+              0.0,
+              17.386666
+            ],
+            "nominal": [
+              0.0,
+              0.0,
+              18.0
+            ]
+          },
+          {
+            "count": 5,
+            "field": "injection.direction",
+            "file": "constant/sprayCloudProperties",
+            "incidence": [
+              0.258819,
+              0.0,
+              0.965926
+            ],
+            "nominal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          }
+        ],
+        "files_checked": [
+          "0/N2",
+          "0/O2",
+          "0/T",
+          "0/U",
+          "0/Ydefault",
+          "0/alphat",
+          "0/k",
+          "0/nut",
+          "0/omega",
+          "0/p",
+          "Allclean",
+          "Allrun",
+          "chemkin/chem.inp",
+          "chemkin/therm.dat",
+          "chemkin/transportProperties",
+          "constant/chemistryProperties",
+          "constant/combustionProperties",
+          "constant/g",
+          "constant/radiationProperties",
+          "constant/sprayCloudProperties",
+          "constant/thermophysicalProperties",
+          "constant/turbulenceProperties",
+          "system/blockMeshDict",
+          "system/controlDict",
+          "system/decomposeParDict",
+          "system/fvSchemes",
+          "system/fvSolution"
+        ],
+        "incidence_angle_deg": 15.0,
+        "incidence_case": "medium_incidence_15deg",
+        "nominal_case": "medium",
+        "pass": true,
+        "rotation_axis": "+Y",
+        "schema_version": "incidence15_input_diff_v1",
+        "unexpected_differences": []
+      },
+      "7.5": {
+        "expected_changes": [
+          {
+            "count": 1,
+            "field": "airInlet.value",
+            "file": "0/U",
+            "incidence": [
+              2.349471,
+              0.0,
+              17.846008
+            ],
+            "nominal": [
+              0.0,
+              0.0,
+              18.0
+            ]
+          },
+          {
+            "count": 5,
+            "field": "injection.direction",
+            "file": "constant/sprayCloudProperties",
+            "incidence": [
+              0.130526,
+              0.0,
+              0.991445
+            ],
+            "nominal": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          }
+        ],
+        "files_checked": [
+          "0/N2",
+          "0/O2",
+          "0/T",
+          "0/U",
+          "0/Ydefault",
+          "0/alphat",
+          "0/k",
+          "0/nut",
+          "0/omega",
+          "0/p",
+          "Allclean",
+          "Allrun",
+          "chemkin/chem.inp",
+          "chemkin/therm.dat",
+          "chemkin/transportProperties",
+          "constant/chemistryProperties",
+          "constant/combustionProperties",
+          "constant/g",
+          "constant/radiationProperties",
+          "constant/sprayCloudProperties",
+          "constant/thermophysicalProperties",
+          "constant/turbulenceProperties",
+          "system/blockMeshDict",
+          "system/controlDict",
+          "system/decomposeParDict",
+          "system/fvSchemes",
+          "system/fvSolution"
+        ],
+        "incidence_angle_deg": 7.5,
+        "incidence_case": "medium_incidence_7p5deg",
+        "nominal_case": "medium",
+        "pass": true,
+        "rotation_axis": "+Y",
+        "schema_version": "incidence15_input_diff_v1",
+        "unexpected_differences": []
+      }
+    },
+    "schema_version": "warp_w1_3_domain_audit_v1",
+    "source_and_nozzle_inputs": {
+      "0.0": {
+        "air_inlet_vector_m_s": [
+          0.0,
+          0.0,
+          18.0
+        ],
+        "injection_positions_m": [
+          [
+            0.0,
+            0.0,
+            0.002
+          ],
+          [
+            0.0,
+            0.0,
+            0.002
+          ],
+          [
+            0.0,
+            0.0,
+            0.002
+          ],
+          [
+            0.0,
+            0.0,
+            0.002
+          ],
+          [
+            0.0,
+            0.0,
+            0.002
+          ]
+        ],
+        "source_nozzle_positions_identical": true,
+        "spray_direction_count": 5,
+        "spray_directions": [
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "unique_spray_directions": [
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "15.0": {
+        "air_inlet_vector_m_s": [
+          4.658742,
+          0.0,
+          17.386666
+        ],
+        "injection_positions_m": [
+          [
+            0.0,
+            0.0,
+            0.002
+          ],
+          [
+            0.0,
+            0.0,
+            0.002
+          ],
+          [
+            0.0,
+            0.0,
+            0.002
+          ],
+          [
+            0.0,
+            0.0,
+            0.002
+          ],
+          [
+            0.0,
+            0.0,
+            0.002
+          ]
+        ],
+        "source_nozzle_positions_identical": true,
+        "spray_direction_count": 5,
+        "spray_directions": [
+          [
+            0.258819,
+            0.0,
+            0.965926
+          ],
+          [
+            0.258819,
+            0.0,
+            0.965926
+          ],
+          [
+            0.258819,
+            0.0,
+            0.965926
+          ],
+          [
+            0.258819,
+            0.0,
+            0.965926
+          ],
+          [
+            0.258819,
+            0.0,
+            0.965926
+          ]
+        ],
+        "unique_spray_directions": [
+          [
+            0.258819,
+            0.0,
+            0.965926
+          ]
+        ]
+      },
+      "7.5": {
+        "air_inlet_vector_m_s": [
+          2.349471,
+          0.0,
+          17.846008
+        ],
+        "injection_positions_m": [
+          [
+            0.0,
+            0.0,
+            0.002
+          ],
+          [
+            0.0,
+            0.0,
+            0.002
+          ],
+          [
+            0.0,
+            0.0,
+            0.002
+          ],
+          [
+            0.0,
+            0.0,
+            0.002
+          ],
+          [
+            0.0,
+            0.0,
+            0.002
+          ]
+        ],
+        "source_nozzle_positions_identical": true,
+        "spray_direction_count": 5,
+        "spray_directions": [
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ],
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ]
+        ],
+        "unique_spray_directions": [
+          [
+            0.130526,
+            0.0,
+            0.991445
+          ]
+        ]
+      }
+    },
+    "target_wall": {
+      "0.0": {
+        "boundary_sha256": "6244c3e38b853339cbbb8d709d61b5895bc7a1c02c127314bd0fc4b95bab2032",
+        "target_wall_bounds_max_m": [
+          0.15,
+          0.15,
+          0.24
+        ],
+        "target_wall_bounds_min_m": [
+          -0.15,
+          -0.15,
+          0.24
+        ],
+        "target_wall_face_count": 576,
+        "target_wall_geometry_sha256": "7cecfc272950dc556e17308c1886c318766eaea871dba8a1d9a94980da5f952e",
+        "target_wall_vertex_count": 625
+      },
+      "15.0": {
+        "boundary_sha256": "6244c3e38b853339cbbb8d709d61b5895bc7a1c02c127314bd0fc4b95bab2032",
+        "target_wall_bounds_max_m": [
+          0.15,
+          0.15,
+          0.24
+        ],
+        "target_wall_bounds_min_m": [
+          -0.15,
+          -0.15,
+          0.24
+        ],
+        "target_wall_face_count": 576,
+        "target_wall_geometry_sha256": "7cecfc272950dc556e17308c1886c318766eaea871dba8a1d9a94980da5f952e",
+        "target_wall_vertex_count": 625
+      },
+      "7.5": {
+        "boundary_sha256": "6244c3e38b853339cbbb8d709d61b5895bc7a1c02c127314bd0fc4b95bab2032",
+        "target_wall_bounds_max_m": [
+          0.15,
+          0.15,
+          0.24
+        ],
+        "target_wall_bounds_min_m": [
+          -0.15,
+          -0.15,
+          0.24
+        ],
+        "target_wall_face_count": 576,
+        "target_wall_geometry_sha256": "7cecfc272950dc556e17308c1886c318766eaea871dba8a1d9a94980da5f952e",
+        "target_wall_vertex_count": 625
+      }
+    }
+  },
+  "frozen_10deg_carrier": {
+    "OPENFOAM_10DEG_NOT_READ_AT_PREDICTION_TIME": true,
+    "angle_deg": 10.0,
+    "case_created_at_prediction_time": false,
+    "created_utc": "2026-09-08T14:52:08.727155+00:00",
+    "inside_mask_array_sha256": "3c7699b02e6aa76f9926e98c036148015252b8938a0458c2e00e32efa40f0420",
+    "interpolation_method": "FIXED_GRID_LOCAL_VECTOR_INTERP",
+    "model_id": "warp_vector_carrier_v3",
+    "model_sha256": "0034ebf2ab91ca2178a0bde8538a738ede42cb033df0cbef2473ac9b62507adb",
+    "prediction_array_sha256": "7fc541c2a4e87c81fbb6fc1d115872b5e235780d9f27b88608d14a30d8752282",
+    "prediction_sha256": "d9acc2e439d348b2ed6b738e5caa26e9d94cf71280b8b76e8055a2022a7c7364",
+    "schema_version": "warp_w1_3_frozen_10deg_carrier_v1"
+  },
+  "frozen_10deg_deposition": {
+    "OPENFOAM_10DEG_NOT_READ_AT_PREDICTION_TIME": true,
+    "angle_deg": 10.0,
+    "carrier_mode": "FIXED_GRID_LOCAL_VECTOR_INTERP",
+    "case_created_at_prediction_time": false,
+    "created_utc": "2026-09-08T14:52:09.214497+00:00",
+    "mass_ledger": {
+      "carrier_out_of_field_mass_kg": 0.0,
+      "carrier_out_of_field_particle_count": 0,
+      "deposited_mass_kg": 1.0000000000000004e-06,
+      "deposited_particle_count": 10000,
+      "escaped_mass_kg": 0.0,
+      "escaped_particle_count": 0,
+      "expected_injected_mass_kg": 1.0000000000000004e-06,
+      "live_mass_kg": 0.0,
+      "live_particle_count": 0,
+      "mass_residual_kg": 0.0,
+      "particle_injected_mass_kg": 1.0000000000000004e-06,
+      "relative_balance_error": 0.0,
+      "released_particle_count": 10000,
+      "teacher_out_of_field_mass_kg": 0.0,
+      "teacher_out_of_field_particle_count": 0,
+      "transfer_efficiency": 1.0
+    },
+    "model_id": "warp_vector_carrier_v3",
+    "model_sha256": "0034ebf2ab91ca2178a0bde8538a738ede42cb033df0cbef2473ac9b62507adb",
+    "performance": {
+      "carrier_field_upload_seconds": 0.0001284000463783741,
+      "carrier_mode": "FIXED_GRID_LOCAL_VECTOR_INTERP",
+      "device": "cuda:0",
+      "kernel_launch_count": 1200,
+      "max_step_compute_seconds": 0.0014194000978022814,
+      "mean_step_compute_seconds": 0.00027158224974603703,
+      "p95_step_compute_seconds": 0.0007309098728001116,
+      "particle_count": 10000,
+      "particle_count_per_bin": 2000,
+      "particle_dt_s": 5e-05,
+      "simulated_duration_s": 0.06,
+      "substeps": 1200,
+      "teacher_field_upload_seconds": 0.0,
+      "wall_seconds": 0.3272995001170784
+    },
+    "prediction_sha256": "f8140c599c87919fcdb52d4ef09f2cbcc6681759b6ec47622247d57da38693fd",
+    "schema_version": "warp_w1_3_frozen_10deg_deposition_v1"
+  },
+  "next_step": "Create the medium_incidence_10deg case and run blockMesh/checkMesh/sprayFoam only after these hashes exist.",
+  "regression_7p5": {
+    "angle_deg": 7.5,
+    "carrier_status": "REGRESSION_ONLY_NOT_BLIND_HOLDOUT",
+    "comparison": {
+      "Analytic W1": {
+        "centroid_u_m": 0.03158281288194026,
+        "centroid_v_m": -3.218764118377548e-05,
+        "deposited_mass_kg": 9.999995903148264e-07,
+        "escaped_mass_kg": 0.0,
+        "nrmse": 0.06286847981743124,
+        "peak_density_kg_m2": 0.0008481612894684077,
+        "pearson_correlation": 0.8355034669252107,
+        "sigma_major_m": 0.019200908801475163,
+        "sigma_minor_m": 0.018997285480986528,
+        "transfer_efficiency": 1.0
+      },
+      "OpenFOAM": {
+        "centroid_u_m": 0.03998890569308883,
+        "centroid_v_m": -0.0004081613563283942,
+        "deposited_mass_kg": 1.000000000007e-06,
+        "nrmse": 0.0,
+        "peak_density_kg_m2": 0.0005213423698559995,
+        "pearson_correlation": 1.0,
+        "sigma_major_m": 0.02276979292346974,
+        "sigma_minor_m": 0.01976210899709326,
+        "transfer_efficiency": 1.0
+      },
+      "S2": {
+        "centroid_u_m": 0.039601652736307086,
+        "centroid_v_m": -0.0002951559382736042,
+        "deposited_mass_kg": 9.846394659708499e-07,
+        "escaped_mass_kg": null,
+        "nrmse": 0.03316056809401697,
+        "peak_density_kg_m2": 0.0003093300427076654,
+        "pearson_correlation": 0.9306511870106534,
+        "sigma_major_m": 0.023881433106275343,
+        "sigma_minor_m": 0.02001404502526176,
+        "teacher_reference_centroid_u_m": 0.03998890569308883,
+        "teacher_reference_deposited_mass_kg": 1.000000000007e-06,
+        "transfer_efficiency": 0.98463946597085
+      },
+      "Teacher-U W1.1": {
+        "centroid_u_m": 0.03999623958271163,
+        "centroid_v_m": -3.0312647172290984e-05,
+        "deposited_mass_kg": 9.999982520797481e-07,
+        "escaped_mass_kg": 0.0,
+        "nrmse": 0.02498044315065858,
+        "peak_density_kg_m2": 0.0003940783699363238,
+        "pearson_correlation": 0.9631044018438103,
+        "sigma_major_m": 0.024089275487489886,
+        "sigma_minor_m": 0.02250449624567523,
+        "transfer_efficiency": 1.0
+      },
+      "W1.2": {
+        "centroid_u_m": 0.005337645283020189,
+        "centroid_v_m": -0.0002262190949155387,
+        "deposited_mass_kg": 1.6714995502986612e-07,
+        "escaped_mass_kg": 8.328500000000003e-07,
+        "nrmse": 0.08878990386823027,
+        "peak_density_kg_m2": 9.02399222013628e-05,
+        "pearson_correlation": 0.24405824572210827,
+        "sigma_major_m": 0.025116940794044668,
+        "sigma_minor_m": 0.01047914057765694,
+        "transfer_efficiency": 0.16715
+      },
+      "W1.3": {
+        "centroid_u_m": 0.03919311783139931,
+        "centroid_v_m": -3.000011983516633e-05,
+        "deposited_mass_kg": 9.999984040970358e-07,
+        "escaped_mass_kg": 0.0,
+        "nrmse": 0.02545424223776632,
+        "peak_density_kg_m2": 0.0003894386281899643,
+        "pearson_correlation": 0.9605145144400214,
+        "sigma_major_m": 0.023788838089069078,
+        "sigma_minor_m": 0.022435281572984106,
+        "transfer_efficiency": 1.0
+      }
+    },
+    "coverage": {
+      "inside_fraction": 1.0,
+      "out_of_field_count": 0,
+      "pass": true
+    },
+    "performance": {
+      "analytic_w1": {
+        "carrier_field_upload_seconds": 0.0,
+        "carrier_mode": "ANALYTIC_AIR",
+        "device": "cuda:0",
+        "kernel_launch_count": 1200,
+        "max_step_compute_seconds": 0.013816999970003963,
+        "mean_step_compute_seconds": 0.00011100383456020306,
+        "p95_step_compute_seconds": 0.0002663350431248545,
+        "particle_count": 10000,
+        "particle_count_per_bin": 2000,
+        "particle_dt_s": 5e-05,
+        "simulated_duration_s": 0.06,
+        "substeps": 1200,
+        "teacher_field_upload_seconds": 0.0,
+        "wall_seconds": 0.1354638000484556
+      },
+      "teacher_u_w1_1": {
+        "carrier_field_upload_seconds": 0.00013160007074475288,
+        "carrier_mode": "TEACHER_FORCED_U",
+        "device": "cuda:0",
+        "kernel_launch_count": 1200,
+        "max_step_compute_seconds": 0.000965900020673871,
+        "mean_step_compute_seconds": 0.00016069499969792862,
+        "p95_step_compute_seconds": 0.0005858999327756464,
+        "particle_count": 10000,
+        "particle_count_per_bin": 2000,
+        "particle_dt_s": 5e-05,
+        "simulated_duration_s": 0.06,
+        "substeps": 1200,
+        "teacher_field_upload_seconds": 0.00013160007074475288,
+        "wall_seconds": 0.1940308001358062
+      },
+      "vector_w1_2": {
+        "carrier_field_upload_seconds": 0.00011920020915567875,
+        "carrier_mode": "COROTATING_VECTOR_INTERP",
+        "device": "cuda:0",
+        "kernel_launch_count": 1200,
+        "max_step_compute_seconds": 0.0005222000181674957,
+        "mean_step_compute_seconds": 8.61337462750574e-05,
+        "p95_step_compute_seconds": 0.00018782003317028282,
+        "particle_count": 10000,
+        "particle_count_per_bin": 2000,
+        "particle_dt_s": 5e-05,
+        "simulated_duration_s": 0.06,
+        "substeps": 1200,
+        "teacher_field_upload_seconds": 0.0,
+        "wall_seconds": 0.10637279995717108
+      },
+      "vector_w1_3": {
+        "carrier_field_upload_seconds": 0.00012600002810359,
+        "carrier_mode": "FIXED_GRID_LOCAL_VECTOR_INTERP",
+        "device": "cuda:0",
+        "kernel_launch_count": 1200,
+        "max_step_compute_seconds": 0.001070600003004074,
+        "mean_step_compute_seconds": 0.00018994408077560365,
+        "p95_step_compute_seconds": 0.0005842200247570872,
+        "particle_count": 10000,
+        "particle_count_per_bin": 2000,
+        "particle_dt_s": 5e-05,
+        "simulated_duration_s": 0.06,
+        "substeps": 1200,
+        "teacher_field_upload_seconds": 0.0,
+        "wall_seconds": 0.23076659999787807
+      }
+    },
+    "schema_version": "warp_w1_3_regression_7p5_v1",
+    "w1_3_gate": {
+      "centroid": true,
+      "correlation": true,
+      "deposited_mass": true,
+      "mass_balance": true,
+      "nrmse": true,
+      "sigma_major": true,
+      "sigma_minor": true
+    },
+    "w1_3_summary": {
+      "comparison": {
+        "openfoam_teacher": {
+          "actual": {
+            "centroid_uv_m": [
+              0.03998890569308883,
+              -0.0004081613563283942
+            ],
+            "covariance_uv_m2": [
+              [
+                0.0005139778704834797,
+                -2.3530587633355763e-05
+              ],
+              [
+                -2.3530587633355756e-05,
+                0.00039502655130720733
+              ]
+            ],
+            "mass_kg": 1.000000000007e-06,
+            "peak_density_kg_m2": 0.0005213423698559995,
+            "sigma_major_m": 0.02276979292346974,
+            "sigma_minor_m": 0.01976210899709326
+          },
+          "centroid_error_m": 0.0008810699413772221,
+          "integrated_absolute_mass_density_error_kg": 3.333997989448023e-07,
+          "integrated_mass_error_kg": -1.5959099642813627e-12,
+          "integrated_mass_relative_error": 1.5959099642701912e-06,
+          "nrmse": 0.02545424223776632,
+          "pearson_correlation": 0.9605145144400214,
+          "predicted": {
+            "centroid_uv_m": [
+              0.03919311783139931,
+              -3.000011983516633e-05
+            ],
+            "covariance_uv_m2": [
+              [
+                0.0005659072566168985,
+                3.1251444180300677e-07
+              ],
+              [
+                3.125144418030003e-07,
+                0.0005033434202701255
+              ]
+            ],
+            "mass_kg": 9.999984040970358e-07,
+            "peak_density_kg_m2": 0.0003894386281899643,
+            "sigma_major_m": 0.023788838089069078,
+            "sigma_minor_m": 0.022435281572984106
+          },
+          "rmse_kg_m2": 1.3270374971125773e-05,
+          "sigma_major_relative_error": 0.04475425705558212,
+          "sigma_minor_relative_error": 0.13526757575742723
+        }
+      },
+      "deposition": {
+        "centroid_error_m": 0.0008810699413772221,
+        "centroid_uv_m": [
+          0.03919311783139931,
+          -3.000011983516633e-05
+        ],
+        "covariance_uv_m2": [
+          [
+            0.0005659072566168985,
+            3.1251444180300677e-07
+          ],
+          [
+            3.125144418030003e-07,
+            0.0005033434202701255
+          ]
+        ],
+        "deposited_mass_relative_error": 1.5959099642701912e-06,
+        "mass_kg": 9.999984040970358e-07,
+        "peak_density_kg_m2": 0.0003894386281899643,
+        "sigma_major_m": 0.023788838089069078,
+        "sigma_major_relative_error": 0.04475425705558212,
+        "sigma_minor_m": 0.022435281572984106,
+        "sigma_minor_relative_error": 0.13526757575742723
+      },
+      "incidence_angle_deg": 7.5,
+      "mass_ledger": {
+        "carrier_out_of_field_mass_kg": 0.0,
+        "carrier_out_of_field_particle_count": 0,
+        "deposited_mass_kg": 1.0000000000000004e-06,
+        "deposited_particle_count": 10000,
+        "escaped_mass_kg": 0.0,
+        "escaped_particle_count": 0,
+        "expected_injected_mass_kg": 1.0000000000000004e-06,
+        "live_mass_kg": 0.0,
+        "live_particle_count": 0,
+        "mass_residual_kg": 0.0,
+        "particle_injected_mass_kg": 1.0000000000000004e-06,
+        "relative_balance_error": 0.0,
+        "released_particle_count": 10000,
+        "teacher_out_of_field_mass_kg": 0.0,
+        "teacher_out_of_field_particle_count": 0,
+        "transfer_efficiency": 1.0
+      },
+      "particle_count": 10000,
+      "particle_count_per_bin": 2000,
+      "performance": {
+        "carrier_field_upload_seconds": 0.00012600002810359,
+        "carrier_mode": "FIXED_GRID_LOCAL_VECTOR_INTERP",
+        "device": "cuda:0",
+        "kernel_launch_count": 1200,
+        "max_step_compute_seconds": 0.001070600003004074,
+        "mean_step_compute_seconds": 0.00018994408077560365,
+        "p95_step_compute_seconds": 0.0005842200247570872,
+        "particle_count": 10000,
+        "particle_count_per_bin": 2000,
+        "particle_dt_s": 5e-05,
+        "simulated_duration_s": 0.06,
+        "substeps": 1200,
+        "teacher_field_upload_seconds": 0.0,
+        "wall_seconds": 0.23076659999787807
+      },
+      "schema_version": "warp_w1_case_metrics_v1",
+      "state_counts": {
+        "alive": 0,
+        "deposited": 10000,
+        "escaped": 0,
+        "released": 10000
+      },
+      "teacher_reference": {
+        "case": "medium_incidence_7p5deg",
+        "centroid_uv_m": [
+          0.03998890569308883,
+          -0.0004081613563283942
+        ],
+        "deposited_mass_kg": 1.000000000007e-06,
+        "sigma_major_m": 0.02276979292346974,
+        "sigma_minor_m": 0.01976210899709326
+      }
+    }
+  },
+  "schema_version": "warp_w1_3_prepare_summary_v1",
+  "w1_2_coverage": {
+    "angle_deg": 7.5,
+    "bounds_max_m": [
+      0.14999999999999963,
+      0.14999999999999963,
+      0.23999999999999996
+    ],
+    "bounds_min_m": [
+      -0.14999999999999997,
+      -0.14999999999999997,
+      4.336808689942018e-19
+    ],
+    "categories": {
+      "inside_both_anchors": {
+        "count": 23472,
+        "fraction": 0.8489583333333334
+      },
+      "outside_anchor_0_only": {
+        "count": 1944,
+        "fraction": 0.0703125
+      },
+      "outside_anchor_15_only": {
+        "count": 1944,
+        "fraction": 0.0703125
+      },
+      "outside_both_anchors": {
+        "count": 288,
+        "fraction": 0.010416666666666666
+      },
+      "outside_due_to_x_bounds": {
+        "count": 2544,
+        "fraction": 0.0920138888888889
+      },
+      "outside_due_to_y_bounds": {
+        "count": 0,
+        "fraction": 0.0
+      },
+      "outside_due_to_z_bounds": {
+        "count": 1920,
+        "fraction": 0.06944444444444445
+      }
+    },
+    "grid_sample_count": 27648,
+    "mapping_rule": "W1.2 rotated query coordinates into endpoint fields before sampling",
+    "schema_version": "warp_w1_3_w1_2_coverage_audit_v1",
+    "w1_2_inside_both_fraction": 0.8489583333333334,
+    "w1_2_out_of_field_count": 4176
+  },
+  "w1_3_model": {
+    "anchors": {
+      "0_deg": {
+        "angle_deg": 0.0,
+        "latest_time_s": 0.06,
+        "source_case": "reference_cfd\\openfoam_v2606\\flat_plate\\medium",
+        "source_hashes": {
+          "C": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+          "U": "b217fe99246518b85e0cadd5e5ad97ef40e44a58905b1e615e61618605f39f75"
+        },
+        "source_paths": {
+          "C": "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0.06\\C",
+          "U": "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0.06\\U"
+        }
+      },
+      "15_deg": {
+        "angle_deg": 15.0,
+        "latest_time_s": 0.06,
+        "source_case": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg",
+        "source_hashes": {
+          "C": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+          "U": "521ad2a53ee0294b7e3e5029358789abb0febd9f79feef00800313f369e1b72d"
+        },
+        "source_paths": {
+          "C": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg\\0.06\\C",
+          "U": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg\\0.06\\U"
+        }
+      }
+    },
+    "angle_range_deg": [
+      0.0,
+      15.0
+    ],
+    "diagnostic_interpolation_method": "WORLD_LINEAR_DIAGNOSTIC",
+    "frame_convention": {
+      "local_axes": "+X fan major/u, +Y fan minor/v, +Z spray/stand-off",
+      "query_rule": "fixed world-space query; endpoint velocity vectors expressed in local frames",
+      "rotation": "about world +Y"
+    },
+    "grid": {
+      "array_layout": "U[nz, ny, nx, 3]",
+      "dimensions_nx_ny_nz": [
+        24,
+        24,
+        48
+      ],
+      "finite_volume_bounds_max_m": [
+        0.14999999999999963,
+        0.14999999999999963,
+        0.23999999999999996
+      ],
+      "finite_volume_bounds_min_m": [
+        -0.14999999999999997,
+        -0.14999999999999997,
+        4.336808689942018e-19
+      ],
+      "first_center_m": [
+        -0.14375,
+        -0.14375,
+        0.0025
+      ],
+      "spacing_m": [
+        0.012499999999999983,
+        0.012499999999999983,
+        0.004999999999999999
+      ]
+    },
+    "interpolation_method": "FIXED_GRID_LOCAL_VECTOR_INTERP",
+    "model_id": "warp_vector_carrier_v3",
+    "model_json_sha256": "f2be35c282907442853c4747b008b84975694a377d18759c5dfa61c2b5aa0586",
+    "model_sha256": "0034ebf2ab91ca2178a0bde8538a738ede42cb033df0cbef2473ac9b62507adb",
+    "model_type": "two_anchor_full_vector_structured_grid",
+    "nozzle_origin_m": [
+      0.0,
+      0.0,
+      0.002
+    ],
+    "npz_path": "warp_vector_carrier_v3.npz",
+    "npz_sha256": "f02b6d6ee664007f4c77cdd11dabb2ff6d6f7aecc0d1df0402793450dd75deb3",
+    "openfoam_version": "v2606",
+    "schema_version": "warp_vector_carrier_v3",
+    "source_commit": "f77151f6d18e9ba93a924c18a3154b4bb04d5d66"
+  }
+}

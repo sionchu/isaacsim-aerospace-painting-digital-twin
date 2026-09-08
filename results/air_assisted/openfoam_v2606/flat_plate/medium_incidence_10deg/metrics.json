@@ -1,0 +1,83 @@
+{
+  "schema_version": "level1_flat_plate_v2",
+  "solver": "sprayFoam",
+  "openfoam_version": "v2606",
+  "case": "medium_incidence_10deg",
+  "latest_time_s": 0.06,
+  "mesh": {
+    "cell_count": 27648,
+    "point_count": 30625,
+    "target_wall_face_count": 576
+  },
+  "inputs": {
+    "mass_flow_kg_s": 0.0001,
+    "injection_duration_s": 0.01,
+    "expected_injected_mass_kg": 1e-06,
+    "air_velocity_m_s": 18.0,
+    "droplet_initial_speed_m_s": 12.0,
+    "diameter_bins_m": [
+      4e-05,
+      7e-05,
+      0.0001,
+      0.00015,
+      0.00022
+    ],
+    "mass_fraction": [
+      0.1,
+      0.2,
+      0.3,
+      0.25,
+      0.15
+    ]
+  },
+  "mass_ledger": {
+    "expected_injected_mass_kg": 1.0000000000000002e-06,
+    "injected_kg": 1e-06,
+    "deposited_kg": 1.0000000000069e-06,
+    "escaped_kg": 0.0,
+    "remaining_live_mass_kg": 0.0,
+    "evaporated_kg": 0.0,
+    "other_accounted_mass_kg": 0.0,
+    "unaccounted_mass_kg": -6.900142146570344e-18,
+    "residual_kg": -6.900142146570344e-18,
+    "relative_balance_error": -6.900142146570344e-12,
+    "transfer_efficiency": 1.0,
+    "bin_injected_kg": {
+      "bin40um": 1e-07,
+      "bin70um": 2e-07,
+      "bin100um": 3e-07,
+      "bin150um": 2.5e-07,
+      "bin220um": 1.5e-07
+    }
+  },
+  "deposition": {
+    "centroid_u_m": 0.05420367765827038,
+    "centroid_v_m": -0.000646126522874918,
+    "covariance_uv_m2": [
+      [
+        0.0006014369665305752,
+        -1.0833940452832092e-05
+      ],
+      [
+        -1.0833940452832092e-05,
+        0.0004009267661714065
+      ]
+    ],
+    "sigma_major_m": 0.024536109012790946,
+    "sigma_minor_m": 0.020008575341948276,
+    "principal_orientation_deg": -3.0838309955322813,
+    "peak_areal_mass_kg_m2": 0.0005502423452160003,
+    "nonzero_face_count": 78
+  },
+  "gas_velocity": {
+    "min_m_s": 0.9157375416453273,
+    "max_m_s": 22.394865917298837,
+    "mean_m_s": 15.199748669833363,
+    "mid_plane_cell_count": 1152
+  },
+  "quality": {
+    "solver_end_marker": true,
+    "mass_balance_pass": true,
+    "deposition_present": true
+  }
+}

@@ -1,0 +1,484 @@
+{
+  "C_coordinate_sha256": {
+    "0.0": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+    "15.0": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+    "7.5": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca"
+  },
+  "blockMeshDict_sha256": {
+    "0.0": "33560288f8a33d87f9546e4bccc7b09256b276903d7884292d9abc4bc991c51c",
+    "15.0": "33560288f8a33d87f9546e4bccc7b09256b276903d7884292d9abc4bc991c51c",
+    "7.5": "33560288f8a33d87f9546e4bccc7b09256b276903d7884292d9abc4bc991c51c"
+  },
+  "canonical_coordinate_array_sha256": {
+    "0.0": "b22211128e613892165bed139d9cfd0d5425af6409b4f9391d5358f7c8424302",
+    "15.0": "b22211128e613892165bed139d9cfd0d5425af6409b4f9391d5358f7c8424302",
+    "7.5": "b22211128e613892165bed139d9cfd0d5425af6409b4f9391d5358f7c8424302"
+  },
+  "cases": {
+    "0.0": "medium",
+    "15.0": "medium_incidence_15deg",
+    "7.5": "medium_incidence_7p5deg"
+  },
+  "conclusion": "FIXED_EULERIAN_DOMAIN = true",
+  "finite_volume_bounds_m": {
+    "0.0": {
+      "max_m": [
+        0.14999999999999963,
+        0.14999999999999963,
+        0.23999999999999996
+      ],
+      "min_m": [
+        -0.14999999999999997,
+        -0.14999999999999997,
+        4.336808689942018e-19
+      ]
+    },
+    "15.0": {
+      "max_m": [
+        0.14999999999999963,
+        0.14999999999999963,
+        0.23999999999999996
+      ],
+      "min_m": [
+        -0.14999999999999997,
+        -0.14999999999999997,
+        4.336808689942018e-19
+      ]
+    },
+    "7.5": {
+      "max_m": [
+        0.14999999999999963,
+        0.14999999999999963,
+        0.23999999999999996
+      ],
+      "min_m": [
+        -0.14999999999999997,
+        -0.14999999999999997,
+        4.336808689942018e-19
+      ]
+    }
+  },
+  "fixed_eulerian_domain": true,
+  "grid_dimensions_nx_ny_nz": {
+    "0.0": [
+      24,
+      24,
+      48
+    ],
+    "15.0": [
+      24,
+      24,
+      48
+    ],
+    "7.5": [
+      24,
+      24,
+      48
+    ]
+  },
+  "intended_input_diffs": {
+    "15.0": {
+      "expected_changes": [
+        {
+          "count": 1,
+          "field": "airInlet.value",
+          "file": "0/U",
+          "incidence": [
+            4.658742,
+            0.0,
+            17.386666
+          ],
+          "nominal": [
+            0.0,
+            0.0,
+            18.0
+          ]
+        },
+        {
+          "count": 5,
+          "field": "injection.direction",
+          "file": "constant/sprayCloudProperties",
+          "incidence": [
+            0.258819,
+            0.0,
+            0.965926
+          ],
+          "nominal": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "files_checked": [
+        "0/N2",
+        "0/O2",
+        "0/T",
+        "0/U",
+        "0/Ydefault",
+        "0/alphat",
+        "0/k",
+        "0/nut",
+        "0/omega",
+        "0/p",
+        "Allclean",
+        "Allrun",
+        "chemkin/chem.inp",
+        "chemkin/therm.dat",
+        "chemkin/transportProperties",
+        "constant/chemistryProperties",
+        "constant/combustionProperties",
+        "constant/g",
+        "constant/radiationProperties",
+        "constant/sprayCloudProperties",
+        "constant/thermophysicalProperties",
+        "constant/turbulenceProperties",
+        "system/blockMeshDict",
+        "system/controlDict",
+        "system/decomposeParDict",
+        "system/fvSchemes",
+        "system/fvSolution"
+      ],
+      "incidence_angle_deg": 15.0,
+      "incidence_case": "medium_incidence_15deg",
+      "nominal_case": "medium",
+      "pass": true,
+      "rotation_axis": "+Y",
+      "schema_version": "incidence15_input_diff_v1",
+      "unexpected_differences": []
+    },
+    "7.5": {
+      "expected_changes": [
+        {
+          "count": 1,
+          "field": "airInlet.value",
+          "file": "0/U",
+          "incidence": [
+            2.349471,
+            0.0,
+            17.846008
+          ],
+          "nominal": [
+            0.0,
+            0.0,
+            18.0
+          ]
+        },
+        {
+          "count": 5,
+          "field": "injection.direction",
+          "file": "constant/sprayCloudProperties",
+          "incidence": [
+            0.130526,
+            0.0,
+            0.991445
+          ],
+          "nominal": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ],
+      "files_checked": [
+        "0/N2",
+        "0/O2",
+        "0/T",
+        "0/U",
+        "0/Ydefault",
+        "0/alphat",
+        "0/k",
+        "0/nut",
+        "0/omega",
+        "0/p",
+        "Allclean",
+        "Allrun",
+        "chemkin/chem.inp",
+        "chemkin/therm.dat",
+        "chemkin/transportProperties",
+        "constant/chemistryProperties",
+        "constant/combustionProperties",
+        "constant/g",
+        "constant/radiationProperties",
+        "constant/sprayCloudProperties",
+        "constant/thermophysicalProperties",
+        "constant/turbulenceProperties",
+        "system/blockMeshDict",
+        "system/controlDict",
+        "system/decomposeParDict",
+        "system/fvSchemes",
+        "system/fvSolution"
+      ],
+      "incidence_angle_deg": 7.5,
+      "incidence_case": "medium_incidence_7p5deg",
+      "nominal_case": "medium",
+      "pass": true,
+      "rotation_axis": "+Y",
+      "schema_version": "incidence15_input_diff_v1",
+      "unexpected_differences": []
+    }
+  },
+  "schema_version": "warp_w1_3_domain_audit_v1",
+  "source_and_nozzle_inputs": {
+    "0.0": {
+      "air_inlet_vector_m_s": [
+        0.0,
+        0.0,
+        18.0
+      ],
+      "injection_positions_m": [
+        [
+          0.0,
+          0.0,
+          0.002
+        ],
+        [
+          0.0,
+          0.0,
+          0.002
+        ],
+        [
+          0.0,
+          0.0,
+          0.002
+        ],
+        [
+          0.0,
+          0.0,
+          0.002
+        ],
+        [
+          0.0,
+          0.0,
+          0.002
+        ]
+      ],
+      "source_nozzle_positions_identical": true,
+      "spray_direction_count": 5,
+      "spray_directions": [
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "unique_spray_directions": [
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "15.0": {
+      "air_inlet_vector_m_s": [
+        4.658742,
+        0.0,
+        17.386666
+      ],
+      "injection_positions_m": [
+        [
+          0.0,
+          0.0,
+          0.002
+        ],
+        [
+          0.0,
+          0.0,
+          0.002
+        ],
+        [
+          0.0,
+          0.0,
+          0.002
+        ],
+        [
+          0.0,
+          0.0,
+          0.002
+        ],
+        [
+          0.0,
+          0.0,
+          0.002
+        ]
+      ],
+      "source_nozzle_positions_identical": true,
+      "spray_direction_count": 5,
+      "spray_directions": [
+        [
+          0.258819,
+          0.0,
+          0.965926
+        ],
+        [
+          0.258819,
+          0.0,
+          0.965926
+        ],
+        [
+          0.258819,
+          0.0,
+          0.965926
+        ],
+        [
+          0.258819,
+          0.0,
+          0.965926
+        ],
+        [
+          0.258819,
+          0.0,
+          0.965926
+        ]
+      ],
+      "unique_spray_directions": [
+        [
+          0.258819,
+          0.0,
+          0.965926
+        ]
+      ]
+    },
+    "7.5": {
+      "air_inlet_vector_m_s": [
+        2.349471,
+        0.0,
+        17.846008
+      ],
+      "injection_positions_m": [
+        [
+          0.0,
+          0.0,
+          0.002
+        ],
+        [
+          0.0,
+          0.0,
+          0.002
+        ],
+        [
+          0.0,
+          0.0,
+          0.002
+        ],
+        [
+          0.0,
+          0.0,
+          0.002
+        ],
+        [
+          0.0,
+          0.0,
+          0.002
+        ]
+      ],
+      "source_nozzle_positions_identical": true,
+      "spray_direction_count": 5,
+      "spray_directions": [
+        [
+          0.130526,
+          0.0,
+          0.991445
+        ],
+        [
+          0.130526,
+          0.0,
+          0.991445
+        ],
+        [
+          0.130526,
+          0.0,
+          0.991445
+        ],
+        [
+          0.130526,
+          0.0,
+          0.991445
+        ],
+        [
+          0.130526,
+          0.0,
+          0.991445
+        ]
+      ],
+      "unique_spray_directions": [
+        [
+          0.130526,
+          0.0,
+          0.991445
+        ]
+      ]
+    }
+  },
+  "target_wall": {
+    "0.0": {
+      "boundary_sha256": "6244c3e38b853339cbbb8d709d61b5895bc7a1c02c127314bd0fc4b95bab2032",
+      "target_wall_bounds_max_m": [
+        0.15,
+        0.15,
+        0.24
+      ],
+      "target_wall_bounds_min_m": [
+        -0.15,
+        -0.15,
+        0.24
+      ],
+      "target_wall_face_count": 576,
+      "target_wall_geometry_sha256": "7cecfc272950dc556e17308c1886c318766eaea871dba8a1d9a94980da5f952e",
+      "target_wall_vertex_count": 625
+    },
+    "15.0": {
+      "boundary_sha256": "6244c3e38b853339cbbb8d709d61b5895bc7a1c02c127314bd0fc4b95bab2032",
+      "target_wall_bounds_max_m": [
+        0.15,
+        0.15,
+        0.24
+      ],
+      "target_wall_bounds_min_m": [
+        -0.15,
+        -0.15,
+        0.24
+      ],
+      "target_wall_face_count": 576,
+      "target_wall_geometry_sha256": "7cecfc272950dc556e17308c1886c318766eaea871dba8a1d9a94980da5f952e",
+      "target_wall_vertex_count": 625
+    },
+    "7.5": {
+      "boundary_sha256": "6244c3e38b853339cbbb8d709d61b5895bc7a1c02c127314bd0fc4b95bab2032",
+      "target_wall_bounds_max_m": [
+        0.15,
+        0.15,
+        0.24
+      ],
+      "target_wall_bounds_min_m": [
+        -0.15,
+        -0.15,
+        0.24
+      ],
+      "target_wall_face_count": 576,
+      "target_wall_geometry_sha256": "7cecfc272950dc556e17308c1886c318766eaea871dba8a1d9a94980da5f952e",
+      "target_wall_vertex_count": 625
+    }
+  }
+}

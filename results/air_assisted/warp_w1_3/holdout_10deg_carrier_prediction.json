@@ -1,0 +1,13 @@
+{
+  "OPENFOAM_10DEG_NOT_READ_AT_PREDICTION_TIME": true,
+  "angle_deg": 10.0,
+  "case_created_at_prediction_time": false,
+  "created_utc": "2026-09-08T14:52:08.727155+00:00",
+  "inside_mask_array_sha256": "3c7699b02e6aa76f9926e98c036148015252b8938a0458c2e00e32efa40f0420",
+  "interpolation_method": "FIXED_GRID_LOCAL_VECTOR_INTERP",
+  "model_id": "warp_vector_carrier_v3",
+  "model_sha256": "0034ebf2ab91ca2178a0bde8538a738ede42cb033df0cbef2473ac9b62507adb",
+  "prediction_array_sha256": "7fc541c2a4e87c81fbb6fc1d115872b5e235780d9f27b88608d14a30d8752282",
+  "prediction_sha256": "d9acc2e439d348b2ed6b738e5caa26e9d94cf71280b8b76e8055a2022a7c7364",
+  "schema_version": "warp_w1_3_frozen_10deg_carrier_v1"
+}

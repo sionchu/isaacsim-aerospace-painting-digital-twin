@@ -1,0 +1,115 @@
+{
+  "angle_deg": 10.0,
+  "comparison": {
+    "actual": {
+      "centroid_uv_m": [
+        0.05420367765827038,
+        -0.0006461265228749188
+      ],
+      "covariance_uv_m2": [
+        [
+          0.0006014369665305752,
+          -1.0833940452832092e-05
+        ],
+        [
+          -1.0833940452832092e-05,
+          0.0004009267661714065
+        ]
+      ],
+      "mass_kg": 1.0000000000069e-06,
+      "peak_density_kg_m2": 0.0005502423452160003,
+      "sigma_major_m": 0.024536109012790946,
+      "sigma_minor_m": 0.020008575341948276
+    },
+    "centroid_error_m": 0.0015847168505167483,
+    "integrated_absolute_mass_density_error_kg": 3.3165809595630874e-07,
+    "integrated_mass_error_kg": -1.810189846978034e-12,
+    "integrated_mass_relative_error": 1.8101898469655435e-06,
+    "nrmse": 0.02580693923941607,
+    "pearson_correlation": 0.9504260590504071,
+    "predicted": {
+      "centroid_uv_m": [
+        0.052735612666489365,
+        -4.937475185222155e-05
+      ],
+      "covariance_uv_m2": [
+        [
+          0.0006247043887715195,
+          -8.414854585697727e-07
+        ],
+        [
+          -8.414854585697865e-07,
+          0.0005050607526393563
+        ]
+      ],
+      "mass_kg": 9.999981898170531e-07,
+      "peak_density_kg_m2": 0.00036671838188340194,
+      "sigma_major_m": 0.0249942054658561,
+      "sigma_minor_m": 0.022473425073660777
+    },
+    "rmse_kg_m2": 1.4200070769943121e-05,
+    "sigma_major_relative_error": 0.01867029743087391,
+    "sigma_minor_relative_error": 0.12318966690971281
+  },
+  "frozen_prediction_sha256": "f8140c599c87919fcdb52d4ef09f2cbcc6681759b6ec47622247d57da38693fd",
+  "gate_pass": true,
+  "gates": {
+    "centroid": true,
+    "correlation": true,
+    "deposited_mass": true,
+    "mass_balance": true,
+    "nrmse": true,
+    "sigma_major": true,
+    "sigma_minor": true
+  },
+  "integrated_absolute_density_error_kg": 3.3165809595630874e-07,
+  "openfoam": {
+    "centroid_u_m": 0.05420367765827038,
+    "centroid_v_m": -0.000646126522874918,
+    "deposited_mass_kg": 1.0000000000069e-06,
+    "escaped_mass_kg": 0.0,
+    "peak_density_kg_m2": 0.0005502423452160003,
+    "sigma_major_m": 0.024536109012790946,
+    "sigma_minor_m": 0.020008575341948276,
+    "transfer_efficiency": 1.0
+  },
+  "predicted": {
+    "centroid_uv_m": [
+      0.052735612666489365,
+      -4.937475185222155e-05
+    ],
+    "covariance_uv_m2": [
+      [
+        0.0006247043887715195,
+        -8.414854585697727e-07
+      ],
+      [
+        -8.414854585697865e-07,
+        0.0005050607526393563
+      ]
+    ],
+    "mass_kg": 9.999981898170531e-07,
+    "peak_density_kg_m2": 0.00036671838188340194,
+    "sigma_major_m": 0.0249942054658561,
+    "sigma_minor_m": 0.022473425073660777
+  },
+  "predicted_mass_balance": {
+    "carrier_out_of_field_mass_kg": 0.0,
+    "carrier_out_of_field_particle_count": 0,
+    "deposited_mass_kg": 1.0000000000000004e-06,
+    "deposited_particle_count": 10000,
+    "escaped_mass_kg": 0.0,
+    "escaped_particle_count": 0,
+    "expected_injected_mass_kg": 1.0000000000000004e-06,
+    "live_mass_kg": 0.0,
+    "live_particle_count": 0,
+    "mass_residual_kg": 0.0,
+    "particle_injected_mass_kg": 1.0000000000000004e-06,
+    "relative_balance_error": 0.0,
+    "released_particle_count": 10000,
+    "teacher_out_of_field_mass_kg": 0.0,
+    "teacher_out_of_field_particle_count": 0,
+    "transfer_efficiency": 1.0
+  },
+  "schema_version": "warp_w1_3_deposition_holdout_10deg_v1"
+}

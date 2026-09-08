@@ -1,0 +1,48 @@
+{
+  "angle_deg": 7.5,
+  "bounds_max_m": [
+    0.14999999999999963,
+    0.14999999999999963,
+    0.23999999999999996
+  ],
+  "bounds_min_m": [
+    -0.14999999999999997,
+    -0.14999999999999997,
+    4.336808689942018e-19
+  ],
+  "categories": {
+    "inside_both_anchors": {
+      "count": 23472,
+      "fraction": 0.8489583333333334
+    },
+    "outside_anchor_0_only": {
+      "count": 1944,
+      "fraction": 0.0703125
+    },
+    "outside_anchor_15_only": {
+      "count": 1944,
+      "fraction": 0.0703125
+    },
+    "outside_both_anchors": {
+      "count": 288,
+      "fraction": 0.010416666666666666
+    },
+    "outside_due_to_x_bounds": {
+      "count": 2544,
+      "fraction": 0.0920138888888889
+    },
+    "outside_due_to_y_bounds": {
+      "count": 0,
+      "fraction": 0.0
+    },
+    "outside_due_to_z_bounds": {
+      "count": 1920,
+      "fraction": 0.06944444444444445
+    }
+  },
+  "grid_sample_count": 27648,
+  "mapping_rule": "W1.2 rotated query coordinates into endpoint fields before sampling",
+  "schema_version": "warp_w1_3_w1_2_coverage_audit_v1",
+  "w1_2_inside_both_fraction": 0.8489583333333334,
+  "w1_2_out_of_field_count": 4176
+}

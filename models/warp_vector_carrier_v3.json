@@ -1,0 +1,83 @@
+{
+  "anchors": {
+    "0_deg": {
+      "angle_deg": 0.0,
+      "latest_time_s": 0.06,
+      "source_case": "reference_cfd\\openfoam_v2606\\flat_plate\\medium",
+      "source_hashes": {
+        "C": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+        "U": "b217fe99246518b85e0cadd5e5ad97ef40e44a58905b1e615e61618605f39f75"
+      },
+      "source_paths": {
+        "C": "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0.06\\C",
+        "U": "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0.06\\U"
+      }
+    },
+    "15_deg": {
+      "angle_deg": 15.0,
+      "latest_time_s": 0.06,
+      "source_case": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg",
+      "source_hashes": {
+        "C": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+        "U": "521ad2a53ee0294b7e3e5029358789abb0febd9f79feef00800313f369e1b72d"
+      },
+      "source_paths": {
+        "C": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg\\0.06\\C",
+        "U": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg\\0.06\\U"
+      }
+    }
+  },
+  "angle_range_deg": [
+    0.0,
+    15.0
+  ],
+  "diagnostic_interpolation_method": "WORLD_LINEAR_DIAGNOSTIC",
+  "frame_convention": {
+    "local_axes": "+X fan major/u, +Y fan minor/v, +Z spray/stand-off",
+    "query_rule": "fixed world-space query; endpoint velocity vectors expressed in local frames",
+    "rotation": "about world +Y"
+  },
+  "grid": {
+    "array_layout": "U[nz, ny, nx, 3]",
+    "dimensions_nx_ny_nz": [
+      24,
+      24,
+      48
+    ],
+    "finite_volume_bounds_max_m": [
+      0.14999999999999963,
+      0.14999999999999963,
+      0.23999999999999996
+    ],
+    "finite_volume_bounds_min_m": [
+      -0.14999999999999997,
+      -0.14999999999999997,
+      4.336808689942018e-19
+    ],
+    "first_center_m": [
+      -0.14375,
+      -0.14375,
+      0.0025
+    ],
+    "spacing_m": [
+      0.012499999999999983,
+      0.012499999999999983,
+      0.004999999999999999
+    ]
+  },
+  "interpolation_method": "FIXED_GRID_LOCAL_VECTOR_INTERP",
+  "model_id": "warp_vector_carrier_v3",
+  "model_json_sha256": "f2be35c282907442853c4747b008b84975694a377d18759c5dfa61c2b5aa0586",
+  "model_sha256": "0034ebf2ab91ca2178a0bde8538a738ede42cb033df0cbef2473ac9b62507adb",
+  "model_type": "two_anchor_full_vector_structured_grid",
+  "nozzle_origin_m": [
+    0.0,
+    0.0,
+    0.002
+  ],
+  "npz_path": "warp_vector_carrier_v3.npz",
+  "npz_sha256": "f02b6d6ee664007f4c77cdd11dabb2ff6d6f7aecc0d1df0402793450dd75deb3",
+  "openfoam_version": "v2606",
+  "schema_version": "warp_vector_carrier_v3",
+  "source_commit": "f77151f6d18e9ba93a924c18a3154b4bb04d5d66"
+}

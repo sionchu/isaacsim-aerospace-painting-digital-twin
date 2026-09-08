@@ -308,7 +308,7 @@ if wp is not None:
                     carrier_ny,
                     carrier_nz,
                     carrier_angle_t,
-                    1 if carrier_mode == 3 else 0,
+                    1 if carrier_mode == 3 else 2 if carrier_mode == 4 else 0,
                 )
             if not carrier_inside:
                 teacher_out_of_field[index] = True
@@ -340,7 +340,7 @@ if wp is not None:
                     carrier_ny,
                     carrier_nz,
                     carrier_angle_t,
-                    0 if carrier_mode == 2 else 1,
+                    0 if carrier_mode == 2 else 1 if carrier_mode == 3 else 2,
                 )
         acceleration = _sphere_drag_acceleration(
             velocities[index],
@@ -447,12 +447,12 @@ def run_warp_case(
     if not str(device).startswith("cuda"):
         raise ValueError("W1 validation requires a CUDA device")
     mode = str(carrier_mode).upper()
-    valid_modes = {"ANALYTIC_AIR", "TEACHER_FORCED_U", "COROTATING_VECTOR_INTERP", "WORLD_LINEAR_DIAGNOSTIC"}
+    valid_modes = {"ANALYTIC_AIR", "TEACHER_FORCED_U", "COROTATING_VECTOR_INTERP", "FIXED_GRID_LOCAL_VECTOR_INTERP", "WORLD_LINEAR_DIAGNOSTIC"}
     if mode not in valid_modes:
         raise ValueError(f"carrier_mode must be one of {sorted(valid_modes)}")
     if mode == "TEACHER_FORCED_U" and teacher_flow is None:
         raise ValueError("TEACHER_FORCED_U requires a TeacherFlowGrid")
-    if mode in {"COROTATING_VECTOR_INTERP", "WORLD_LINEAR_DIAGNOSTIC"} and vector_carrier is None:
+    if mode in {"COROTATING_VECTOR_INTERP", "FIXED_GRID_LOCAL_VECTOR_INTERP", "WORLD_LINEAR_DIAGNOSTIC"} and vector_carrier is None:
         raise ValueError(f"{mode} requires a VectorCarrierModel")
     wp.init()
     if wp.get_cuda_device_count() < 1:
@@ -483,7 +483,7 @@ def run_warp_case(
         carrier_first_center = np.asarray(teacher_flow.first_center_m, dtype=np.float32)
         carrier_spacing = np.asarray(teacher_flow.spacing_m, dtype=np.float32)
         carrier_nx, carrier_ny, carrier_nz = teacher_flow.nx, teacher_flow.ny, teacher_flow.nz
-    elif mode in {"COROTATING_VECTOR_INTERP", "WORLD_LINEAR_DIAGNOSTIC"}:
+    elif mode in {"COROTATING_VECTOR_INTERP", "FIXED_GRID_LOCAL_VECTOR_INTERP", "WORLD_LINEAR_DIAGNOSTIC"}:
         assert vector_carrier is not None
         carrier_values_0 = wp.array(vector_carrier.flat_anchor_0_vec3f, dtype=wp.vec3f, device=device_obj)
         carrier_values_15 = wp.array(vector_carrier.flat_anchor_15_vec3f, dtype=wp.vec3f, device=device_obj)
@@ -550,7 +550,7 @@ def run_warp_case(
                 int(carrier_ny),
                 int(carrier_nz),
                 float(config.incidence_angle_deg / 15.0),
-                {"ANALYTIC_AIR": 0, "TEACHER_FORCED_U": 1, "COROTATING_VECTOR_INTERP": 2, "WORLD_LINEAR_DIAGNOSTIC": 3}[mode],
+                {"ANALYTIC_AIR": 0, "TEACHER_FORCED_U": 1, "COROTATING_VECTOR_INTERP": 2, "WORLD_LINEAR_DIAGNOSTIC": 3, "FIXED_GRID_LOCAL_VECTOR_INTERP": 4}[mode],
             ],
             device=device_obj,
         )

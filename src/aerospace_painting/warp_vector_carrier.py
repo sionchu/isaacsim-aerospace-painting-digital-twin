@@ -23,6 +23,7 @@ from .warp_teacher_flow import TeacherFlowGrid, _sha256_file
 
 COROTATING_VECTOR_INTERP = "COROTATING_VECTOR_INTERP"
 WORLD_LINEAR_DIAGNOSTIC = "WORLD_LINEAR_DIAGNOSTIC"
+FIXED_GRID_LOCAL_VECTOR_INTERP = "FIXED_GRID_LOCAL_VECTOR_INTERP"
 MODEL_ID = "warp_vector_carrier_v2"
 ANGLE_MIN_DEG = 0.0
 ANGLE_MAX_DEG = 15.0
@@ -89,6 +90,7 @@ class VectorCarrierModel:
     anchor_15: TeacherFlowGrid
     nozzle_origin_m: tuple[float, float, float] = (0.0, 0.0, 0.002)
     model_id: str = MODEL_ID
+    interpolation_method: str = COROTATING_VECTOR_INTERP
 
     def __post_init__(self) -> None:
         if not np.isclose(self.anchor_0.angle_deg, 0.0, rtol=0.0, atol=1.0e-10):
@@ -101,6 +103,12 @@ class VectorCarrierModel:
             raise VectorCarrierError("anchor fields must share first centers")
         if not np.allclose(self.anchor_0.spacing_m, self.anchor_15.spacing_m, rtol=0.0, atol=1.0e-12):
             raise VectorCarrierError("anchor fields must share spacing")
+        if self.interpolation_method not in {
+            COROTATING_VECTOR_INTERP,
+            WORLD_LINEAR_DIAGNOSTIC,
+            FIXED_GRID_LOCAL_VECTOR_INTERP,
+        }:
+            raise VectorCarrierError(f"unsupported carrier interpolation method: {self.interpolation_method}")
         origin = tuple(float(value) for value in self.nozzle_origin_m)
         if len(origin) != 3 or not all(np.isfinite(value) for value in origin):
             raise VectorCarrierError("nozzle origin must be finite and length three")
@@ -153,8 +161,16 @@ class VectorCarrierModel:
         anchor_15: TeacherFlowGrid,
         *,
         nozzle_origin_m: tuple[float, float, float] = (0.0, 0.0, 0.002),
+        model_id: str = MODEL_ID,
+        interpolation_method: str = COROTATING_VECTOR_INTERP,
     ) -> "VectorCarrierModel":
-        return cls(anchor_0=anchor_0, anchor_15=anchor_15, nozzle_origin_m=nozzle_origin_m)
+        return cls(
+            anchor_0=anchor_0,
+            anchor_15=anchor_15,
+            nozzle_origin_m=nozzle_origin_m,
+            model_id=model_id,
+            interpolation_method=interpolation_method,
+        )
 
     def sample(
         self,
@@ -168,7 +184,7 @@ class VectorCarrierModel:
         angle = float(angle_deg)
         if angle < ANGLE_MIN_DEG - 1.0e-10 or angle > ANGLE_MAX_DEG + 1.0e-10:
             raise VectorCarrierError("query angle must be within [0, 15] degrees")
-        if interpolation not in {COROTATING_VECTOR_INTERP, WORLD_LINEAR_DIAGNOSTIC}:
+        if interpolation not in {COROTATING_VECTOR_INTERP, WORLD_LINEAR_DIAGNOSTIC, FIXED_GRID_LOCAL_VECTOR_INTERP}:
             raise VectorCarrierError(f"unsupported interpolation method: {interpolation}")
         points = np.asarray(points_world, dtype=np.float64)
         if points.shape[-1] != 3:
@@ -183,12 +199,20 @@ class VectorCarrierModel:
             return values.reshape(points.shape), inside.reshape(points.shape[:-1])
 
         t = angle / ANGLE_MAX_DEG
-        if interpolation == WORLD_LINEAR_DIAGNOSTIC:
+        if interpolation in {WORLD_LINEAR_DIAGNOSTIC, FIXED_GRID_LOCAL_VECTOR_INTERP}:
             u0_same, inside0 = self.anchor_0.trilinear_velocity(flat)
             u15_same, inside15 = self.anchor_15.trilinear_velocity(flat)
             inside = np.asarray(inside0, dtype=bool) & np.asarray(inside15, dtype=bool)
             output = np.zeros_like(u0_same, dtype=np.float32)
-            output[inside] = ((1.0 - t) * u0_same[inside] + t * u15_same[inside]).astype(np.float32)
+            if interpolation == WORLD_LINEAR_DIAGNOSTIC:
+                output[inside] = ((1.0 - t) * u0_same[inside] + t * u15_same[inside]).astype(np.float32)
+            else:
+                x0, y0, z0 = _rotation_axes(0.0)
+                x15, y15, z15 = _rotation_axes(ANGLE_MAX_DEG)
+                u0_local = np.stack((u0_same @ x0, u0_same @ y0, u0_same @ z0), axis=-1)
+                u15_local = np.stack((u15_same @ x15, u15_same @ y15, u15_same @ z15), axis=-1)
+                local = (1.0 - t) * u0_local + t * u15_local
+                output[inside] = _local_to_world(local[inside], angle).astype(np.float32)
             return output.reshape(points.shape), inside.reshape(points.shape[:-1])
         q_local = _world_to_local(flat, angle, origin)
         p0_world = origin + _local_to_world(q_local, 0.0)
@@ -239,6 +263,8 @@ class VectorCarrierModel:
         source_0: dict[str, Any],
         source_15: dict[str, Any],
         openfoam_version: str,
+        model_id: str = MODEL_ID,
+        interpolation_method: str = COROTATING_VECTOR_INTERP,
     ) -> "VectorCarrierModel":
         source = Path(path)
         with np.load(source, allow_pickle=False) as payload:
@@ -281,7 +307,13 @@ class VectorCarrierModel:
             }
         )
         anchor15 = TeacherFlowGrid(angle_deg=15.0, values_nz_ny_nx_3=values15, **common15)
-        return cls(anchor_0=anchor0, anchor_15=anchor15, nozzle_origin_m=origin)
+        return cls(
+            anchor_0=anchor0,
+            anchor_15=anchor15,
+            nozzle_origin_m=origin,
+            model_id=model_id,
+            interpolation_method=interpolation_method,
+        )
 
 
 def _validate_anchor_metadata(model: VectorCarrierModel, payload: dict[str, Any]) -> None:
@@ -313,11 +345,11 @@ def build_model_payload(
         }
 
     payload: dict[str, Any] = {
-        "schema_version": "warp_vector_carrier_v2",
+        "schema_version": "warp_vector_carrier_v3" if model.model_id.endswith("_v3") else "warp_vector_carrier_v2",
         "model_id": model.model_id,
         "model_type": "two_anchor_full_vector_structured_grid",
         "angle_range_deg": [ANGLE_MIN_DEG, ANGLE_MAX_DEG],
-        "interpolation_method": COROTATING_VECTOR_INTERP,
+        "interpolation_method": model.interpolation_method,
         "diagnostic_interpolation_method": WORLD_LINEAR_DIAGNOSTIC,
         "grid": {
             "dimensions_nx_ny_nz": list(model.dimensions_nx_ny_nz),
@@ -331,7 +363,11 @@ def build_model_payload(
         "frame_convention": {
             "local_axes": "+X fan major/u, +Y fan minor/v, +Z spray/stand-off",
             "rotation": "about world +Y",
-            "query_rule": "co-rotating local-frame vector interpolation",
+            "query_rule": (
+                "co-rotating local-frame spatial/vector interpolation"
+                if model.interpolation_method == COROTATING_VECTOR_INTERP
+                else "fixed world-space query; endpoint velocity vectors expressed in local frames"
+            ),
         },
         "anchors": {"0_deg": anchor_payload(model.anchor_0), "15_deg": anchor_payload(model.anchor_15)},
         "openfoam_version": model.anchor_0.openfoam_version,
@@ -395,7 +431,7 @@ def load_model_artifacts(
 
     json_file = Path(json_path)
     payload = json.loads(json_file.read_text(encoding="utf-8"))
-    if payload.get("model_id") != MODEL_ID:
+    if payload.get("model_id") not in {MODEL_ID, "warp_vector_carrier_v3"}:
         raise VectorCarrierError("unexpected vector carrier model id")
     npz_file = json_file.parent / str(payload["npz_path"])
     anchors = payload["anchors"]
@@ -418,6 +454,8 @@ def load_model_artifacts(
             "latest_time_s": anchors["15_deg"]["latest_time_s"],
         },
         openfoam_version=str(payload["openfoam_version"]),
+        model_id=str(payload["model_id"]),
+        interpolation_method=str(payload["interpolation_method"]),
     )
     verify_model_payload(model, payload, npz_path=npz_file, repo_root=repo_root, verify_sources=verify_sources)
     return model, payload
@@ -467,6 +505,13 @@ if wp is not None:
             u0_same = teacher_flow_trilinear(values0, position, first_center, spacing, nx, ny, nz)
             u15_same = teacher_flow_trilinear(values15, position, first_center, spacing, nx, ny, nz)
             return (1.0 - interpolation_t) * u0_same + interpolation_t * u15_same
+        if interpolation_mode == 2:
+            u0_same = teacher_flow_trilinear(values0, position, first_center, spacing, nx, ny, nz)
+            u15_same = teacher_flow_trilinear(values15, position, first_center, spacing, nx, ny, nz)
+            u0_local = wp.vec3f(wp.dot(u0_same, x0), wp.dot(u0_same, y0), wp.dot(u0_same, z0))
+            u15_local = wp.vec3f(wp.dot(u15_same, x15), wp.dot(u15_same, y15), wp.dot(u15_same, z15))
+            local = (1.0 - interpolation_t) * u0_local + interpolation_t * u15_local
+            return query_x * local[0] + query_y * local[1] + query_z * local[2]
         u0_local = wp.vec3f(wp.dot(u0_world, x0), wp.dot(u0_world, y0), wp.dot(u0_world, z0))
         u15_local = wp.vec3f(wp.dot(u15_world, x15), wp.dot(u15_world, y15), wp.dot(u15_world, z15))
         local = (1.0 - interpolation_t) * u0_local + interpolation_t * u15_local
@@ -488,7 +533,7 @@ if wp is not None:
         interpolation_t: float,
         interpolation_mode: int,
     ) -> bool:
-        if interpolation_mode == 1:
+        if interpolation_mode == 1 or interpolation_mode == 2:
             return teacher_flow_inside(position, first_center, spacing, nx, ny, nz)
         if interpolation_t <= 0.0 or interpolation_t >= 1.0:
             return teacher_flow_inside(position, first_center, spacing, nx, ny, nz)
@@ -575,7 +620,7 @@ def sample_vector_carrier_warp(
 
     if wp is None:
         raise RuntimeError("Warp is not available")
-    if interpolation not in {COROTATING_VECTOR_INTERP, WORLD_LINEAR_DIAGNOSTIC}:
+    if interpolation not in {COROTATING_VECTOR_INTERP, WORLD_LINEAR_DIAGNOSTIC, FIXED_GRID_LOCAL_VECTOR_INTERP}:
         raise VectorCarrierError(f"unsupported interpolation method: {interpolation}")
     wp.init()
     device_obj = wp.get_device(device)
@@ -605,7 +650,7 @@ def sample_vector_carrier_warp(
             model.ny,
             model.nz,
             float(angle_deg / ANGLE_MAX_DEG),
-            0 if interpolation == COROTATING_VECTOR_INTERP else 1,
+            0 if interpolation == COROTATING_VECTOR_INTERP else 1 if interpolation == WORLD_LINEAR_DIAGNOSTIC else 2,
         ],
         device=device_obj,
     )

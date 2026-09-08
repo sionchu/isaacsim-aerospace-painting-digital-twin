@@ -1,0 +1,293 @@
+{
+  "angle_deg": 7.5,
+  "carrier_status": "REGRESSION_ONLY_NOT_BLIND_HOLDOUT",
+  "comparison": {
+    "Analytic W1": {
+      "centroid_u_m": 0.03158281288194026,
+      "centroid_v_m": -3.218764118377548e-05,
+      "deposited_mass_kg": 9.999995903148264e-07,
+      "escaped_mass_kg": 0.0,
+      "nrmse": 0.06286847981743124,
+      "peak_density_kg_m2": 0.0008481612894684077,
+      "pearson_correlation": 0.8355034669252107,
+      "sigma_major_m": 0.019200908801475163,
+      "sigma_minor_m": 0.018997285480986528,
+      "transfer_efficiency": 1.0
+    },
+    "OpenFOAM": {
+      "centroid_u_m": 0.03998890569308883,
+      "centroid_v_m": -0.0004081613563283942,
+      "deposited_mass_kg": 1.000000000007e-06,
+      "nrmse": 0.0,
+      "peak_density_kg_m2": 0.0005213423698559995,
+      "pearson_correlation": 1.0,
+      "sigma_major_m": 0.02276979292346974,
+      "sigma_minor_m": 0.01976210899709326,
+      "transfer_efficiency": 1.0
+    },
+    "S2": {
+      "centroid_u_m": 0.039601652736307086,
+      "centroid_v_m": -0.0002951559382736042,
+      "deposited_mass_kg": 9.846394659708499e-07,
+      "escaped_mass_kg": null,
+      "nrmse": 0.03316056809401697,
+      "peak_density_kg_m2": 0.0003093300427076654,
+      "pearson_correlation": 0.9306511870106534,
+      "sigma_major_m": 0.023881433106275343,
+      "sigma_minor_m": 0.02001404502526176,
+      "teacher_reference_centroid_u_m": 0.03998890569308883,
+      "teacher_reference_deposited_mass_kg": 1.000000000007e-06,
+      "transfer_efficiency": 0.98463946597085
+    },
+    "Teacher-U W1.1": {
+      "centroid_u_m": 0.03999623958271163,
+      "centroid_v_m": -3.0312647172290984e-05,
+      "deposited_mass_kg": 9.999982520797481e-07,
+      "escaped_mass_kg": 0.0,
+      "nrmse": 0.02498044315065858,
+      "peak_density_kg_m2": 0.0003940783699363238,
+      "pearson_correlation": 0.9631044018438103,
+      "sigma_major_m": 0.024089275487489886,
+      "sigma_minor_m": 0.02250449624567523,
+      "transfer_efficiency": 1.0
+    },
+    "W1.2": {
+      "centroid_u_m": 0.005337645283020189,
+      "centroid_v_m": -0.0002262190949155387,
+      "deposited_mass_kg": 1.6714995502986612e-07,
+      "escaped_mass_kg": 8.328500000000003e-07,
+      "nrmse": 0.08878990386823027,
+      "peak_density_kg_m2": 9.02399222013628e-05,
+      "pearson_correlation": 0.24405824572210827,
+      "sigma_major_m": 0.025116940794044668,
+      "sigma_minor_m": 0.01047914057765694,
+      "transfer_efficiency": 0.16715
+    },
+    "W1.3": {
+      "centroid_u_m": 0.03919311783139931,
+      "centroid_v_m": -3.000011983516633e-05,
+      "deposited_mass_kg": 9.999984040970358e-07,
+      "escaped_mass_kg": 0.0,
+      "nrmse": 0.02545424223776632,
+      "peak_density_kg_m2": 0.0003894386281899643,
+      "pearson_correlation": 0.9605145144400214,
+      "sigma_major_m": 0.023788838089069078,
+      "sigma_minor_m": 0.022435281572984106,
+      "transfer_efficiency": 1.0
+    }
+  },
+  "coverage": {
+    "inside_fraction": 1.0,
+    "out_of_field_count": 0,
+    "pass": true
+  },
+  "performance": {
+    "analytic_w1": {
+      "carrier_field_upload_seconds": 0.0,
+      "carrier_mode": "ANALYTIC_AIR",
+      "device": "cuda:0",
+      "kernel_launch_count": 1200,
+      "max_step_compute_seconds": 0.013816999970003963,
+      "mean_step_compute_seconds": 0.00011100383456020306,
+      "p95_step_compute_seconds": 0.0002663350431248545,
+      "particle_count": 10000,
+      "particle_count_per_bin": 2000,
+      "particle_dt_s": 5e-05,
+      "simulated_duration_s": 0.06,
+      "substeps": 1200,
+      "teacher_field_upload_seconds": 0.0,
+      "wall_seconds": 0.1354638000484556
+    },
+    "teacher_u_w1_1": {
+      "carrier_field_upload_seconds": 0.00013160007074475288,
+      "carrier_mode": "TEACHER_FORCED_U",
+      "device": "cuda:0",
+      "kernel_launch_count": 1200,
+      "max_step_compute_seconds": 0.000965900020673871,
+      "mean_step_compute_seconds": 0.00016069499969792862,
+      "p95_step_compute_seconds": 0.0005858999327756464,
+      "particle_count": 10000,
+      "particle_count_per_bin": 2000,
+      "particle_dt_s": 5e-05,
+      "simulated_duration_s": 0.06,
+      "substeps": 1200,
+      "teacher_field_upload_seconds": 0.00013160007074475288,
+      "wall_seconds": 0.1940308001358062
+    },
+    "vector_w1_2": {
+      "carrier_field_upload_seconds": 0.00011920020915567875,
+      "carrier_mode": "COROTATING_VECTOR_INTERP",
+      "device": "cuda:0",
+      "kernel_launch_count": 1200,
+      "max_step_compute_seconds": 0.0005222000181674957,
+      "mean_step_compute_seconds": 8.61337462750574e-05,
+      "p95_step_compute_seconds": 0.00018782003317028282,
+      "particle_count": 10000,
+      "particle_count_per_bin": 2000,
+      "particle_dt_s": 5e-05,
+      "simulated_duration_s": 0.06,
+      "substeps": 1200,
+      "teacher_field_upload_seconds": 0.0,
+      "wall_seconds": 0.10637279995717108
+    },
+    "vector_w1_3": {
+      "carrier_field_upload_seconds": 0.00012600002810359,
+      "carrier_mode": "FIXED_GRID_LOCAL_VECTOR_INTERP",
+      "device": "cuda:0",
+      "kernel_launch_count": 1200,
+      "max_step_compute_seconds": 0.001070600003004074,
+      "mean_step_compute_seconds": 0.00018994408077560365,
+      "p95_step_compute_seconds": 0.0005842200247570872,
+      "particle_count": 10000,
+      "particle_count_per_bin": 2000,
+      "particle_dt_s": 5e-05,
+      "simulated_duration_s": 0.06,
+      "substeps": 1200,
+      "teacher_field_upload_seconds": 0.0,
+      "wall_seconds": 0.23076659999787807
+    }
+  },
+  "schema_version": "warp_w1_3_regression_7p5_v1",
+  "w1_3_gate": {
+    "centroid": true,
+    "correlation": true,
+    "deposited_mass": true,
+    "mass_balance": true,
+    "nrmse": true,
+    "sigma_major": true,
+    "sigma_minor": true
+  },
+  "w1_3_summary": {
+    "comparison": {
+      "openfoam_teacher": {
+        "actual": {
+          "centroid_uv_m": [
+            0.03998890569308883,
+            -0.0004081613563283942
+          ],
+          "covariance_uv_m2": [
+            [
+              0.0005139778704834797,
+              -2.3530587633355763e-05
+            ],
+            [
+              -2.3530587633355756e-05,
+              0.00039502655130720733
+            ]
+          ],
+          "mass_kg": 1.000000000007e-06,
+          "peak_density_kg_m2": 0.0005213423698559995,
+          "sigma_major_m": 0.02276979292346974,
+          "sigma_minor_m": 0.01976210899709326
+        },
+        "centroid_error_m": 0.0008810699413772221,
+        "integrated_absolute_mass_density_error_kg": 3.333997989448023e-07,
+        "integrated_mass_error_kg": -1.5959099642813627e-12,
+        "integrated_mass_relative_error": 1.5959099642701912e-06,
+        "nrmse": 0.02545424223776632,
+        "pearson_correlation": 0.9605145144400214,
+        "predicted": {
+          "centroid_uv_m": [
+            0.03919311783139931,
+            -3.000011983516633e-05
+          ],
+          "covariance_uv_m2": [
+            [
+              0.0005659072566168985,
+              3.1251444180300677e-07
+            ],
+            [
+              3.125144418030003e-07,
+              0.0005033434202701255
+            ]
+          ],
+          "mass_kg": 9.999984040970358e-07,
+          "peak_density_kg_m2": 0.0003894386281899643,
+          "sigma_major_m": 0.023788838089069078,
+          "sigma_minor_m": 0.022435281572984106
+        },
+        "rmse_kg_m2": 1.3270374971125773e-05,
+        "sigma_major_relative_error": 0.04475425705558212,
+        "sigma_minor_relative_error": 0.13526757575742723
+      }
+    },
+    "deposition": {
+      "centroid_error_m": 0.0008810699413772221,
+      "centroid_uv_m": [
+        0.03919311783139931,
+        -3.000011983516633e-05
+      ],
+      "covariance_uv_m2": [
+        [
+          0.0005659072566168985,
+          3.1251444180300677e-07
+        ],
+        [
+          3.125144418030003e-07,
+          0.0005033434202701255
+        ]
+      ],
+      "deposited_mass_relative_error": 1.5959099642701912e-06,
+      "mass_kg": 9.999984040970358e-07,
+      "peak_density_kg_m2": 0.0003894386281899643,
+      "sigma_major_m": 0.023788838089069078,
+      "sigma_major_relative_error": 0.04475425705558212,
+      "sigma_minor_m": 0.022435281572984106,
+      "sigma_minor_relative_error": 0.13526757575742723
+    },
+    "incidence_angle_deg": 7.5,
+    "mass_ledger": {
+      "carrier_out_of_field_mass_kg": 0.0,
+      "carrier_out_of_field_particle_count": 0,
+      "deposited_mass_kg": 1.0000000000000004e-06,
+      "deposited_particle_count": 10000,
+      "escaped_mass_kg": 0.0,
+      "escaped_particle_count": 0,
+      "expected_injected_mass_kg": 1.0000000000000004e-06,
+      "live_mass_kg": 0.0,
+      "live_particle_count": 0,
+      "mass_residual_kg": 0.0,
+      "particle_injected_mass_kg": 1.0000000000000004e-06,
+      "relative_balance_error": 0.0,
+      "released_particle_count": 10000,
+      "teacher_out_of_field_mass_kg": 0.0,
+      "teacher_out_of_field_particle_count": 0,
+      "transfer_efficiency": 1.0
+    },
+    "particle_count": 10000,
+    "particle_count_per_bin": 2000,
+    "performance": {
+      "carrier_field_upload_seconds": 0.00012600002810359,
+      "carrier_mode": "FIXED_GRID_LOCAL_VECTOR_INTERP",
+      "device": "cuda:0",
+      "kernel_launch_count": 1200,
+      "max_step_compute_seconds": 0.001070600003004074,
+      "mean_step_compute_seconds": 0.00018994408077560365,
+      "p95_step_compute_seconds": 0.0005842200247570872,
+      "particle_count": 10000,
+      "particle_count_per_bin": 2000,
+      "particle_dt_s": 5e-05,
+      "simulated_duration_s": 0.06,
+      "substeps": 1200,
+      "teacher_field_upload_seconds": 0.0,
+      "wall_seconds": 0.23076659999787807
+    },
+    "schema_version": "warp_w1_case_metrics_v1",
+    "state_counts": {
+      "alive": 0,
+      "deposited": 10000,
+      "escaped": 0,
+      "released": 10000
+    },
+    "teacher_reference": {
+      "case": "medium_incidence_7p5deg",
+      "centroid_uv_m": [
+        0.03998890569308883,
+        -0.0004081613563283942
+      ],
+      "deposited_mass_kg": 1.000000000007e-06,
+      "sigma_major_m": 0.02276979292346974,
+      "sigma_minor_m": 0.01976210899709326
+    }
+  }
+}

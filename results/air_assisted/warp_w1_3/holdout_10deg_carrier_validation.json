@@ -1,0 +1,70 @@
+{
+  "angle_deg": 10.0,
+  "carrier_gate": {
+    "median_direction_error_deg": 0.2916617912694437,
+    "median_direction_error_deg_max": 5.0,
+    "normalized_vector_rmse": 0.025802784104060783,
+    "normalized_vector_rmse_max": 0.2,
+    "pass": true,
+    "vector_correlation": 0.9995018567332143,
+    "vector_correlation_min": 0.9
+  },
+  "openfoam_version": "v2606",
+  "prediction_inside_fraction": 1.0,
+  "prediction_out_of_field_count": 0,
+  "region_definitions": {
+    "high_speed_jet": "actual OpenFOAM speed >= 0.5 * whole-domain maximum speed",
+    "near_target_region": "cell-center z >= finite-volume upper z bound - 0.06 m"
+  },
+  "regions": {
+    "high_speed_jet": {
+      "Ux_rmse_m_s": 0.1406189441835369,
+      "Uy_rmse_m_s": 0.09100147115875233,
+      "Uz_rmse_m_s": 0.35332944024897445,
+      "mean_direction_error_deg": 0.3921651382355935,
+      "median_direction_error_deg": 0.23049164772293623,
+      "normalized_vector_rmse": 0.02385767159816989,
+      "p95_direction_error_deg": 1.3666566469296357,
+      "predicted_out_of_field_count": 0,
+      "region": "high_speed_jet",
+      "sample_count": 23892,
+      "speed_correlation": 0.9857174851109877,
+      "speed_rmse_m_s": 0.35706487751656346,
+      "vector_component_correlation": 0.9995631284024027,
+      "vector_rmse_m_s": 0.2257555082849612
+    },
+    "near_target_region": {
+      "Ux_rmse_m_s": 0.26773469033460784,
+      "Uy_rmse_m_s": 0.13583382273043146,
+      "Uz_rmse_m_s": 0.3306496428508093,
+      "mean_direction_error_deg": 1.2508932299480209,
+      "median_direction_error_deg": 1.02509312820796,
+      "normalized_vector_rmse": 0.035994834335089904,
+      "p95_direction_error_deg": 2.854391815022326,
+      "predicted_out_of_field_count": 0,
+      "region": "near_target_region",
+      "sample_count": 6912,
+      "speed_correlation": 0.9968613062879788,
+      "speed_rmse_m_s": 0.3420692203254324,
+      "vector_component_correlation": 0.9992929196229214,
+      "vector_rmse_m_s": 0.25785129960470005
+    },
+    "whole_flow_domain": {
+      "Ux_rmse_m_s": 0.1605415299457077,
+      "Uy_rmse_m_s": 0.09268393864369735,
+      "Uz_rmse_m_s": 0.35627929933748664,
+      "mean_direction_error_deg": 0.5450607982262268,
+      "median_direction_error_deg": 0.2916617912694437,
+      "normalized_vector_rmse": 0.025802784104060783,
+      "p95_direction_error_deg": 1.9988436730635584,
+      "predicted_out_of_field_count": 0,
+      "region": "whole_flow_domain",
+      "sample_count": 27648,
+      "speed_correlation": 0.9943663199178069,
+      "speed_rmse_m_s": 0.3626387202351995,
+      "vector_component_correlation": 0.9995018567332143,
+      "vector_rmse_m_s": 0.23187556609542945
+    }
+  },
+  "schema_version": "warp_w1_3_carrier_holdout_10deg_v1"
+}

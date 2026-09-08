@@ -1,30 +1,30 @@
-# Beyond Offline Programming: Exploring an Aerospace Robotic Painting Digital Twin with NVIDIA Isaac Sim
+# Beyond Offline Programming: Exploring an Aerospace Robotic Painting Digital Twin with Isaac Sim, OpenFOAM, and NVIDIA Warp
 
-Mature OLP platforms such as RoboDK and DELMIA already provide strong workflows
-for CAD-based path generation, robot simulation, offline programming, and
-production integration. This project does not try to replace them.
+Mature OLP platforms such as RoboDK and DELMIA already provide strong
+workflows for CAD-based path generation, robot simulation, offline programming,
+and production integration.  This project does not try to replace them.
 
-Instead, I explored a complementary question: how can a robotic surface process
-be represented in an OpenUSD/Isaac Sim scene where robot motion, an auxiliary
-axis, geometry, sensors, process metrics, and future Physical AI workflows can
-share the same simulation environment?
+Instead, I explored a complementary question: how can robot motion, process
+evaluation, and GPU spray transport share one OpenUSD/Isaac Sim scene?
 
-The prototype includes:
+The release candidate connects:
 
-- a 6-axis industrial robot on an auxiliary linear axis;
-- a generic curved aircraft surface and holding fixture;
-- surface position and normal sampling;
-- surface-normal-aware tool orientation;
-- a constant-stand-off boustrophedon path concept;
-- spray-cone geometry visualization; and
-- distance/angle-based geometric coverage accumulation and overlay.
+- a rail-mounted 6-axis robot and actual TCP-driven motion;
+- a generic aircraft-panel workpiece and process tool;
+- OpenFOAM v2606 offline reference cases;
+- an S2 CFD-calibrated deposition surrogate validated on a 7.5° hold-out; and
+- a validated W1.3 carrier model with an optional native Warp plume layer.
 
-This is not a physical paint-quality solver. It does not model or validate
-atomization, droplet deposition, airflow CFD, curing, or real film thickness.
-The current result is a technical portfolio implementation of robot motion,
-process geometry, and coverage evaluation inside a shared digital-twin scene.
+The native viewer makes the distinction visible: S2 remains the authoritative
+surface deposition overlay, while Warp shows GPU Lagrangian transport with
+drag, gravity, and mesh collision.  The moving-scene transport is a
+quasi-steady local tangent-patch approximation.
 
-The repository contains the portable math, architecture, scope boundaries, and
-reviewed demo media. GitHub and demo links are in the first comment.
+This is not a production paint-quality solver.  It does not claim primary
+atomization, breakup, evaporation, splash/rebound, wall-film transport,
+curing, physical film thickness, or production coating qualification.
 
-#NVIDIAIsaacSim #OpenUSD #DigitalTwin #Robotics #AerospaceManufacturing
+The repository contains the portable math, OpenFOAM reference evidence,
+runtime metrics, architecture, scope boundaries, and reviewed demo media.
+
+#NVIDIAIsaacSim #OpenFOAM #NVIDIAWarp #OpenUSD #DigitalTwin #Robotics #AerospaceManufacturing

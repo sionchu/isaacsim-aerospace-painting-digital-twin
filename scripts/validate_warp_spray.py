@@ -618,7 +618,7 @@ def run_validation(low_count: int, high_count: int, device: str) -> dict[str, An
         },
         "canonical_high_particle_count_per_bin": high_count,
         "low_particle_count_per_bin": low_count,
-        "command": f"C:\\isaacsim\\python.bat scripts/validate_warp_spray.py --low-particles-per-bin {low_count} --high-particles-per-bin {high_count}",
+        "command": f"Isaac Sim Python launcher scripts/validate_warp_spray.py --low-particles-per-bin {low_count} --high-particles-per-bin {high_count}",
     }
     _write_json(WARP_RESULT_DIR / "environment.json", environment)
     sensitivity_payload = {

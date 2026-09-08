@@ -1,61 +1,66 @@
-# Air-assisted spray extension architecture
+# Air-assisted spray architecture
 
-This extension keeps the existing geometric painting model and adds a staged
-path toward a physics-informed runtime.  The stages are deliberately separated
-so a reference solver is not called in every Isaac Sim or Isaac Lab step.
+The release candidate separates reference CFD, fast deposition, GPU transport,
+and native scene integration so the reference solver is not called in every
+Isaac Sim step.
 
 ```text
-static reference case
-  -> mass ledger + wall-deposition map
-  -> anisotropic footprint fit
-  -> fast CPU/GPU deposition runtime
-  -> moving curved-surface integration
-  -> optional learning environment
+OpenFOAM v2606 reference/teacher cases
+  -> carrier fields + wall-deposition maps + mass ledger
+  -> S2 CFD-calibrated deposition surrogate
+  -> W1.3 fixed-grid full-vector carrier + Warp Lagrangian transport
+  -> native Isaac Sim robot/scene/process integration
+  -> optional plume visualization and future data workflows
 ```
 
-## Current implementation
+## Layer responsibilities
 
-The repository now contains the portable contracts needed before a reference
-run:
+### OpenFOAM v2606
 
-- `configs/air_assisted_spray.yaml` defines one deterministic demo parameter
-  set and the nozzle-frame convention.
-- `aerospace_painting.frames.NozzleFrame` defines a right-handed frame with
-  `+Z` as spray direction, `+X` as fan-major, and `+Y` as fan-minor.
-- `aerospace_painting.deposition_kernel.AnisotropicGaussian` is an analytic
-  S1 footprint baseline in surface-local `(u, v)` coordinates.  It is not
-  CFD-calibrated.
-- `aerospace_painting.mass_ledger.MassLedger` provides explicit accounting
-  fields and a closure check for future reference runs.
+The offline reference layer contains stationary flat-plate cases at 0°, 7.5°,
+10°, and 15°.  It supplies the carrier fields, wall-deposition maps, and
+mass-ledger evidence used by the downstream models.  The checked-in cases and
+metrics are under `reference_cfd/openfoam_v2606/` and
+`results/air_assisted/openfoam_v2606/`.
 
-The existing surface sampler, normal construction, TCP path generator,
-spray-cone visualization, and geometric coverage model remain unchanged.
+### S2 deposition surrogate
 
-## Static benchmark contract
+S2 fits the validated deposition moments and transfer response with the
+existing surface-local kernel.  Its 7.5° hold-out is the fast runtime
+validation target.  S2 is the authoritative surface deposition and mass-density
+overlay in the native runtime.
 
-The first physical case is a stationary nozzle, a stationary flat plate, a
-prescribed external air-assist source, a discrete prescribed droplet
-distribution, and a wall-deposition ledger.  The case must export nozzle and
-plate transforms and map deposited mass into fan-local `(u, v)` coordinates.
+### Warp transport
 
-No moving robot, aircraft surface, or factory cell belongs in this first CFD
-mesh.  Those are later integration stages.
+W1.3 interpolates a fixed-grid, full-vector carrier model built from the 0° and
+15° OpenFOAM anchors and passes a blind 10° carrier/deposition hold-out.  W2
+uses that model for deterministic GPU Lagrangian droplet transport with drag,
+gravity, mesh collision, and explicit mass accounting.  Warp is an optional
+higher-fidelity transport/plume layer; it does not replace S2 deposition.
 
-## Runtime contract after calibration
+### Native Isaac Sim
 
-The intended future interface is a fast deposition step:
+The native runtime resolves the actual composed painting-cell prims and reads
+the live robot/TCP and spray-tool transforms.  It drives the moving scene,
+renders the active plume, and keeps the S2 deposition overlay on the workpiece.
+The moving-scene Warp transport uses a quasi-steady local tangent-patch
+approximation rather than online CFD.
+
+## Runtime contract
+
+The portable deposition interface remains:
 
 ```python
 deposition_step(tcp_pose, surface_state, process_params, dt) -> deposition_delta
 ```
 
-The current branch does not implement this as a CFD-backed runtime because no
-reference case has passed the mass-accounting and sensitivity gates.  The
-analytic kernel is kept as a portable baseline for subsequent fitting and
-tests.
+The native adapter supplies live transforms and visualization state while the
+numeric S2 and Warp modules remain testable without Isaac Sim.
 
 ## Fidelity labels
 
-Use `AIR-ASSISTED SPRAY` for the process definition, `CFD REFERENCE` only for
-an executed external-solver result, and `CFD-CALIBRATED MODEL` only after a
-held-out comparison has been run.  Deposited mass is not paint thickness.
+Use `AIR-ASSISTED SPRAY` for the process definition, `CFD REFERENCE` for the
+executed OpenFOAM v2606 cases, `CFD-CALIBRATED MODEL` for S2 and the validated
+W1.3 comparison, and `GPU LAGRANGIAN TRANSPORT` for the Warp layer.  Deposited
+mass is not paint thickness, and the project does not claim production coating
+qualification.

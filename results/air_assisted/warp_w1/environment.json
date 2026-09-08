@@ -70,7 +70,7 @@
     },
     "temperature_K": 293.15
   },
-  "command": "C:\\isaacsim\\python.bat scripts/validate_warp_spray.py --low-particles-per-bin 500 --high-particles-per-bin 2000",
+  "command": "Isaac Sim Python launcher scripts/validate_warp_spray.py --low-particles-per-bin 500 --high-particles-per-bin 2000",
   "cuda_device_count": 1,
   "dynamics": {
     "collision": "Warp mesh_query_ray segment query",

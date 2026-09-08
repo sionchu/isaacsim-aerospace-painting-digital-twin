@@ -1,16 +1,16 @@
-# Fidelity boundary
+# Geometric baseline boundary
 
-This project models robot/auxiliary-axis motion, tool orientation,
-stand-off distance, spray-cone geometry, and geometric surface coverage.
+This document describes the original portable geometric layer: robot and
+auxiliary-axis motion, tool orientation, stand-off distance, spray-cone
+membership, and geometric surface coverage.
 
-It does NOT simulate or validate paint atomization, droplet deposition,
-airflow CFD, solvent evaporation, curing, or physical film thickness.
+The release candidate also contains a separate CFD-backed spray extension.
+Its validated process layers and explicit limitations are documented in the
+[spray fidelity boundary](spray_fidelity_boundary.md).  The geometric coverage
+score and the CFD-derived deposited-mass density are different quantities.
 
-The displayed coverage is a process-planning visualization derived from
-distance, cone membership, and incidence angle. Its scores are not coating
-quality measurements, certification results, or production process parameters.
-
-The demo also does not generate controller-specific KUKA, FANUC, ABB, or other
-production robot programs. Any industrial deployment would require calibrated
-robot and cell geometry, validated process parameters, safety analysis,
-controller post-processing, and domain-specific qualification.
+Neither layer claims production coating quality, paint atomization from first
+principles, physical film thickness, curing, or controller-specific production
+robot programs.  Industrial deployment would require calibrated robot and cell
+geometry, validated process parameters, safety analysis, controller
+post-processing, and domain-specific qualification.

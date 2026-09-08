@@ -1,38 +1,37 @@
 # Relationship to mature offline-programming tools
 
-This project is not a RoboDK or DELMIA replacement. It explores a complementary
-OpenUSD/Isaac Sim representation for a surface-process workflow.
+This project is complementary to mature OLP software, not a replacement for
+RoboDK, DELMIA, or a production robot-programming system.
 
-## Where mature OLP tools are strong
+## Different strengths
 
-RoboDK provides established CAD/curve-follow workflows, robot simulation,
-offline programming, controller-specific post-processors, collision checking,
-and support for synchronized external axes. DELMIA Robotics integrates product,
-process, workcell, robot programming, validation, and broader manufacturing
-planning within the 3DEXPERIENCE platform.
+Traditional OLP tools are strong at CAD-to-path generation, reachability,
+collision checking, cycle-time analysis, controller-specific post-processing,
+and enterprise manufacturing-process integration.
 
-Those capabilities are central when the goal is production robot programming,
-controller output, mature reachability and cycle-time workflows, or enterprise
-manufacturing-process integration.
+This portfolio focuses on a shared programmable OpenUSD/Isaac Sim scene in
+which robot motion, auxiliary axes, geometry, process overlays, CFD-derived
+evaluation, sensors, and GPU droplet transport can be inspected together.
 
-## Why Isaac Sim/OpenUSD is interesting here
+## Process-model contribution
 
-The portfolio investigates a shared programmable scene in which robot motion,
-an auxiliary axis, environment geometry, process overlays, sensors, and custom
-metrics can coexist. Isaac Sim also provides Python APIs, RTX/physics sensor
-simulation, ROS 2 integration, and extension points for synthetic-data and
-future robot-learning workflows.
+The current release adds an offline OpenFOAM v2606 reference layer, an S2
+CFD-calibrated deposition surrogate, and an optional Warp Lagrangian plume
+layer.  Those layers complement OLP path and reachability workflows by making
+process response visible in the same scene; they do not provide controller
+post-processors or replace an OLP system.
 
 ## Current limitations
 
-- Isaac Sim does not provide a built-in aircraft paint-process solver equivalent
-  to mature dedicated OLP or process-engineering tools.
-- Paint atomization, airflow, deposition, curing, and physical film thickness
-  are outside this implementation.
-- Production robot post-processing is not the core purpose of this project.
-- Custom path and process logic must be engineered, calibrated, and validated.
-- Manufacturing process certification requires domain-specific tooling and
-  evidence beyond this demo.
+- The reference and surrogate layers do not model primary atomization,
+  breakup, evaporation, splash/rebound, wall-film transport, curing, physical
+  film thickness, or production coating quality.
+- The native Warp plume is a quasi-steady local tangent-patch transport
+  approximation, not online CFD.
+- Production robot post-processing, calibrated cell commissioning, safety
+  analysis, and manufacturing certification remain outside this project.
+- Any industrial deployment would require domain-specific tooling and
+  independent process evidence.
 
 ## References
 

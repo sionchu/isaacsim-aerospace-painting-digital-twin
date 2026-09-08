@@ -1,34 +1,31 @@
-# Optional reference CFD workflow
+# OpenFOAM v2606 reference workflow
 
-This directory documents the external reference layer without vendoring a CFD
-solver.  The current branch stops at Level 0: no external CFD case has been
-executed and no generated field or metric is checked in.
+This directory contains the external reference layer without vendoring the
+OpenFOAM solver.  The cases were prepared for OpenCFD/Keysight OpenFOAM v2606
+on Ubuntu 24.04 WSL2 and use the official package installation.
 
-## Candidate
+## Case contract
 
-Iteration-CFD is the inspected candidate:
+Each case contains a stationary nozzle, prescribed external air-assist source,
+free-air domain, and flat plate.  The case adapter records nozzle and plate
+frames, mesh and timestep, droplet-bin inputs, solver completion, wall
+outcomes, and an explicit mass ledger.  It exports a surface-local deposition
+map in fan-major/fan-minor `(u, v)` coordinates.
 
-- repository: <https://github.com/using76/Iteration-CFD>
-- revision: `f8027745a77406f02521e43dd61308239dd95e01`
-- license: Prosperity Public License 3.0.0 plus licensor terms
-- build prerequisites: Rust 1.85+, Visual Studio 2022 C++ workload, CUDA 13.x
+The checked-in medium cases are:
 
-Use it as an independently installed dependency only after the intended use
-has a compatible license decision.  Do not copy its source or binaries into
-this repository.
+- `flat_plate/` — 0° reference;
+- `flat_plate/medium_incidence_7p5deg/` — S2 hold-out;
+- `flat_plate/medium_incidence_10deg/` — W1.3 blind hold-out; and
+- `flat_plate/medium_incidence_15deg/` — second carrier anchor.
 
-## Required first case
+The corresponding metrics and maps are under
+`results/air_assisted/openfoam_v2606/`.  Do not treat a CFD image as process
+evidence without the matching solver completion and closed mass ledger.
 
-The first case must contain only:
+## Solver boundary
 
-```text
-stationary nozzle + external air-assist source + free-air domain + flat plate
-```
-
-The case adapter must record `T_world_nozzle`, `T_world_plate`, the mesh and
-timestep, droplet-bin inputs, solver commit, residual summary, wall outcomes,
-and an explicit mass ledger.  It must export a surface-local deposition map in
-fan-major/fan-minor `(u, v)` coordinates.
-
-Do not use a CFD image as evidence until the mass ledger closes and a
-coarse/medium sensitivity comparison has been recorded.
+OpenFOAM is an offline teacher/reference layer.  It is not called during native
+Isaac Sim stepping.  S2 and W1.3 consume the checked-in reference evidence;
+native W2 uses W1.3 for optional GPU plume transport while S2 remains the
+authoritative surface deposition overlay.

@@ -46,21 +46,21 @@ physics.
 
 ## Current level
 
-`S2 + native runtime + Warp W1.2 carrier-surrogate audit` — the CFD-calibrated
-covariance-moment deposition surrogate remains validated on the held-out
-7.5-degree OpenFOAM v2606 medium case and the native Isaac Sim integration
-checkpoint remains complete. The new static Warp transport solver executes on
-CUDA and closes its mass ledger. Teacher-forced vector-field transport passes
-the original W1 7.5-degree gates. The two-anchor co-rotating full-vector
-surrogate reproduces both endpoint particle results, but its blind 7.5-degree
-carrier coverage and deposition response fail the W1.2 gates; no deployable
-Warp carrier validation is claimed.
+`S2 + native runtime + Warp W1.3/W2` — S2 remains validated on the held-out
+7.5-degree OpenFOAM v2606 medium case.  W1.3 replaces the failed W1.2
+transformed-domain path with a fixed-grid full-vector carrier and passes a blind
+10-degree carrier/deposition hold-out.  Native W2 runs that validated carrier
+with Warp Lagrangian transport in the actual Isaac Sim painting scene while
+keeping S2 as the authoritative deposition overlay.
 
 ## Next checkpoint
 
-The next concrete action is to audit the demonstrated W1.2 out-of-field and
-hold-out mismatch before considering any new carrier representation. Moving
-Isaac integration, Isaac Lab, and reinforcement learning remain out of scope.
+The release-candidate documentation and reviewed media are ready for a pull
+request review.  No new CFD, Isaac Lab, reinforcement-learning, or production
+coating work is implied by this checkpoint.
+
+The checkpoint sections below retain the validation journey as historical
+evidence.  The W1.3 and W2 sections at the end are the current release path.
 
 ## Native S2 runtime checkpoint (2026-09-08)
 
@@ -362,7 +362,7 @@ field NRMSE `0.0249804`, and relative mass-balance error `0`.
 
 ### Verification evidence
 
-- CUDA command: `C:\\isaacsim\\python.bat scripts/validate_warp_w1_1_teacher_u.py
+- CUDA command: `Isaac Sim Python launcher scripts/validate_warp_w1_1_teacher_u.py
   --device cuda:0` -> exit `0`, Warp 1.13.0 on `cuda:0`, 10,000 particles per
   angle, and status `W1_TRANSPORT_CORE_VALIDATED_WITH_TEACHER_U`.
 - CPU/GPU sampler agreement passed for all three fields. Maximum absolute
@@ -481,7 +481,7 @@ NRMSE `0.0887899`, and relative mass balance `0`.
 
 ### Verification evidence
 
-- CUDA command: `C:\\isaacsim\\python.bat scripts/validate_warp_w1_2.py
+- CUDA command: `Isaac Sim Python launcher scripts/validate_warp_w1_2.py
   --device cuda:0` -> exit `0`, Warp 1.13.0 on `cuda:0`, all 0°/7.5°/15°
   analytic, teacher-U, and vector cases executed, status
   `WARP_VECTOR_CARRIER_NOT_VALIDATED`.
@@ -545,3 +545,71 @@ gates. Do not proceed to moving-scene integration.
 Audit the demonstrated transformed-domain coverage and 7.5° mismatch before
 designing any further carrier representation. Keep W1.2 as a failed static
 checkpoint and do not integrate it into Isaac yet.
+
+## NVIDIA Warp W1.3 fixed-grid carrier checkpoint (2026-09-09)
+
+### Objective
+
+Replace the failed W1.2 transformed-domain query with fixed-grid local vector
+interpolation, freeze a new blind angle, and validate the unchanged transport
+and deposition gates without fitting to the hold-out.
+
+### Result
+
+`WARP_W1_VECTOR_CARRIER_VALIDATED`.  The model uses the solved OpenFOAM v2606
+0° and 15° full-vector anchors on a shared fixed grid.  The blind 10° carrier
+hold-out records normalized vector RMSE `0.0258028`, vector correlation
+`0.999502`, and zero out-of-field queries.  The corresponding deposition
+hold-out records centroid error `1.58472 mm`, correlation `0.950426`, NRMSE
+`0.0258069`, and a closed particle mass ledger.
+
+The 7.5° result is retained as a regression comparison, not a new blind
+hold-out.  The W1.2 transformed-domain failure remains preserved as historical
+evidence and is not the release-candidate carrier path.
+
+### Evidence
+
+- JSON: `results/air_assisted/warp_w1_3/validation_summary.json`.
+- Model: `models/warp_vector_carrier_v3.json` and
+  `models/warp_vector_carrier_v3.npz`.
+- Media: `media/air_assisted_spray/warp_w1_3_fidelity_hierarchy.png` and the
+  companion carrier/deposition comparison figures.
+
+## Native Isaac Sim W2 Warp plume checkpoint (2026-09-09)
+
+### Objective
+
+Integrate the validated W1.3 carrier into the existing native Isaac Sim S2
+runtime as an optional GPU Lagrangian plume layer, without changing the
+authoritative S2 deposition overlay or adding a new CFD case.
+
+### Result
+
+`ISAAC_WARP_PLUME_VALIDATED`.  The native scene completed 720 frames and
+emitted 225 Warp batches with 2,500 parcels per batch.  Warp deposited
+`0.00149979733333333 kg`, escaped `2.02666666666667e-7 kg`, and closed its mass
+ledger with residual `5.21486e-18 kg`.  The S2 surface-map closure remained
+`1.95156e-18 kg` and the S2 ledger residual remained `-5.62430e-18 kg`.
+
+The viewer computes actual robot/TCP scene motion, interpolated W1.3 carrier
+velocity, Warp droplet trajectories with drag/gravity/collision handling, and
+active plume positions.  The surface overlay remains the S2 CFD-calibrated
+deposited-mass density.  The moving-scene transport uses a quasi-steady local
+tangent-patch approximation; it is not online CFD.
+
+### Evidence and verification
+
+- Native metrics: `results/air_assisted/isaac_warp_runtime/runtime_metrics.json`.
+- Reviewed media: `media/air_assisted_spray/isaac_warp_plume_hero.png`,
+  `isaac_warp_plume_deposition.png`, and `isaac_warp_plume_demo.mp4`.
+- Portable verification remains `46 passed, 2 skipped`; compilation and
+  `git diff --check` pass.  The native command was
+  `Isaac Sim Python launcher scripts/run_isaac_s2_runtime.py --headless --warp-plume`.
+
+### Release boundary
+
+This checkpoint does not claim primary atomization, breakup, evaporation,
+stochastic turbulent dispersion, splash/rebound, wall-film transport, curing,
+physical film thickness, or production coating qualification.  S2 is the
+authoritative fast deposition model; Warp is the optional transport/plume
+layer.

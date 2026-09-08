@@ -2,7 +2,7 @@ GitHub repository:
 https://github.com/sionchu/isaacsim-aerospace-painting-digital-twin
 
 Demo video:
-https://github.com/sionchu/isaacsim-aerospace-painting-digital-twin/blob/main/media/demo.mp4
+https://github.com/sionchu/isaacsim-aerospace-painting-digital-twin/blob/feat/air-assisted-spray-physics/media/air_assisted_spray/isaac_warp_plume_demo.mp4
 
 Technical references:
 

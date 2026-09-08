@@ -1,0 +1,70 @@
+{
+  "schema_version": "incidence15_input_diff_v1",
+  "nominal_case": "medium",
+  "incidence_case": "medium_incidence_15deg",
+  "incidence_angle_deg": 15.0,
+  "rotation_axis": "+Y",
+  "files_checked": [
+    "0/N2",
+    "0/O2",
+    "0/T",
+    "0/U",
+    "0/Ydefault",
+    "0/alphat",
+    "0/k",
+    "0/nut",
+    "0/omega",
+    "0/p",
+    "Allclean",
+    "Allrun",
+    "chemkin/chem.inp",
+    "chemkin/therm.dat",
+    "chemkin/transportProperties",
+    "constant/chemistryProperties",
+    "constant/combustionProperties",
+    "constant/g",
+    "constant/radiationProperties",
+    "constant/sprayCloudProperties",
+    "constant/thermophysicalProperties",
+    "constant/turbulenceProperties",
+    "system/blockMeshDict",
+    "system/controlDict",
+    "system/decomposeParDict",
+    "system/fvSchemes",
+    "system/fvSolution"
+  ],
+  "expected_changes": [
+    {
+      "file": "0/U",
+      "field": "airInlet.value",
+      "nominal": [
+        0.0,
+        0.0,
+        18.0
+      ],
+      "incidence": [
+        4.658742,
+        0.0,
+        17.386666
+      ],
+      "count": 1
+    },
+    {
+      "file": "constant/sprayCloudProperties",
+      "field": "injection.direction",
+      "nominal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "incidence": [
+        0.258819,
+        0.0,
+        0.965926
+      ],
+      "count": 5
+    }
+  ],
+  "unexpected_differences": [],
+  "pass": true
+}

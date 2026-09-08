@@ -2,12 +2,12 @@
   "schema_version": "level1_flat_plate_v2",
   "solver": "sprayFoam",
   "openfoam_version": "v2606",
-  "case": "coarse",
+  "case": "medium_incidence_15deg",
   "latest_time_s": 0.06,
   "mesh": {
-    "cell_count": 6144,
-    "point_count": 7225,
-    "target_wall_face_count": 256
+    "cell_count": 27648,
+    "point_count": 30625,
+    "target_wall_face_count": 576
   },
   "inputs": {
     "mass_flow_kg_s": 0.0001,
@@ -33,15 +33,15 @@
   "mass_ledger": {
     "expected_injected_mass_kg": 1.0000000000000002e-06,
     "injected_kg": 1e-06,
-    "deposited_kg": 1.0000000000078e-06,
-    "escaped_kg": 0.0,
+    "deposited_kg": 9.69281800814e-07,
+    "escaped_kg": 3.0718199183000004e-08,
     "remaining_live_mass_kg": 0.0,
     "evaporated_kg": 0.0,
     "other_accounted_mass_kg": 0.0,
-    "unaccounted_mass_kg": -7.800114653028038e-18,
-    "residual_kg": -7.800114653028038e-18,
-    "relative_balance_error": -7.800114653028038e-12,
-    "transfer_efficiency": 1.0,
+    "unaccounted_mass_kg": 2.999992175827719e-18,
+    "residual_kg": 2.999992175827719e-18,
+    "relative_balance_error": 2.999992175827719e-12,
+    "transfer_efficiency": 0.969281800814,
     "bin_injected_kg": {
       "bin40um": 1e-07,
       "bin70um": 2e-07,
@@ -51,29 +51,29 @@
     }
   },
   "deposition": {
-    "centroid_u_m": -0.00039314965111193355,
-    "centroid_v_m": -0.000306767338456356,
+    "centroid_u_m": 0.07969718794914857,
+    "centroid_v_m": -0.0005540851375074549,
     "covariance_uv_m2": [
       [
-        0.00040435884459094683,
-        -2.0336520228731712e-05
+        0.0007091386760671378,
+        -1.5316218873924092e-05
       ],
       [
-        -2.0336520228731695e-05,
-        0.0004176687404570849
+        -1.5316218873924092e-05,
+        0.00042058136630670904
       ]
     ],
-    "sigma_major_m": 0.020794506768015215,
-    "sigma_minor_m": 0.01973869482318933,
-    "principal_orientation_deg": -54.06011513244745,
-    "peak_areal_mass_kg_m2": 0.0003741889968355556,
-    "nonzero_face_count": 41
+    "sigma_major_m": 0.026644874966677647,
+    "sigma_minor_m": 0.020488305942267696,
+    "principal_orientation_deg": -3.02983251745016,
+    "peak_areal_mass_kg_m2": 0.0004699668973440002,
+    "nonzero_face_count": 85
   },
   "gas_velocity": {
-    "min_m_s": 1.8964935535850869,
-    "max_m_s": 21.8211987918162,
-    "mean_m_s": 15.378587020051802,
-    "mid_plane_cell_count": 384
+    "min_m_s": 0.9992868789786737,
+    "max_m_s": 22.100502756489803,
+    "mean_m_s": 15.008215069073625,
+    "mid_plane_cell_count": 1152
   },
   "quality": {
     "solver_end_marker": true,

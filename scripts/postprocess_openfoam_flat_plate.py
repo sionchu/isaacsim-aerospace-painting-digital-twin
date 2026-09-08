@@ -169,6 +169,53 @@ def _last_time(case_dir: Path) -> Path:
     return max(times, key=lambda item: item[0])[1]
 
 
+def _lagrangian_values(path: Path) -> np.ndarray:
+    """Read a simple scalar/label parcel field written by OpenFOAM."""
+    text = path.read_text(encoding="utf-8", errors="replace")
+    uniform = re.search(r"\n\s*(\d+)\s*\{\s*(%s)\s*\}" % FLOAT, text)
+    if uniform:
+        return np.full(int(uniform.group(1)), float(uniform.group(2)))
+    values = re.search(r"\n\s*\d+\s*\(\s*(.*?)\s*\)\s*\n", text, re.S)
+    if not values:
+        raise ValueError(f"unsupported parcel field in {path}")
+    return _float_list(values.group(1))
+
+
+def _remaining_live_mass(time_dir: Path) -> float:
+    cloud_dir = time_dir / "lagrangian" / "sprayCloud"
+    active_path = cloud_dir / "active"
+    if not active_path.exists():
+        return 0.0
+    active = _lagrangian_values(active_path) > 0.5
+    if not np.any(active):
+        return 0.0
+    mass0 = _lagrangian_values(cloud_dir / "mass0")
+    n_particle = _lagrangian_values(cloud_dir / "nParticle")
+    return float(np.sum(mass0[active] * n_particle[active]))
+
+
+def canonical_footprint_metrics(
+    covariance: np.ndarray,
+    peak_areal_mass_kg_m2: float,
+) -> dict[str, float]:
+    """Return one canonical covariance/eigen-axis definition for every case."""
+    eigenvalues, eigenvectors = np.linalg.eigh(np.asarray(covariance, dtype=float))
+    order = np.argsort(eigenvalues)[::-1]
+    eigenvalues = np.maximum(eigenvalues[order], 0.0)
+    major_axis = eigenvectors[:, order[0]]
+    orientation = float(np.degrees(np.arctan2(major_axis[1], major_axis[0])))
+    while orientation >= 90.0:
+        orientation -= 180.0
+    while orientation < -90.0:
+        orientation += 180.0
+    return {
+        "sigma_major_m": float(np.sqrt(eigenvalues[0])),
+        "sigma_minor_m": float(np.sqrt(eigenvalues[1])),
+        "principal_orientation_deg": orientation,
+        "peak_areal_mass_kg_m2": float(peak_areal_mass_kg_m2),
+    }
+
+
 def process_case(case_dir: Path, output_root: Path, label: str) -> dict:
     time_dir = _last_time(case_dir)
     log_text = (case_dir / "log.sprayFoam").read_text(encoding="utf-8", errors="replace")
@@ -185,7 +232,6 @@ def process_case(case_dir: Path, output_root: Path, label: str) -> dict:
     )
 
     mass_stick = read_boundary_scalars(_field_file(time_dir, "massStick"), "targetWall")
-    mass_escape_field = read_boundary_scalars(_field_file(time_dir, "massEscape"), "targetWall")
     if len(mass_stick) != n_faces:
         raise ValueError(f"targetWall massStick length {len(mass_stick)} != {n_faces}")
     deposited = float(mass_stick.sum())
@@ -199,6 +245,7 @@ def process_case(case_dir: Path, output_root: Path, label: str) -> dict:
     escaped = float(sum(escape_values))
     evaporated = _last_phase_change(log_text)
     injected = float(sum(injection.values()))
+    remaining_live = _remaining_live_mass(time_dir)
 
     centres = read_internal_vectors(time_dir / "C")
     velocity = read_internal_vectors(time_dir / "U")
@@ -218,12 +265,14 @@ def process_case(case_dir: Path, output_root: Path, label: str) -> dict:
         centroid = np.zeros(2)
         covariance = np.zeros((2, 2))
 
-    residual = injected - deposited - escaped - evaporated
+    other_accounted = 0.0
+    residual = injected - deposited - escaped - remaining_live - evaporated - other_accounted
     relative_error = residual / injected if injected else float("nan")
     transfer_efficiency = deposited / injected if injected else 0.0
     transfer_efficiency = min(1.0, max(0.0, transfer_efficiency))
+    shape = canonical_footprint_metrics(covariance, float(mass_density.max()))
     metrics = {
-        "schema_version": "level1_flat_plate_v1",
+        "schema_version": "level1_flat_plate_v2",
         "solver": "sprayFoam",
         "openfoam_version": "v2606",
         "case": label,
@@ -243,10 +292,14 @@ def process_case(case_dir: Path, output_root: Path, label: str) -> dict:
             "mass_fraction": [0.10, 0.20, 0.30, 0.25, 0.15],
         },
         "mass_ledger": {
+            "expected_injected_mass_kg": 1.0e-4 * 0.01,
             "injected_kg": injected,
             "deposited_kg": deposited,
             "escaped_kg": escaped,
+            "remaining_live_mass_kg": remaining_live,
             "evaporated_kg": evaporated,
+            "other_accounted_mass_kg": other_accounted,
+            "unaccounted_mass_kg": residual,
             "residual_kg": residual,
             "relative_balance_error": relative_error,
             "transfer_efficiency": transfer_efficiency,
@@ -256,8 +309,8 @@ def process_case(case_dir: Path, output_root: Path, label: str) -> dict:
             "centroid_u_m": float(centroid[0]),
             "centroid_v_m": float(centroid[1]),
             "covariance_uv_m2": covariance.tolist(),
+            **shape,
             "nonzero_face_count": int(np.count_nonzero(mass_stick > 0)),
-            "peak_areal_mass_kg_m2": float(mass_density.max()),
         },
         "gas_velocity": {
             "min_m_s": float(speeds.min()),
@@ -319,8 +372,8 @@ def process_case(case_dir: Path, output_root: Path, label: str) -> dict:
 
 def write_sensitivity(metrics_by_label: dict[str, dict], output_root: Path) -> None:
     labels = list(metrics_by_label)
-    coarse = metrics_by_label[labels[0]]
-    medium = metrics_by_label[labels[-1]]
+    coarse = metrics_by_label.get("coarse", metrics_by_label[labels[0]])
+    medium = metrics_by_label.get("medium", metrics_by_label[labels[-1]])
     coarse_c = np.asarray(
         [coarse["deposition"]["centroid_u_m"], coarse["deposition"]["centroid_v_m"]]
     )
@@ -328,12 +381,16 @@ def write_sensitivity(metrics_by_label: dict[str, dict], output_root: Path) -> N
         [medium["deposition"]["centroid_u_m"], medium["deposition"]["centroid_v_m"]]
     )
     sensitivity = {
-        "schema_version": "level1_flat_plate_mesh_sensitivity_v1",
+        "schema_version": "level1_flat_plate_mesh_sensitivity_v2",
         "meshes": {
             label: {
                 "cell_count": data["mesh"]["cell_count"],
                 "transfer_efficiency": data["mass_ledger"]["transfer_efficiency"],
                 "centroid_uv_m": [data["deposition"]["centroid_u_m"], data["deposition"]["centroid_v_m"]],
+                "sigma_major_m": data["deposition"]["sigma_major_m"],
+                "sigma_minor_m": data["deposition"]["sigma_minor_m"],
+                "principal_orientation_deg": data["deposition"]["principal_orientation_deg"],
+                "peak_areal_mass_kg_m2": data["deposition"]["peak_areal_mass_kg_m2"],
             }
             for label, data in metrics_by_label.items()
         },
@@ -343,6 +400,10 @@ def write_sensitivity(metrics_by_label: dict[str, dict], output_root: Path) -> N
                 - coarse["mass_ledger"]["transfer_efficiency"]
             ),
             "centroid_distance_m": float(np.linalg.norm(medium_c - coarse_c)),
+            "sigma_major_delta_m": medium["deposition"]["sigma_major_m"] - coarse["deposition"]["sigma_major_m"],
+            "sigma_minor_delta_m": medium["deposition"]["sigma_minor_m"] - coarse["deposition"]["sigma_minor_m"],
+            "peak_areal_mass_delta_kg_m2": medium["deposition"]["peak_areal_mass_kg_m2"] - coarse["deposition"]["peak_areal_mass_kg_m2"],
+            "principal_orientation_delta_deg": medium["deposition"]["principal_orientation_deg"] - coarse["deposition"]["principal_orientation_deg"],
         },
         "pass": bool(
             abs(medium["mass_ledger"]["transfer_efficiency"] - coarse["mass_ledger"]["transfer_efficiency"]) <= 0.02
@@ -352,7 +413,12 @@ def write_sensitivity(metrics_by_label: dict[str, dict], output_root: Path) -> N
     out = output_root / "mesh_sensitivity.json"
     out.write_text(json.dumps(sensitivity, indent=2) + "\n", encoding="utf-8")
     fig, ax = plt.subplots(figsize=(7, 4), constrained_layout=True)
-    ax.bar(labels, [metrics_by_label[label]["mass_ledger"]["transfer_efficiency"] for label in labels], color=["#1677ff", "#15a36d"])
+    colors = ["#1677ff", "#15a36d", "#d97706", "#7c3aed"]
+    ax.bar(
+        labels,
+        [metrics_by_label[label]["mass_ledger"]["transfer_efficiency"] for label in labels],
+        color=[colors[index % len(colors)] for index in range(len(labels))],
+    )
     ax.set_ylim(0, 1.05)
     ax.set_ylabel("wall transfer efficiency [-]")
     ax.set_title("v2606 flat-plate mesh sensitivity")

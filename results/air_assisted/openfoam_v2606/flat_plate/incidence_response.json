@@ -1,0 +1,39 @@
+{
+  "schema_version": "incidence_response_v1",
+  "baseline": "medium",
+  "incidence_case": "medium_incidence_15deg",
+  "incidence_angle_deg": 15.0,
+  "rotation_axis": "+Y",
+  "mesh_centroid_noise_m": 0.0002885603165762264,
+  "incidence_centroid_shift_m": 0.08019240007475671,
+  "centroid_response_to_noise_ratio": 277.90515697460086,
+  "mesh_shape_deltas": {
+    "sigma_major_delta_m": -3.668598466981601e-05,
+    "sigma_minor_delta_m": -0.00021432154857752364,
+    "peak_areal_mass_delta_kg_m2": 0.00019772842671644434
+  },
+  "incidence_shape_deltas": {
+    "sigma_major_delta_m": 0.005887054183332248,
+    "sigma_minor_delta_m": 0.0009639326676558896,
+    "peak_areal_mass_delta_kg_m2": -0.00010195052620799971
+  },
+  "direction_check": {
+    "centroid_u_nominal_m": -0.0004935400618006563,
+    "centroid_u_incidence_m": 0.07969718794914857,
+    "delta_u_m": 0.08019072801094923,
+    "delta_v_m": -0.0005178521254208252,
+    "expected_positive_u_shift": true,
+    "pass": true
+  },
+  "distinguishability_gate": {
+    "centroid_shift_gt_mesh_noise": true,
+    "shape_or_intensity_delta_gt_nominal_mesh_delta": true,
+    "shape_checks": {
+      "sigma_major_m": true,
+      "sigma_minor_m": true,
+      "peak_areal_mass_kg_m2": false
+    },
+    "pass": true
+  },
+  "status": "INCIDENCE_RESPONSE_VALIDATED"
+}

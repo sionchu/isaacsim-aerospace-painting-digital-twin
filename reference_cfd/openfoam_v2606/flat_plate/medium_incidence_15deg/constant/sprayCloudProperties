@@ -1,0 +1,227 @@
+FoamFile
+{
+    version 2.0;
+    format ascii;
+    class dictionary;
+    object sprayCloudProperties;
+}
+
+solution
+{
+    active true;
+    coupled false;
+    transient yes;
+    cellValueSourceCorrection off;
+    maxCo 0.3;
+    sourceTerms
+    {
+        schemes
+        {
+            rho explicit 1;
+            U explicit 1;
+            Yi explicit 1;
+            h explicit 1;
+            radiation explicit 1;
+        }
+    }
+    interpolationSchemes
+    {
+        rho cell;
+        U cellPoint;
+        thermo:mu cell;
+        T cell;
+        Cp cell;
+        kappa cell;
+        p cell;
+    }
+    integrationSchemes
+    {
+        U Euler;
+        T analytical;
+    }
+}
+
+constantProperties
+{
+    T0 293.15;
+    rho0 1000;
+    Cp0 4187;
+    constantVolume false;
+}
+
+subModels
+{
+    particleForces
+    {
+        sphereDrag;
+        gravity;
+    }
+
+    injectionModels
+    {
+        bin40um
+        {
+            type coneNozzleInjection;
+            SOI 0;
+            massTotal 1.0e-7;
+            parcelBasisType mass;
+            injectionMethod disc;
+            flowType constantVelocity;
+            UMag 12;
+            outerDiameter 8e-4;
+            innerDiameter 0;
+            duration 0.01;
+            position (0 0 0.002);
+            direction (0.258819 0 0.965926);
+            parcelsPerSecond 20000;
+            minParticlesPerParcel 0;
+            flowRateProfile constant 1;
+            thetaInner constant 0;
+            thetaOuter constant 22;
+            sizeDistribution
+            {
+                type fixedValue;
+                fixedValueDistribution { value 4e-5; }
+            }
+        }
+        bin70um
+        {
+            type coneNozzleInjection;
+            SOI 0;
+            massTotal 2.0e-7;
+            parcelBasisType mass;
+            injectionMethod disc;
+            flowType constantVelocity;
+            UMag 12;
+            outerDiameter 8e-4;
+            innerDiameter 0;
+            duration 0.01;
+            position (0 0 0.002);
+            direction (0.258819 0 0.965926);
+            parcelsPerSecond 20000;
+            minParticlesPerParcel 0;
+            flowRateProfile constant 1;
+            thetaInner constant 0;
+            thetaOuter constant 22;
+            sizeDistribution
+            {
+                type fixedValue;
+                fixedValueDistribution { value 7e-5; }
+            }
+        }
+        bin100um
+        {
+            type coneNozzleInjection;
+            SOI 0;
+            massTotal 3.0e-7;
+            parcelBasisType mass;
+            injectionMethod disc;
+            flowType constantVelocity;
+            UMag 12;
+            outerDiameter 8e-4;
+            innerDiameter 0;
+            duration 0.01;
+            position (0 0 0.002);
+            direction (0.258819 0 0.965926);
+            parcelsPerSecond 20000;
+            minParticlesPerParcel 0;
+            flowRateProfile constant 1;
+            thetaInner constant 0;
+            thetaOuter constant 22;
+            sizeDistribution
+            {
+                type fixedValue;
+                fixedValueDistribution { value 1e-4; }
+            }
+        }
+        bin150um
+        {
+            type coneNozzleInjection;
+            SOI 0;
+            massTotal 2.5e-7;
+            parcelBasisType mass;
+            injectionMethod disc;
+            flowType constantVelocity;
+            UMag 12;
+            outerDiameter 8e-4;
+            innerDiameter 0;
+            duration 0.01;
+            position (0 0 0.002);
+            direction (0.258819 0 0.965926);
+            parcelsPerSecond 20000;
+            minParticlesPerParcel 0;
+            flowRateProfile constant 1;
+            thetaInner constant 0;
+            thetaOuter constant 22;
+            sizeDistribution
+            {
+                type fixedValue;
+                fixedValueDistribution { value 1.5e-4; }
+            }
+        }
+        bin220um
+        {
+            type coneNozzleInjection;
+            SOI 0;
+            massTotal 1.5e-7;
+            parcelBasisType mass;
+            injectionMethod disc;
+            flowType constantVelocity;
+            UMag 12;
+            outerDiameter 8e-4;
+            innerDiameter 0;
+            duration 0.01;
+            position (0 0 0.002);
+            direction (0.258819 0 0.965926);
+            parcelsPerSecond 20000;
+            minParticlesPerParcel 0;
+            flowRateProfile constant 1;
+            thetaInner constant 0;
+            thetaOuter constant 22;
+            sizeDistribution
+            {
+                type fixedValue;
+                fixedValueDistribution { value 2.2e-4; }
+            }
+        }
+    }
+
+    dispersionModel none;
+    patchInteractionModel localInteraction;
+    heatTransferModel none;
+    compositionModel singlePhaseMixture;
+    phaseChangeModel none;
+    surfaceFilmModel none;
+    atomizationModel none;
+    breakupModel none;
+    stochasticCollisionModel none;
+    radiation off;
+
+    localInteractionCoeffs
+    {
+        writeFields true;
+        patches
+        (
+            targetWall { type stick; }
+            airInlet { type escape; }
+            farField { type escape; }
+        );
+    }
+
+    singlePhaseMixtureCoeffs
+    {
+        phases
+        (
+            liquid { C7H16 1; }
+        );
+    }
+}
+
+cloudFunctions
+{
+    patchInteractionFields1
+    {
+        type patchInteractionFields;
+        resetMode none;
+    }
+}

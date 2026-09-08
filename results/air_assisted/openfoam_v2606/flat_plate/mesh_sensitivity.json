@@ -1,5 +1,5 @@
 {
-  "schema_version": "level1_flat_plate_mesh_sensitivity_v1",
+  "schema_version": "level1_flat_plate_mesh_sensitivity_v2",
   "meshes": {
     "coarse": {
       "cell_count": 6144,
@@ -7,7 +7,11 @@
       "centroid_uv_m": [
         -0.00039314965111193355,
         -0.000306767338456356
-      ]
+      ],
+      "sigma_major_m": 0.020794506768015215,
+      "sigma_minor_m": 0.01973869482318933,
+      "principal_orientation_deg": -54.06011513244745,
+      "peak_areal_mass_kg_m2": 0.0003741889968355556
     },
     "medium": {
       "cell_count": 27648,
@@ -15,12 +19,32 @@
       "centroid_uv_m": [
         -0.0004935400618006563,
         -3.623301208662972e-05
-      ]
+      ],
+      "sigma_major_m": 0.0207578207833454,
+      "sigma_minor_m": 0.019524373274611807,
+      "principal_orientation_deg": -6.463423214872506,
+      "peak_areal_mass_kg_m2": 0.0005719174235519999
+    },
+    "medium_incidence_15deg": {
+      "cell_count": 27648,
+      "transfer_efficiency": 0.969281800814,
+      "centroid_uv_m": [
+        0.07969718794914857,
+        -0.0005540851375074549
+      ],
+      "sigma_major_m": 0.026644874966677647,
+      "sigma_minor_m": 0.020488305942267696,
+      "principal_orientation_deg": -3.02983251745016,
+      "peak_areal_mass_kg_m2": 0.0004699668973440002
     }
   },
   "difference_medium_minus_coarse": {
     "transfer_efficiency_abs": 0.0,
-    "centroid_distance_m": 0.0002885603165762264
+    "centroid_distance_m": 0.0002885603165762264,
+    "sigma_major_delta_m": -3.668598466981601e-05,
+    "sigma_minor_delta_m": -0.00021432154857752364,
+    "peak_areal_mass_delta_kg_m2": 0.00019772842671644434,
+    "principal_orientation_delta_deg": 47.596691917574944
   },
   "pass": true
 }

@@ -1,0 +1,52 @@
+# Canonical demo schema for the air-assisted spray extension.
+# All values in this file are DEMO / SYNTHETIC INPUT PARAMETERS. They are not
+# manufacturer settings or production coating-process data.
+
+process:
+  spray_type: air_assisted
+  spray_on: true
+  stand_off_m: 0.24
+  incidence_angle_deg: 0.0
+
+  liquid:
+    mass_flow_kg_s: 0.00010
+    density_kg_m3: 1000.0
+    viscosity_pa_s: 0.010
+    temperature_k: 293.15
+
+  air:
+    model: prescribed_external_assist_jet
+    velocity_m_s: 18.0
+    temperature_k: 293.15
+
+  droplets:
+    distribution: prescribed_discrete_bins
+    # Diameter bins and mass fractions are deterministic demo inputs. The
+    # fractions sum to one so the injector mass flow remains explicit.
+    diameter_bins_m: [0.00004, 0.00007, 0.00010, 0.00015, 0.00022]
+    mass_fraction: [0.10, 0.20, 0.30, 0.25, 0.15]
+    initial_speed_m_s: 12.0
+    breakup_model: none
+
+  fan:
+    # The portable runtime uses an anisotropic fan even if an external
+    # reference solver initially accepts only a simpler cone injector.
+    major_half_angle_deg: 22.0
+    minor_half_angle_deg: 8.0
+    rotation_deg: 0.0
+    centroid_shift_u_m: 0.0
+    centroid_shift_v_m: 0.0
+
+frame:
+  convention: nozzle_origin_and_right_handed_axes
+  spray_axis: +Z
+  fan_major_axis: +X
+  fan_minor_axis: +Y
+  units: metre
+
+benchmark:
+  geometry: stationary_nozzle_stationary_flat_plate
+  nozzle_origin_m: [0.0, 0.0, 0.0]
+  plate_origin_m: [0.0, 0.0, 0.24]
+  plate_normal: [0.0, 0.0, -1.0]
+  local_coordinates: [u_fan_major, v_fan_minor]

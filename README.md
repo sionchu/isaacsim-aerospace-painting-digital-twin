@@ -70,6 +70,11 @@ contract](scenes/README.md) and [asset provenance](docs/asset_provenance.md).
 - [Fidelity boundary](docs/fidelity_boundary.md)
 - [Relationship to mature OLP tools](docs/olp_comparison.md)
 - [Asset provenance](docs/asset_provenance.md)
+- [Air-assisted spray architecture](docs/air_assisted_spray_architecture.md)
+- [Spray solver decision](docs/spray_solver_decision.md)
+- [Research basis](docs/research_basis_air_assisted_spray.md)
+- [Spray fidelity boundary](docs/spray_fidelity_boundary.md)
+- [External solver licensing](docs/external_solver_license.md)
 
 ## Media status
 

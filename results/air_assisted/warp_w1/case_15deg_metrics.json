@@ -1,0 +1,278 @@
+{
+  "high": {
+    "comparison": {
+      "openfoam_teacher": {
+        "actual": {
+          "centroid_uv_m": [
+            0.07969718794914857,
+            -0.0005540851375074558
+          ],
+          "covariance_uv_m2": [
+            [
+              0.0007091386760671378,
+              -1.5316218873924105e-05
+            ],
+            [
+              -1.53162188739241e-05,
+              0.00042058136630670893
+            ]
+          ],
+          "mass_kg": 9.69281800814e-07,
+          "peak_density_kg_m2": 0.0004699668973440002,
+          "sigma_major_m": 0.026644874966677647,
+          "sigma_minor_m": 0.020488305942267693
+        },
+        "centroid_error_m": 0.015191822590715985,
+        "integrated_absolute_mass_density_error_kg": 7.183049496408751e-07,
+        "integrated_mass_error_kg": 3.0718197743709986e-08,
+        "integrated_mass_relative_error": 0.03169171000416281,
+        "nrmse": 0.08074474330131241,
+        "pearson_correlation": 0.7377502863464739,
+        "predicted": {
+          "centroid_uv_m": [
+            0.06451406606587752,
+            -4.00000224492645e-05
+          ],
+          "covariance_uv_m2": [
+            [
+              0.0004007559050594758,
+              5.903272558397112e-07
+            ],
+            [
+              5.903272558397192e-07,
+              0.0003742873386179136
+            ]
+          ],
+          "mass_kg": 9.9999999855771e-07,
+          "peak_density_kg_m2": 0.0007155219009291615,
+          "sigma_major_m": 0.020019217381289964,
+          "sigma_minor_m": 0.019346167039443425
+        },
+        "rmse_kg_m2": 3.794735648615554e-05,
+        "sigma_major_relative_error": 0.24866536599153863,
+        "sigma_minor_relative_error": 0.0557458926102825
+      }
+    },
+    "deposition": {
+      "centroid_error_m": 0.015191822590715985,
+      "centroid_uv_m": [
+        0.06451406606587752,
+        -4.00000224492645e-05
+      ],
+      "covariance_uv_m2": [
+        [
+          0.0004007559050594758,
+          5.903272558397112e-07
+        ],
+        [
+          5.903272558397192e-07,
+          0.0003742873386179136
+        ]
+      ],
+      "deposited_mass_relative_error": 0.03169171000416281,
+      "mass_kg": 9.9999999855771e-07,
+      "peak_density_kg_m2": 0.0007155219009291615,
+      "sigma_major_m": 0.020019217381289964,
+      "sigma_major_relative_error": 0.24866536599153863,
+      "sigma_minor_m": 0.019346167039443425,
+      "sigma_minor_relative_error": 0.05574589261028266
+    },
+    "incidence_angle_deg": 15.0,
+    "mass_ledger": {
+      "deposited_mass_kg": 1.0000000000000004e-06,
+      "deposited_particle_count": 10000,
+      "escaped_mass_kg": 0.0,
+      "escaped_particle_count": 0,
+      "expected_injected_mass_kg": 1.0000000000000004e-06,
+      "live_mass_kg": 0.0,
+      "live_particle_count": 0,
+      "mass_residual_kg": 0.0,
+      "particle_injected_mass_kg": 1.0000000000000004e-06,
+      "relative_balance_error": 0.0,
+      "released_particle_count": 10000,
+      "transfer_efficiency": 1.0
+    },
+    "particle_count": 10000,
+    "particle_count_per_bin": 2000,
+    "performance": {
+      "device": "cuda:0",
+      "kernel_launch_count": 1200,
+      "max_step_compute_seconds": 0.00047850003466010094,
+      "mean_step_compute_seconds": 0.00010714566917158664,
+      "p95_step_compute_seconds": 0.00019265506416559216,
+      "particle_count": 10000,
+      "particle_count_per_bin": 2000,
+      "particle_dt_s": 5e-05,
+      "simulated_duration_s": 0.06,
+      "substeps": 1200,
+      "wall_seconds": 0.12976060016080737
+    },
+    "schema_version": "warp_w1_case_metrics_v1",
+    "state_counts": {
+      "alive": 0,
+      "deposited": 10000,
+      "escaped": 0,
+      "released": 10000
+    },
+    "teacher_reference": {
+      "case": "medium_incidence_15deg",
+      "centroid_uv_m": [
+        0.07969718794914857,
+        -0.0005540851375074549
+      ],
+      "deposited_mass_kg": 9.69281800814e-07,
+      "sigma_major_m": 0.026644874966677647,
+      "sigma_minor_m": 0.020488305942267696
+    }
+  },
+  "incidence_angle_deg": 15.0,
+  "low": {
+    "comparison": {
+      "openfoam_teacher": {
+        "actual": {
+          "centroid_uv_m": [
+            0.07969718794914857,
+            -0.0005540851375074558
+          ],
+          "covariance_uv_m2": [
+            [
+              0.0007091386760671378,
+              -1.5316218873924105e-05
+            ],
+            [
+              -1.53162188739241e-05,
+              0.00042058136630670893
+            ]
+          ],
+          "mass_kg": 9.69281800814e-07,
+          "peak_density_kg_m2": 0.0004699668973440002,
+          "sigma_major_m": 0.026644874966677647,
+          "sigma_minor_m": 0.020488305942267693
+        },
+        "centroid_error_m": 0.015194478220953255,
+        "integrated_absolute_mass_density_error_kg": 7.263286559006932e-07,
+        "integrated_mass_error_kg": 3.071727670268897e-08,
+        "integrated_mass_relative_error": 0.03169075977377548,
+        "nrmse": 0.08161364420748454,
+        "pearson_correlation": 0.7333587910112493,
+        "predicted": {
+          "centroid_uv_m": [
+            0.06451249901343997,
+            -8.750072807068096e-06
+          ],
+          "covariance_uv_m2": [
+            [
+              0.000397637681726663,
+              1.025422504467945e-06
+            ],
+            [
+              1.025422504467943e-06,
+              0.00037515648229867856
+            ]
+          ],
+          "mass_kg": 9.99999077516689e-07,
+          "peak_density_kg_m2": 0.0007225577974168119,
+          "sigma_major_m": 0.01994202489341374,
+          "sigma_minor_m": 0.01936775173260459
+        },
+        "rmse_kg_m2": 3.835571114912865e-05,
+        "sigma_major_relative_error": 0.2515624517527877,
+        "sigma_minor_relative_error": 0.054692379780964785
+      }
+    },
+    "deposition": {
+      "centroid_error_m": 0.015194478220953255,
+      "centroid_uv_m": [
+        0.06451249901343997,
+        -8.750072807068096e-06
+      ],
+      "covariance_uv_m2": [
+        [
+          0.000397637681726663,
+          1.025422504467945e-06
+        ],
+        [
+          1.025422504467943e-06,
+          0.00037515648229867856
+        ]
+      ],
+      "deposited_mass_relative_error": 0.03169075977377548,
+      "mass_kg": 9.99999077516689e-07,
+      "peak_density_kg_m2": 0.0007225577974168119,
+      "sigma_major_m": 0.01994202489341374,
+      "sigma_major_relative_error": 0.2515624517527877,
+      "sigma_minor_m": 0.01936775173260459,
+      "sigma_minor_relative_error": 0.054692379780964945
+    },
+    "incidence_angle_deg": 15.0,
+    "mass_ledger": {
+      "deposited_mass_kg": 1.0000000000000004e-06,
+      "deposited_particle_count": 2500,
+      "escaped_mass_kg": 0.0,
+      "escaped_particle_count": 0,
+      "expected_injected_mass_kg": 1.0000000000000004e-06,
+      "live_mass_kg": 0.0,
+      "live_particle_count": 0,
+      "mass_residual_kg": 0.0,
+      "particle_injected_mass_kg": 1.0000000000000004e-06,
+      "relative_balance_error": 0.0,
+      "released_particle_count": 2500,
+      "transfer_efficiency": 1.0
+    },
+    "particle_count": 2500,
+    "particle_count_per_bin": 500,
+    "performance": {
+      "device": "cuda:0",
+      "kernel_launch_count": 1200,
+      "max_step_compute_seconds": 0.0003800000995397568,
+      "mean_step_compute_seconds": 7.739525230135769e-05,
+      "p95_step_compute_seconds": 0.0001890149316750466,
+      "particle_count": 2500,
+      "particle_count_per_bin": 500,
+      "particle_dt_s": 5e-05,
+      "simulated_duration_s": 0.06,
+      "substeps": 1200,
+      "wall_seconds": 0.0935829000081867
+    },
+    "schema_version": "warp_w1_case_metrics_v1",
+    "state_counts": {
+      "alive": 0,
+      "deposited": 2500,
+      "escaped": 0,
+      "released": 2500
+    },
+    "teacher_reference": {
+      "case": "medium_incidence_15deg",
+      "centroid_uv_m": [
+        0.07969718794914857,
+        -0.0005540851375074549
+      ],
+      "deposited_mass_kg": 9.69281800814e-07,
+      "sigma_major_m": 0.026644874966677647,
+      "sigma_minor_m": 0.020488305942267696
+    }
+  },
+  "schema_version": "warp_w1_case_metrics_v1",
+  "sensitivity": {
+    "absolute_deltas": {
+      "centroid_m": 3.128921549003486e-05,
+      "deposited_mass_kg": 9.210410210172716e-13,
+      "sigma_major_m": 7.71924878762223e-05,
+      "sigma_minor_m": 2.1584693161165458e-05
+    },
+    "high_particle_count": 10000,
+    "low_particle_count": 2500,
+    "numerical_sensitivity_smaller_than_physical_response": {
+      "centroid": true,
+      "deposited_mass": true,
+      "sigma_major": true,
+      "sigma_minor": true
+    },
+    "physical_0_to_15_response": {
+      "centroid_shift_m": 0.08019072801094923,
+      "mass_shift_kg": 3.071819921000004e-08,
+      "sigma_major_shift_m": 0.005887054183332248,
+      "sigma_minor_shift_m": 0.0009639326676558896
+    }
+  }
+}

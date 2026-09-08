@@ -1,0 +1,144 @@
+{
+  "air_field_model": {
+    "fit_report": {
+      "combined_sample_count": 55296,
+      "downsample_stride": 5,
+      "fit_method": "deterministic_coordinate_descent",
+      "fit_sample_count": 11060,
+      "fit_targets": "solved OpenFOAM carrier axial velocity from C/U only",
+      "per_case": {
+        "0_deg": {
+          "actual_axial_speed_max_m_s": 17.99898594,
+          "actual_axial_speed_mean_m_s": 13.804146994614063,
+          "actual_axial_speed_min_m_s": 0.5041517322,
+          "fit_pearson_correlation": 0.8090938422657246,
+          "fit_rmse_m_s": 2.9693350741920104,
+          "sample_count": 27648
+        },
+        "15_deg": {
+          "actual_axial_speed_max_m_s": 18.286767240926153,
+          "actual_axial_speed_mean_m_s": 13.507811384275941,
+          "actual_axial_speed_min_m_s": 0.0,
+          "fit_pearson_correlation": 0.7157808510739913,
+          "fit_rmse_m_s": 3.5283949391509593,
+          "sample_count": 27648
+        }
+      }
+    },
+    "model_sha256": "d2c0fd79fc86f56c65aaf6c494a4a3e363e07709ba471b58b9fbc2ae497c605f",
+    "parameters": {
+      "decay_exponent": 2.749755859375,
+      "decay_z0_m": 0.547021484375,
+      "sigma0_m": 0.20003906250000003,
+      "sigma_slope": 2.9990234375,
+      "u0_m_s": 23.291015625
+    },
+    "path": "models\\warp_air_field_v1.json"
+  },
+  "canonical_high_particle_count_per_bin": 2000,
+  "carrier_properties": {
+    "composition_mass_or_mole_fields": {
+      "N2": 0.766,
+      "O2": 0.234
+    },
+    "dynamic_viscosity_pa_s": 1.8094681577601565e-05,
+    "gravity_m_s2": [
+      0.0,
+      0.0,
+      -9.81
+    ],
+    "ideal_gas_density_kg_m3": 1.1995094678333025,
+    "liquid_density_kg_m3": 1000.0,
+    "mixture_molar_mass_kg_per_mol": 0.028854340431363246,
+    "molecular_weights_kg_per_mol": {
+      "N2": 0.0280134,
+      "O2": 0.0319988
+    },
+    "pressure_Pa": 101325.0,
+    "source_files": {
+      "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0\\N2": "62821cfa7601ab6170baf9f3f7d44bef4cc9b72933625e8d8a8efc35efc0f844",
+      "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0\\O2": "1522f4d1a667ea30c2145c2a8b7146509ce2f31497e54b9e9ed04c952a79eaa1",
+      "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0\\T": "26fdd750f14c207ea66feca845eef0c1b916472a2588756d2797152ec928990f",
+      "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0\\p": "66ace4dc3c6d614ef51f64f1f4b3e2b942010cb633e8a93cfa7651880318e80a",
+      "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\chemkin\\transportProperties": "bf594833fab6be303ba032cb90bcc81db8de6b27ccae6f2f2de3808f9729359c",
+      "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\constant\\g": "dbba0e921a08b5495fc7c116cc2bcfe614201c27f194c81608753ce09c4b8fe2",
+      "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\constant\\thermophysicalProperties": "4a7bca34d74b322d343d92769292418e96307f35ec442c9d5fe2f345e2081743"
+    },
+    "sutherland": {
+      "As": 1.67212e-06,
+      "Ts": 170.672
+    },
+    "temperature_K": 293.15
+  },
+  "command": "C:\\isaacsim\\python.bat scripts/validate_warp_spray.py --low-particles-per-bin 500 --high-particles-per-bin 2000",
+  "cuda_device_count": 1,
+  "dynamics": {
+    "collision": "Warp mesh_query_ray segment query",
+    "drag": "sphere Schiller-Naumann",
+    "dt_to_smallest_response_time_ratio": 0.010178258387400878,
+    "gravity": true,
+    "integrator": "explicit Euler",
+    "map_accumulation": "CUDA atomic_add kg/m2",
+    "stokes_response_time_smallest_bin_s": 0.004912431783210803
+  },
+  "low_particle_count_per_bin": 500,
+  "schema_version": "warp_w1_environment_v1",
+  "selected_device": "cuda:0",
+  "solver_state_arrays": [
+    "position",
+    "previous_position",
+    "velocity",
+    "diameter",
+    "represented_mass",
+    "bin_id",
+    "alive",
+    "released",
+    "deposited",
+    "escaped"
+  ],
+  "teacher_case_time_dirs": {
+    "0_deg": "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0.06",
+    "15_deg": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg\\0.06",
+    "7.5_deg": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_7p5deg\\0.06"
+  },
+  "teacher_openfoam_version": "v2606",
+  "teacher_settings": {
+    "cone_inner_half_angle_deg": 0.0,
+    "cone_outer_half_angle_deg": 22.0,
+    "droplet_bins_m": [
+      4e-05,
+      7e-05,
+      0.0001,
+      0.00015,
+      0.00022
+    ],
+    "droplet_speed_m_s": 12.0,
+    "gravity_m_s2": [
+      0.0,
+      0.0,
+      -9.81
+    ],
+    "injection_duration_s": 0.01,
+    "mass_fractions": [
+      0.1,
+      0.2,
+      0.3,
+      0.25,
+      0.15
+    ],
+    "mass_total_kg": 1e-06,
+    "nozzle_position_m": [
+      0.0,
+      0.0,
+      0.002
+    ],
+    "outer_diameter_m": 0.0008,
+    "stand_off_m": 0.24,
+    "wall_interaction": "targetWall stick; airInlet/farField escape"
+  },
+  "warp_devices": [
+    "cpu",
+    "cuda:0"
+  ],
+  "warp_version": "1.13.0"
+}

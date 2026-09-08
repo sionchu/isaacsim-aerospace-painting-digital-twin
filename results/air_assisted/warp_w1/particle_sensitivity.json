@@ -1,0 +1,75 @@
+{
+  "canonical_high_particle_count_per_bin": 2000,
+  "cases": {
+    "0.0": {
+      "absolute_deltas": {
+        "centroid_m": 7.029082949816156e-05,
+        "deposited_mass_kg": 9.913042608999945e-13,
+        "sigma_major_m": 9.516548377793213e-05,
+        "sigma_minor_m": 6.444667914546134e-05
+      },
+      "high_particle_count": 10000,
+      "low_particle_count": 2500,
+      "numerical_sensitivity_smaller_than_physical_response": {
+        "centroid": true,
+        "deposited_mass": true,
+        "sigma_major": true,
+        "sigma_minor": true
+      },
+      "physical_0_to_15_response": {
+        "centroid_shift_m": 0.08019072801094923,
+        "mass_shift_kg": 3.071819921000004e-08,
+        "sigma_major_shift_m": 0.005887054183332248,
+        "sigma_minor_shift_m": 0.0009639326676558896
+      }
+    },
+    "15.0": {
+      "absolute_deltas": {
+        "centroid_m": 3.128921549003486e-05,
+        "deposited_mass_kg": 9.210410210172716e-13,
+        "sigma_major_m": 7.71924878762223e-05,
+        "sigma_minor_m": 2.1584693161165458e-05
+      },
+      "high_particle_count": 10000,
+      "low_particle_count": 2500,
+      "numerical_sensitivity_smaller_than_physical_response": {
+        "centroid": true,
+        "deposited_mass": true,
+        "sigma_major": true,
+        "sigma_minor": true
+      },
+      "physical_0_to_15_response": {
+        "centroid_shift_m": 0.08019072801094923,
+        "mass_shift_kg": 3.071819921000004e-08,
+        "sigma_major_shift_m": 0.005887054183332248,
+        "sigma_minor_shift_m": 0.0009639326676558896
+      }
+    },
+    "7.5": {
+      "absolute_deltas": {
+        "centroid_m": 8.32976113392632e-05,
+        "deposited_mass_kg": 4.871519854177109e-13,
+        "sigma_major_m": 2.6806377712462748e-05,
+        "sigma_minor_m": 5.340506234848344e-05
+      },
+      "high_particle_count": 10000,
+      "low_particle_count": 2500,
+      "numerical_sensitivity_smaller_than_physical_response": {
+        "centroid": true,
+        "deposited_mass": true,
+        "sigma_major": true,
+        "sigma_minor": true
+      },
+      "physical_0_to_15_response": {
+        "centroid_shift_m": 0.08019072801094923,
+        "mass_shift_kg": 3.071819921000004e-08,
+        "sigma_major_shift_m": 0.005887054183332248,
+        "sigma_minor_shift_m": 0.0009639326676558896
+      }
+    }
+  },
+  "low_particle_count_per_bin": 500,
+  "mass_balance_pass": true,
+  "schema_version": "warp_w1_particle_sensitivity_v1",
+  "sensitivity_pass": true
+}

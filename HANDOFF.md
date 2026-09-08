@@ -46,16 +46,18 @@ physics.
 
 ## Current level
 
-`S2 + native runtime` — the CFD-calibrated covariance-moment deposition
-surrogate is validated on a held-out 7.5-degree OpenFOAM v2606 medium case and
-has completed the native Isaac Sim integration checkpoint. The calibrated
-interval remains `0-15 degrees`; no extrapolation is used.
+`S2 + native runtime + Warp W1 evaluated` — the CFD-calibrated
+covariance-moment deposition surrogate remains validated on the held-out
+7.5-degree OpenFOAM v2606 medium case and the native Isaac Sim integration
+checkpoint remains complete. The new static Warp transport solver executes on
+CUDA and closes its mass ledger, but its 7.5-degree major-width gate is just
+outside the acceptance band, so Warp transport is not yet validated.
 
 ## Next checkpoint
 
-The next concrete action is an optional separate fidelity task for NVIDIA Warp
-GPU Lagrangian transport. Isaac Lab and reinforcement learning remain out of
-scope for this checkpoint.
+The next concrete action is to refine or re-audit the static Warp transport
+against the frozen teacher before any moving-scene integration. Isaac Lab and
+reinforcement learning remain out of scope for this checkpoint.
 
 ## Native S2 runtime checkpoint (2026-09-08)
 
@@ -181,6 +183,121 @@ None for this checkpoint.
 
 ### Next concrete action
 
-If another fidelity layer is authorized, add NVIDIA Warp GPU Lagrangian droplet
-transport and compare its deposited footprint with the frozen S2/OpenFOAM
-reference. Do not start Isaac Lab yet.
+If another fidelity layer is authorized, continue the static Warp transport
+investigation from the W1 evidence below. Do not start Isaac Lab or integrate
+Warp into the moving Isaac scene yet.
+
+## NVIDIA Warp W1 static transport checkpoint (2026-09-08)
+
+### Objective
+
+Evaluate a deterministic CUDA Lagrangian spray transport implementation in the
+existing NVIDIA Warp runtime against the frozen OpenFOAM v2606 teacher and the
+frozen S2 7.5-degree hold-out, without changing the native moving runtime.
+
+### Scope
+
+- Existing Warp 1.13.0 from Isaac Sim 6.0.1 on `cuda:0`; no package upgrade.
+- Existing solved canonical OpenFOAM cases only: 0°, 7.5°, and 15° at 0.06 s.
+- Five teacher bins, teacher cone/direction settings, Schiller-Naumann sphere
+  drag, gravity, mesh ray collision, stick/escape fate handling, and CUDA
+  atomic areal-mass accumulation.
+- Carrier model fitted from solved 0°/15° `C`/`U` fields only; the 7.5°
+  deposition map remained a transport hold-out.
+
+### Acceptance criteria
+
+The CUDA runtime must close relative mass balance to `1e-5`; the 7.5° hold-out
+must meet deposited-mass error `<=10%`, centroid error `<=10 mm`, both sigma
+errors `<=15%`, field correlation `>=0.80`, field NRMSE `<=0.40`, and numerical
+sensitivity below the physical 0°→15° response.
+
+### Completed
+
+- Added `warp_air_field.py` and `warp_spray.py` with deterministic stratified
+  five-bin injection, explicit state arrays, explicit Euler stepping,
+  Schiller-Naumann drag, gravity, Warp `mesh_query_ray`, and atomic map writes.
+- Added `scripts/validate_warp_spray.py` and portable Warp contract tests.
+- Verified the existing native runtime reports Warp `1.13.0`, `cuda:0`, one
+  CUDA device, and an RTX 4070 Ti; no install or upgrade was performed.
+- Reused the existing solved teacher outputs; no new CFD case or moving Isaac
+  integration was created.
+- Final canonical sensitivity run used 500 low and 2,000 high particles per
+  bin (2,500/10,000 total particles), 1,200 substeps at `5e-5 s` over `0.06 s`.
+
+### Current checkpoint
+
+`WARP_TRANSPORT_NOT_VALIDATED`.
+
+Mass balance and sensitivity pass. The 7.5° high ensemble has deposited-mass
+relative error `4.13245e-7`, centroid error `8.41450 mm`, major sigma error
+`15.6738%`, minor sigma error `3.87015%`, field correlation `0.835503`, and
+field NRMSE `0.0628685`. The major sigma is therefore just outside the `15%`
+acceptance gate; this is not promoted to a transport validation.
+
+### Decisions and reasons
+
+- The W1 air model is an axisymmetric Gaussian external jet in the nozzle-local
+  frame, with +X major/u, +Y minor/v, and +Z spray/stand-off. Its fit targets
+  are solved carrier velocities only.
+- The sampler follows the installed v2606 `ConeNozzleInjection` behavior:
+  uniform cone angle and the implementation's radius/azimuth correlation.
+- The frozen S2 model remains a comparison target only. No drag or air-field
+  parameter was tuned against the 7.5° deposition map.
+- The canonical high count remains 2,000/bin because low/high moments and mass
+  are stable; the physical gate failure is retained rather than hidden by
+  increasing particle count.
+
+### Verification evidence
+
+- Native probe: `C:\isaacsim\python.bat` reported `WARP_VERSION 1.13.0`,
+  devices `['cpu', 'cuda:0']`, `DEFAULT_DEVICE cuda:0`, and `CUDA_COUNT 1`.
+- CUDA validation command:
+  `C:\isaacsim\python.bat scripts/validate_warp_spray.py --low-particles-per-bin 500 --high-particles-per-bin 2000`.
+- The run executed all six low/high angle cases, printed the Warp CUDA device,
+  and produced zero mass residual for every case. The 7.5° high case measured
+  mean step `0.000265265 s`, p95 `0.000743080 s`, wall `0.320110 s`, 1,200
+  kernel launches, and 10,000 particles.
+- Portable verification: `pytest -q tests/test_warp_spray.py
+  tests/test_spray_frames.py tests/test_mass_accounting.py` -> `8 passed`;
+  `python -m compileall -q src/aerospace_painting/warp_air_field.py
+  src/aerospace_painting/warp_spray.py scripts/validate_warp_spray.py` passed.
+- JSON evidence: `results/air_assisted/warp_w1/environment.json`,
+  `particle_sensitivity.json`, `case_0deg_metrics.json`,
+  `case_7p5deg_metrics.json`, `case_15deg_metrics.json`, and
+  `validation_summary.json`.
+- Media evidence: `media/air_assisted_spray/warp_w1_air_field_fit.png`,
+  `warp_w1_openfoam_7p5_comparison.png`, and `warp_w1_angle_response.png`.
+
+### Not executed
+
+- No new OpenFOAM case, deposition DOE, Isaac Sim moving-scene Warp
+  integration, Isaac Lab, reinforcement learning, or production coating
+  qualification was executed.
+
+### Blockers
+
+The remaining blocker is the static transport model's 7.5° major-width error
+of `15.6738%` versus the `15%` gate. The field gate, mass gate, and sensitivity
+gate pass, but the task's required W1 validation status cannot be claimed.
+
+### Modified files
+
+- `HANDOFF.md`
+- `models/warp_air_field_v1.json`
+- `scripts/validate_warp_spray.py`
+- `src/aerospace_painting/warp_air_field.py`
+- `src/aerospace_painting/warp_spray.py`
+- `tests/test_warp_spray.py`
+- `results/air_assisted/warp_w1/`
+- `media/air_assisted_spray/warp_w1_air_field_fit.png`
+- `media/air_assisted_spray/warp_w1_openfoam_7p5_comparison.png`
+- `media/air_assisted_spray/warp_w1_angle_response.png`
+
+### Next concrete action
+
+Keep the Warp implementation and evidence as a failed validation checkpoint.
+If refinement is authorized, audit the teacher-vs-Warp trajectory and
+major-width discrepancy without fitting to the 7.5° deposition target; only
+after all gates pass should Warp be considered for a separate moving-scene
+integration task.

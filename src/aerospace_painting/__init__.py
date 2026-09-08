@@ -1,6 +1,7 @@
 """Portable helpers for the aerospace painting digital-twin portfolio."""
 
 from .coverage import compute_coverage
+from .cfd_calibrated_kernel import GaussianMoments, predict_deposition_kernel
 from .deposition_kernel import AnisotropicGaussian
 from .frames import NozzleFrame
 from .mass_ledger import MassLedger
@@ -13,5 +14,7 @@ __all__ = [
     "compute_coverage",
     "NozzleFrame",
     "AnisotropicGaussian",
+    "GaussianMoments",
+    "predict_deposition_kernel",
     "MassLedger",
 ]

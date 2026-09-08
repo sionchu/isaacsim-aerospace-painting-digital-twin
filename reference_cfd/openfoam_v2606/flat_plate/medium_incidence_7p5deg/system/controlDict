@@ -1,0 +1,46 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+
+application     sprayFoam;
+startFrom       startTime;
+startTime       0;
+stopAt          endTime;
+endTime         0.06;
+deltaT          2e-4;
+writeControl    adjustable;
+writeInterval   0.005;
+purgeWrite      0;
+writeFormat     ascii;
+writePrecision  10;
+writeCompression off;
+timeFormat      general;
+timePrecision   8;
+adjustTimeStep  yes;
+maxCo           0.35;
+maxDeltaT       2e-4;
+runTimeModifiable no;
+
+functions
+{
+    distribution1
+    {
+        type            particleDistribution;
+        libs            (fieldFunctionObjects);
+        cloud           sprayCloud;
+        nameVsBinWidth  ((d 1e-5) (U 1));
+        setFormat       raw;
+        writeToFile     true;
+        useUserTime     true;
+        enabled         true;
+        log             true;
+        executeControl  timeStep;
+        executeInterval 10;
+        writeControl    writeTime;
+        writeInterval   -1;
+    }
+}

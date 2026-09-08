@@ -31,6 +31,18 @@ SPRAY_VECTOR_NOMINAL = (0.0, 0.0, 1.0)
 SPRAY_VECTOR_INCIDENCE = (0.258819, 0.0, 0.965926)
 INPUT_DIRS = ("0", "constant", "system", "chemkin")
 ROOT_INPUTS = ("Allrun", "Allclean")
+VECTOR_TOLERANCE = 2.0e-6
+
+
+def incidence_vectors(angle_deg: float) -> tuple[tuple[float, float, float], tuple[float, float, float]]:
+    """Return the canonical spray axis and 18 m/s carrier vector for +Y tilt."""
+    if np.isclose(float(angle_deg), 15.0, rtol=0.0, atol=1.0e-12):
+        return SPRAY_VECTOR_INCIDENCE, AIR_VECTOR_INCIDENCE
+    angle = np.deg2rad(float(angle_deg))
+    raw_spray = (float(np.sin(angle)), 0.0, float(np.cos(angle)))
+    spray = (round(raw_spray[0], 6), 0.0, round(raw_spray[2], 6))
+    air = (round(18.0 * raw_spray[0], 6), 0.0, round(18.0 * raw_spray[2], 6))
+    return spray, air
 
 
 def _input_files(case_dir: Path) -> list[str]:
@@ -100,8 +112,13 @@ def _diff_lines(left: str, right: str, rel: str) -> list[str]:
     )
 
 
-def compare_incidence_inputs(nominal_case: Path, incidence_case: Path) -> dict:
+def compare_incidence_inputs(
+    nominal_case: Path,
+    incidence_case: Path,
+    angle_deg: float = 15.0,
+) -> dict:
     """Compare input dictionaries and return a machine-readable audit."""
+    spray_vector_incidence, air_vector_incidence = incidence_vectors(angle_deg)
     nominal_files = set(_input_files(nominal_case))
     incidence_files = set(_input_files(incidence_case))
     unexpected: list[dict] = []
@@ -122,7 +139,7 @@ def compare_incidence_inputs(nominal_case: Path, incidence_case: Path) -> dict:
             incidence_vector = _air_inlet_vector(incidence_text)
             if not np.allclose(nominal_vector, AIR_VECTOR_NOMINAL, rtol=0, atol=1e-9):
                 unexpected.append({"file": rel, "reason": "unexpected nominal air vector", "actual": nominal_vector})
-            if not np.allclose(incidence_vector, AIR_VECTOR_INCIDENCE, rtol=0, atol=1e-9):
+            if not np.allclose(incidence_vector, air_vector_incidence, rtol=0, atol=VECTOR_TOLERANCE):
                 unexpected.append({"file": rel, "reason": "unexpected incidence air vector", "actual": incidence_vector})
             normalised_nominal = _normalise_air_vector(nominal_text, AIR_VECTOR_NOMINAL)
             normalised_incidence = _normalise_air_vector(incidence_text, AIR_VECTOR_NOMINAL)
@@ -137,7 +154,7 @@ def compare_incidence_inputs(nominal_case: Path, incidence_case: Path) -> dict:
                 unexpected.append({"file": rel, "reason": "incidence injection direction count is not five", "count": len(incidence_directions)})
             if nominal_directions and not np.allclose(nominal_directions, np.asarray(SPRAY_VECTOR_NOMINAL), rtol=0, atol=1e-9):
                 unexpected.append({"file": rel, "reason": "unexpected nominal injection direction", "actual": nominal_directions})
-            if incidence_directions and not np.allclose(incidence_directions, np.asarray(SPRAY_VECTOR_INCIDENCE), rtol=0, atol=1e-9):
+            if incidence_directions and not np.allclose(incidence_directions, np.asarray(spray_vector_incidence), rtol=0, atol=VECTOR_TOLERANCE):
                 unexpected.append({"file": rel, "reason": "unexpected incidence injection direction", "actual": incidence_directions})
             normalised_nominal = _normalise_spray_directions(nominal_text, SPRAY_VECTOR_NOMINAL)
             normalised_incidence = _normalise_spray_directions(incidence_text, SPRAY_VECTOR_NOMINAL)
@@ -150,7 +167,7 @@ def compare_incidence_inputs(nominal_case: Path, incidence_case: Path) -> dict:
         "schema_version": "incidence15_input_diff_v1",
         "nominal_case": nominal_case.name,
         "incidence_case": incidence_case.name,
-        "incidence_angle_deg": 15.0,
+        "incidence_angle_deg": float(angle_deg),
         "rotation_axis": "+Y",
         "files_checked": files_checked,
         "expected_changes": [
@@ -158,14 +175,14 @@ def compare_incidence_inputs(nominal_case: Path, incidence_case: Path) -> dict:
                 "file": "0/U",
                 "field": "airInlet.value",
                 "nominal": list(AIR_VECTOR_NOMINAL),
-                "incidence": list(AIR_VECTOR_INCIDENCE),
+                "incidence": list(air_vector_incidence),
                 "count": 1,
             },
             {
                 "file": "constant/sprayCloudProperties",
                 "field": "injection.direction",
                 "nominal": list(SPRAY_VECTOR_NOMINAL),
-                "incidence": list(SPRAY_VECTOR_INCIDENCE),
+                "incidence": list(spray_vector_incidence),
                 "count": 5,
             },
         ],

@@ -1,0 +1,82 @@
+{
+  "metrics": {
+    "medium": {
+      "actual_covariance_uv_m2": [
+        [
+          0.0004302575149976908,
+          -5.557545491797767e-06
+        ],
+        [
+          -5.557545491797764e-06,
+          0.00038183076044217114
+        ]
+      ],
+      "actual_integrated_mass_kg": 1.0000000000240008e-06,
+      "actual_map_mass_kg": 1.0000000000240008e-06,
+      "actual_peak_density_kg_m2": 0.0005719174235519999,
+      "centroid_error_m": 6.4064257881065865e-15,
+      "covariance_frobenius_relative_error": 9.80702686034004e-12,
+      "integrated_absolute_mass_density_error_kg": 3.4884067935908916e-07,
+      "integrated_mass_error_kg": -2.4161614820428917e-19,
+      "integrated_mass_relative_error": 2.4161614819849017e-13,
+      "ledger_deposited_mass_kg": 1.000000000024e-06,
+      "normalized_rmse": 0.03072832151696037,
+      "peak_density_relative_error": 0.3718617122837341,
+      "pearson_correlation": 0.940197444302678,
+      "predicted_centroid_u_m": -0.0004935400617942502,
+      "predicted_centroid_v_m": -3.6233012086692626e-05,
+      "predicted_covariance_uv_m2": [
+        [
+          0.00043025751499205207,
+          -5.557545491722623e-06
+        ],
+        [
+          -5.557545491722624e-06,
+          0.000381830760442009
+        ]
+      ],
+      "predicted_integrated_mass_kg": 1.0000000000237592e-06,
+      "predicted_peak_density_kg_m2": 0.00035924323114505164
+    },
+    "medium_incidence_15deg": {
+      "actual_covariance_uv_m2": [
+        [
+          0.0007091386760671378,
+          -1.5316218873924092e-05
+        ],
+        [
+          -1.5316218873924092e-05,
+          0.00042058136630670904
+        ]
+      ],
+      "actual_integrated_mass_kg": 9.69281800814001e-07,
+      "actual_map_mass_kg": 9.69281800814001e-07,
+      "actual_peak_density_kg_m2": 0.0004699668973440002,
+      "centroid_error_m": 0.0003093165874765048,
+      "covariance_frobenius_relative_error": 0.026973810630396833,
+      "integrated_absolute_mass_density_error_kg": 3.8103044725301287e-07,
+      "integrated_mass_error_kg": -3.737790071815195e-09,
+      "integrated_mass_relative_error": 0.0038562470363894233,
+      "ledger_deposited_mass_kg": 9.69281800814e-07,
+      "normalized_rmse": 0.03324577700390431,
+      "peak_density_relative_error": 0.4221995851763828,
+      "pearson_correlation": 0.927761515069091,
+      "predicted_centroid_u_m": 0.07938794348272954,
+      "predicted_centroid_v_m": -0.0005474059700952288,
+      "predicted_covariance_uv_m2": [
+        [
+          0.0006869020234628256,
+          -1.4835944070307167e-05
+        ],
+        [
+          -1.4835944070307162e-05,
+          0.0004205709931647976
+        ]
+      ],
+      "predicted_integrated_mass_kg": 9.655440107421858e-07,
+      "predicted_peak_density_kg_m2": 0.00027154706823873164
+    }
+  },
+  "model": "S2_SINGLE_GAUSSIAN",
+  "schema_version": "s2_teacher_reconstruction_v1"
+}

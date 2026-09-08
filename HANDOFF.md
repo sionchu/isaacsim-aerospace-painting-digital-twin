@@ -29,18 +29,29 @@ physics.
   3.0718199183e-8 kg escaped.
 - Added covariance/eigen footprint metrics, incidence response/noise JSON,
   deposition maps, comparison media, and OpenFOAM-free regression tests.
-- Repository verification: 18 tests passed, Python compilation passed, and
+- Added the S2 covariance-moment surrogate using the existing
+  `AnisotropicGaussian` renderer.  The 0-degree and 15-degree medium teacher
+  reconstructions pass the single-Gaussian warning bands.
+- Froze the 7.5-degree prediction before CFD in
+  `results/air_assisted/s2/holdout_7p5_prediction.json` with canonical hash
+  `30890457e2e9be65d18c05719119b29feb9311f6b8e47926cc366badf88dfba7`.
+- Executed the new 7.5-degree medium OpenFOAM case at 27,648 cells.  The
+  solver reached `End`, `checkMesh` reported `Mesh OK`, and the target wall
+  deposited `1.000000000007e-6 kg` with a closed ledger.
+- S2 hold-out validation passes: centroid distance `4.0323913e-4 m`, sigma
+  major relative error `4.8839%`, sigma minor relative error `1.2748%`, field
+  NRMSE `0.03316`, and correlation `0.93065`; S2 improves over S1.
+- Repository verification: 25 tests passed, Python compilation passed, and
   `git diff --check` passed.
 
 ## Current level
 
-`LEVEL 1` — stationary reference CFD benchmark and 15-degree incidence
-response validation complete.  Nominal mesh centroid noise is
-`2.8856031658e-4 m`; the incidence centroid shift is `8.0192400075e-2 m`
-(`277.9x` the nominal noise), with a positive `u` shift and a passing
-distinguishability gate.
+`S2` — CFD-calibrated covariance-moment deposition surrogate validated on a
+held-out 7.5-degree OpenFOAM v2606 medium case.  The calibrated interval is
+`0-15 degrees`; no extrapolation or downstream runtime integration was run.
 
 ## Next checkpoint
 
-Stop at LEVEL 1 verification.  Do not proceed to calibration or downstream
-integration without a separate task.
+The next concrete action is a separate task to integrate the frozen S2 API
+into the native Windows runtime.  No Isaac Sim, Warp, Isaac Lab, or RL work
+was executed in this checkpoint.

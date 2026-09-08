@@ -1,0 +1,73 @@
+{
+  "actual_openfoam_version": "v2606",
+  "angle_deg": 7.5,
+  "carrier_gate": {
+    "median_direction_error_deg": 0.8313598165915016,
+    "median_direction_error_deg_max": 5.0,
+    "normalized_vector_rmse": 0.4016685607145606,
+    "normalized_vector_rmse_max": 0.2,
+    "pass": false,
+    "vector_correlation": 0.8775206285976778,
+    "vector_correlation_min": 0.9
+  },
+  "model_id": "warp_vector_carrier_v2",
+  "model_sha256": "eb2f29cc95a69b18877c6f01f7903c520ab8486977b2d584aedec04b140a2a22",
+  "prediction_inside_fraction": 0.8489583333333334,
+  "prediction_out_of_field_count": 4176,
+  "prediction_sha256": "12f7e684e76c722519fc3e18235e128562cefaeb63e056bbf282a3b29799294d",
+  "region_definitions": {
+    "high_speed_jet": "actual OpenFOAM speed >= 0.5 * whole-domain maximum speed",
+    "near_target_region": "cell-center z >= finite-volume upper z bound - 0.06 m"
+  },
+  "regions": {
+    "high_speed_jet": {
+      "Ux_rmse_m_s": 3.3347749973574694,
+      "Uy_rmse_m_s": 1.5958408488444726,
+      "Uz_rmse_m_s": 5.518747449961047,
+      "mean_direction_error_deg": 14.988958424749569,
+      "median_direction_error_deg": 0.6080791005915173,
+      "normalized_vector_rmse": 0.4042367574130158,
+      "p95_direction_error_deg": 90.0,
+      "predicted_out_of_field_count": 3790,
+      "region": "high_speed_jet",
+      "sample_count": 23994,
+      "speed_correlation": 0.18760061704186792,
+      "speed_rmse_m_s": 6.633849690794563,
+      "vector_component_correlation": 0.8719042361714596,
+      "vector_rmse_m_s": 3.8351012900266714
+    },
+    "near_target_region": {
+      "Ux_rmse_m_s": 5.79344864451737,
+      "Uy_rmse_m_s": 3.093966686938513,
+      "Uz_rmse_m_s": 3.771665331211286,
+      "mean_direction_error_deg": 25.94068276826055,
+      "median_direction_error_deg": 5.03958847145192,
+      "normalized_vector_rmse": 0.6089628671689581,
+      "p95_direction_error_deg": 90.0,
+      "predicted_out_of_field_count": 1728,
+      "region": "near_target_region",
+      "sample_count": 6912,
+      "speed_correlation": 0.0816786474374935,
+      "speed_rmse_m_s": 7.539054893443786,
+      "vector_component_correlation": 0.7612056099357469,
+      "vector_rmse_m_s": 4.372723652645132
+    },
+    "whole_flow_domain": {
+      "Ux_rmse_m_s": 3.1807562124960858,
+      "Uy_rmse_m_s": 1.5689188526537623,
+      "Uz_rmse_m_s": 5.179726965409558,
+      "mean_direction_error_deg": 14.835296529259907,
+      "median_direction_error_deg": 0.8313598165915016,
+      "normalized_vector_rmse": 0.4016685607145606,
+      "p95_direction_error_deg": 90.0,
+      "predicted_out_of_field_count": 4176,
+      "region": "whole_flow_domain",
+      "sample_count": 27648,
+      "speed_correlation": 0.3825051568106519,
+      "speed_rmse_m_s": 6.264758888414505,
+      "vector_component_correlation": 0.8775206285976778,
+      "vector_rmse_m_s": 3.6243752512553
+    }
+  },
+  "schema_version": "warp_w1_2_carrier_holdout_v1"
+}

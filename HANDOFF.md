@@ -46,21 +46,21 @@ physics.
 
 ## Current level
 
-`S2 + native runtime + Warp W1.1 diagnostic` — the CFD-calibrated
+`S2 + native runtime + Warp W1.2 carrier-surrogate audit` — the CFD-calibrated
 covariance-moment deposition surrogate remains validated on the held-out
 7.5-degree OpenFOAM v2606 medium case and the native Isaac Sim integration
 checkpoint remains complete. The new static Warp transport solver executes on
 CUDA and closes its mass ledger. Teacher-forced vector-field transport passes
-the original W1 7.5-degree gates, isolating the compact analytic carrier field
-as the remaining W1 blocker; the deployable analytic W1 result remains
-unvalidated.
+the original W1 7.5-degree gates. The two-anchor co-rotating full-vector
+surrogate reproduces both endpoint particle results, but its blind 7.5-degree
+carrier coverage and deposition response fail the W1.2 gates; no deployable
+Warp carrier validation is claimed.
 
 ## Next checkpoint
 
-The next concrete action is a separate compact full-vector carrier surrogate
-derived only from the solved 0°/15° velocity fields, followed by the original
-blind 7.5-degree W1 gate. Isaac Lab and reinforcement learning remain out of
-scope for this checkpoint.
+The next concrete action is to audit the demonstrated W1.2 out-of-field and
+hold-out mismatch before considering any new carrier representation. Moving
+Isaac integration, Isaac Lab, and reinforcement learning remain out of scope.
 
 ## Native S2 runtime checkpoint (2026-09-08)
 
@@ -414,3 +414,134 @@ blindly rechecked at 7.5°.
 Build a compact full-vector carrier surrogate from the solved 0°/15° fields,
 then rerun the original blind 7.5° gate. Keep it as a separate diagnostic
 checkpoint and do not integrate it into the moving Isaac runtime yet.
+
+## NVIDIA Warp W1.2 compact full-vector carrier checkpoint (2026-09-08)
+
+### Objective
+
+Replace the failed scalar analytic carrier with the specified compact
+two-anchor full-vector surrogate using only the solved OpenFOAM v2606 0° and
+15° fields, then evaluate the frozen blind 7.5° carrier and deposition hold-out.
+
+### Scope
+
+- Canonical `COROTATING_VECTOR_INTERP` over the shared `U[nz,ny,nx,3]` grid;
+  `WORLD_LINEAR_DIAGNOSTIC` is retained only as an analysis mode.
+- Existing Warp 1.13.0/CUDA static particle core: 10,000 particles,
+  2,000/bin, five bins, `dt=5e-5 s`, 1,200 steps.
+- No new CFD, no 7.5° carrier data in model construction, and no moving Isaac
+  integration, plume rendering, Isaac Lab, or RL.
+
+### Acceptance criteria
+
+Freeze the 7.5° predicted carrier before opening the solved 7.5° `U`, validate
+whole/high-speed/near-target vector errors, preserve explicit out-of-field
+escape, rerun the unchanged W1 deposition gates, and compare analytic W1,
+teacher-U W1.1, S2, and vector W1.2.
+
+### Completed
+
+- Added `warp_vector_carrier.py`, deterministic model build/provenance,
+  runtime NPZ/JSON artifacts, frozen 7.5° prediction, validation script,
+  portable tests, and four measured figures.
+- The model contains only the 0° and 15° full-vector anchors, shared grid
+  metadata, frame convention, source hashes, and source commit
+  `c6a17feab4d8850bf879dfe6b8ca8cc2ad2def02`.
+- Endpoint assertions pass: vector W1.2 versus teacher-U W1.1 deltas are below
+  `1.0e-10 m` for centroid and below `6.0e-15 kg` for deposited mass at both
+  0° and 15°.
+- CPU/Warp sampler agreement passes at all three angles with maximum velocity
+  error `1.90735e-6 m/s` against a `2e-5 m/s` tolerance.
+
+### Current checkpoint
+
+`WARP_VECTOR_CARRIER_NOT_VALIDATED` (`PARTIAL`).
+
+The frozen blind 7.5° carrier has whole-domain normalized vector RMSE
+`0.401669` versus the `0.20` band and vector-component correlation `0.877521`
+versus the `0.90` band. Median direction error is `0.83136°` and passes its
+band, but predicted coverage is only `84.8958%` (`4,176/27,648` cells outside
+the two-anchor transformed domain).
+
+The unchanged 7.5° deposition gates fail for vector W1.2: deposited-mass
+relative error `83.2850%`, centroid error `34.6517 mm`, sigma-major error
+`10.3082%`, sigma-minor error `46.9736%`, field correlation `0.244058`, field
+NRMSE `0.0887899`, and relative mass balance `0`.
+
+### Decisions and reasons
+
+- The canonical co-rotating vector interpolation was implemented exactly as
+  specified; no hold-out fitting, gate relaxation, target shrinking, or
+  particle-physics tuning was applied after inspection.
+- Out-of-field transformed queries are explicitly escaped. The 7.5° vector
+  run escaped `8.32850e-7 kg` and deposited `1.67150e-7 kg`; this behavior is
+  retained as evidence rather than hidden by clamping.
+- W1.2 remains a static carrier-surrogate audit and is not promoted to the
+  moving runtime.
+
+### Verification evidence
+
+- CUDA command: `C:\\isaacsim\\python.bat scripts/validate_warp_w1_2.py
+  --device cuda:0` -> exit `0`, Warp 1.13.0 on `cuda:0`, all 0°/7.5°/15°
+  analytic, teacher-U, and vector cases executed, status
+  `WARP_VECTOR_CARRIER_NOT_VALIDATED`.
+- Carrier hold-out regional metrics: high-speed normalized vector RMSE
+  `0.404237`, vector correlation `0.871904`, median direction error `0.60808°`;
+  near-target normalized vector RMSE `0.608963`, vector correlation
+  `0.761206`, median direction error `5.03959°`, p95 direction error `90°`.
+- Performance at 7.5°: analytic W1 mean/p95/wall
+  `0.000645068/0.001182805/0.775818 s`; teacher-U W1.1
+  `0.000855671/0.001349805/1.029044 s`; vector W1.2
+  `0.000610159/0.000927200/0.734327 s`, with vector model upload
+  `0.000124300 s`. OpenFOAM runtime was not present in the existing static
+  artifacts and was not measured.
+- Focused tests: `pytest -q tests/test_warp_vector_carrier.py
+  tests/test_warp_teacher_flow.py tests/test_warp_spray.py
+  tests/test_spray_frames.py tests/test_mass_accounting.py` -> `15 passed,
+  2 skipped`.
+- Compilation and hygiene: `python -m compileall -q src scripts` passed;
+  `git diff --check` passed.
+- Full legacy `pytest -q` remains blocked only by its two pre-existing
+  collection imports: missing `scripts.validate_s2_surrogate` and missing
+  `scripts.postprocess_openfoam_flat_plate`.
+- Model hashes: semantic model `eb2f29cc95a69b18877c6f01f7903c520ab8486977b2d584aedec04b140a2a22`,
+  model-JSON provenance `cd91b985ca12ab7abcaf3fdaf482ced23d4017cd897676963041e3f71812ee87`,
+  NPZ `f02b6d6ee664007f4c77cdd11dabb2ff6d6f7aecc0d1df0402793450dd75deb3`,
+  frozen prediction `12f7e684e76c722519fc3e18235e128562cefaeb63e056bbf282a3b29799294d`.
+- Media was opened and inspected: the carrier hold-out, five-way deposition
+  hierarchy, metric hierarchy, and angle-response figures render correctly.
+
+### Not executed
+
+- No moving native Isaac integration, live spray plume, curved-surface Warp
+  deposition, Isaac Lab, RL, new CFD case, or production carrier deployment.
+- No attempt was made to force the 15° transfer-efficiency loss by shrinking
+  the target/domain.
+
+### Blockers
+
+The two-anchor carrier is not validated: transformed endpoint coverage and the
+blind 7.5° vector/deposition mismatch fail the engineering and original W1
+gates. Do not proceed to moving-scene integration.
+
+### Modified files
+
+- `HANDOFF.md`
+- `src/aerospace_painting/warp_spray.py`
+- `src/aerospace_painting/warp_vector_carrier.py`
+- `scripts/build_warp_vector_carrier.py`
+- `scripts/validate_warp_w1_2.py`
+- `tests/test_warp_vector_carrier.py`
+- `models/warp_vector_carrier_v2.json`
+- `models/warp_vector_carrier_v2.npz`
+- `results/air_assisted/warp_w1_2/`
+- `media/air_assisted_spray/warp_w1_2_carrier_holdout.png`
+- `media/air_assisted_spray/warp_w1_2_openfoam_7p5_comparison.png`
+- `media/air_assisted_spray/warp_w1_2_fidelity_hierarchy.png`
+- `media/air_assisted_spray/warp_w1_2_angle_response.png`
+
+### Next concrete action
+
+Audit the demonstrated transformed-domain coverage and 7.5° mismatch before
+designing any further carrier representation. Keep W1.2 as a failed static
+checkpoint and do not integrate it into Isaac yet.

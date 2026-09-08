@@ -1,0 +1,31 @@
+{
+  "angle_deg": 7.5,
+  "created_utc": "2026-09-08T14:19:35.017889+00:00",
+  "grid": {
+    "array_layout": "U[nz, ny, nx, 3]",
+    "dimensions_nx_ny_nz": [
+      24,
+      24,
+      48
+    ],
+    "first_center_m": [
+      -0.14375,
+      -0.14375,
+      0.0025
+    ],
+    "spacing_m": [
+      0.012499999999999983,
+      0.012499999999999983,
+      0.004999999999999999
+    ]
+  },
+  "holdout_policy": "frozen before reading the solved 7.5-degree OpenFOAM U field",
+  "inside_mask_array_sha256": "14f083a021b4c1d555d7a009665a2fd13860a8f7e6c5aeb5538d7ee1071c2a4a",
+  "interpolation_method": "COROTATING_VECTOR_INTERP",
+  "model_id": "warp_vector_carrier_v2",
+  "model_sha256": "eb2f29cc95a69b18877c6f01f7903c520ab8486977b2d584aedec04b140a2a22",
+  "prediction_array_sha256": "71a4b07aa192f7bceb5cf9187abd68399c2c2e4b9adb7402e2133193d045770b",
+  "prediction_npz_path": "carrier_7p5_prediction.npz",
+  "prediction_sha256": "12f7e684e76c722519fc3e18235e128562cefaeb63e056bbf282a3b29799294d",
+  "schema_version": "warp_w1_2_frozen_carrier_prediction_v1"
+}

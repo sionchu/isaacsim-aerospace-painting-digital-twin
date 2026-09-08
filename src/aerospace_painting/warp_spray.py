@@ -16,17 +16,21 @@ import numpy as np
 
 from .warp_air_field import AirFieldParameters
 from .warp_teacher_flow import TeacherFlowGrid
+from .warp_vector_carrier import VectorCarrierModel
 
 
 try:  # Warp is optional for the portable test suite.
     import warp as wp
     from warp._src.lang import mesh_query_ray
     from .warp_teacher_flow import teacher_flow_inside, teacher_flow_trilinear
+    from .warp_vector_carrier import vector_carrier_inside, vector_carrier_sample
 except ImportError:  # pragma: no cover - exercised only on non-Isaac hosts.
     wp = None  # type: ignore[assignment]
     mesh_query_ray = None  # type: ignore[assignment]
     teacher_flow_inside = None  # type: ignore[assignment]
     teacher_flow_trilinear = None  # type: ignore[assignment]
+    vector_carrier_inside = None  # type: ignore[assignment]
+    vector_carrier_sample = None  # type: ignore[assignment]
 
 
 class WarpUnavailable(RuntimeError):
@@ -240,12 +244,14 @@ if wp is not None:
         target_extent: float,
         max_z: float,
         map_resolution: int,
-        teacher_values: wp.array(dtype=wp.vec3f),
-        teacher_first_center: wp.vec3f,
-        teacher_spacing: wp.vec3f,
-        teacher_nx: int,
-        teacher_ny: int,
-        teacher_nz: int,
+        carrier_values_0: wp.array(dtype=wp.vec3f),
+        carrier_values_15: wp.array(dtype=wp.vec3f),
+        carrier_first_center: wp.vec3f,
+        carrier_spacing: wp.vec3f,
+        carrier_nx: int,
+        carrier_ny: int,
+        carrier_nz: int,
+        carrier_angle_t: float,
         carrier_mode: int,
     ):
         index = wp.tid()
@@ -280,27 +286,62 @@ if wp is not None:
                 decay_exponent,
             )
         else:
-            if not teacher_flow_inside(
-                previous,
-                teacher_first_center,
-                teacher_spacing,
-                teacher_nx,
-                teacher_ny,
-                teacher_nz,
-            ):
+            if carrier_mode == 1:
+                carrier_inside = teacher_flow_inside(
+                    previous,
+                    carrier_first_center,
+                    carrier_spacing,
+                    carrier_nx,
+                    carrier_ny,
+                    carrier_nz,
+                )
+            else:
+                carrier_inside = vector_carrier_inside(
+                    previous,
+                    origin,
+                    x_axis,
+                    y_axis,
+                    z_axis,
+                    carrier_first_center,
+                    carrier_spacing,
+                    carrier_nx,
+                    carrier_ny,
+                    carrier_nz,
+                    carrier_angle_t,
+                    1 if carrier_mode == 3 else 0,
+                )
+            if not carrier_inside:
                 teacher_out_of_field[index] = True
                 escaped[index] = True
                 alive[index] = False
                 return
-            air = teacher_flow_trilinear(
-                teacher_values,
-                previous,
-                teacher_first_center,
-                teacher_spacing,
-                teacher_nx,
-                teacher_ny,
-                teacher_nz,
-            )
+            if carrier_mode == 1:
+                air = teacher_flow_trilinear(
+                    carrier_values_0,
+                    previous,
+                    carrier_first_center,
+                    carrier_spacing,
+                    carrier_nx,
+                    carrier_ny,
+                    carrier_nz,
+                )
+            else:
+                air = vector_carrier_sample(
+                    carrier_values_0,
+                    carrier_values_15,
+                    previous,
+                    origin,
+                    x_axis,
+                    y_axis,
+                    z_axis,
+                    carrier_first_center,
+                    carrier_spacing,
+                    carrier_nx,
+                    carrier_ny,
+                    carrier_nz,
+                    carrier_angle_t,
+                    0 if carrier_mode == 2 else 1,
+                )
         acceleration = _sphere_drag_acceleration(
             velocities[index],
             air,
@@ -366,6 +407,7 @@ class WarpCaseResult:
     deposited_flags: np.ndarray
     escaped_flags: np.ndarray
     teacher_out_of_field_flags: np.ndarray
+    carrier_out_of_field_flags: np.ndarray
     alive_flags: np.ndarray
     released_flags: np.ndarray
     performance: dict[str, Any]
@@ -396,18 +438,22 @@ def run_warp_case(
     device: str = "cuda:0",
     carrier_mode: str = "ANALYTIC_AIR",
     teacher_flow: TeacherFlowGrid | None = None,
+    vector_carrier: VectorCarrierModel | None = None,
 ) -> WarpCaseResult:
-    """Execute one GPU transport case with an analytic or teacher-forced carrier."""
+    """Execute one GPU transport case with a selected carrier provider."""
 
     if wp is None or mesh_query_ray is None:
         raise WarpUnavailable("NVIDIA Warp is not importable in this Python environment")
     if not str(device).startswith("cuda"):
         raise ValueError("W1 validation requires a CUDA device")
     mode = str(carrier_mode).upper()
-    if mode not in {"ANALYTIC_AIR", "TEACHER_FORCED_U"}:
-        raise ValueError("carrier_mode must be ANALYTIC_AIR or TEACHER_FORCED_U")
+    valid_modes = {"ANALYTIC_AIR", "TEACHER_FORCED_U", "COROTATING_VECTOR_INTERP", "WORLD_LINEAR_DIAGNOSTIC"}
+    if mode not in valid_modes:
+        raise ValueError(f"carrier_mode must be one of {sorted(valid_modes)}")
     if mode == "TEACHER_FORCED_U" and teacher_flow is None:
         raise ValueError("TEACHER_FORCED_U requires a TeacherFlowGrid")
+    if mode in {"COROTATING_VECTOR_INTERP", "WORLD_LINEAR_DIAGNOSTIC"} and vector_carrier is None:
+        raise ValueError(f"{mode} requires a VectorCarrierModel")
     wp.init()
     if wp.get_cuda_device_count() < 1:
         raise WarpUnavailable("Warp reports no usable CUDA device")
@@ -429,19 +475,28 @@ def run_warp_case(
     escaped = wp.zeros(n, dtype=wp.bool, device=device_obj)
     teacher_out_of_field = wp.zeros(n, dtype=wp.bool, device=device_obj)
     deposition_mass = wp.zeros(config.target_resolution * config.target_resolution, dtype=wp.float32, device=device_obj)
-    teacher_upload_start = time.perf_counter()
+    carrier_upload_start = time.perf_counter()
     if mode == "TEACHER_FORCED_U":
         assert teacher_flow is not None
-        teacher_values = wp.array(teacher_flow.flat_values_vec3f, dtype=wp.vec3f, device=device_obj)
-        teacher_first_center = np.asarray(teacher_flow.first_center_m, dtype=np.float32)
-        teacher_spacing = np.asarray(teacher_flow.spacing_m, dtype=np.float32)
-        teacher_nx, teacher_ny, teacher_nz = teacher_flow.nx, teacher_flow.ny, teacher_flow.nz
+        carrier_values_0 = wp.array(teacher_flow.flat_values_vec3f, dtype=wp.vec3f, device=device_obj)
+        carrier_values_15 = wp.array(np.zeros((1, 3), dtype=np.float32), dtype=wp.vec3f, device=device_obj)
+        carrier_first_center = np.asarray(teacher_flow.first_center_m, dtype=np.float32)
+        carrier_spacing = np.asarray(teacher_flow.spacing_m, dtype=np.float32)
+        carrier_nx, carrier_ny, carrier_nz = teacher_flow.nx, teacher_flow.ny, teacher_flow.nz
+    elif mode in {"COROTATING_VECTOR_INTERP", "WORLD_LINEAR_DIAGNOSTIC"}:
+        assert vector_carrier is not None
+        carrier_values_0 = wp.array(vector_carrier.flat_anchor_0_vec3f, dtype=wp.vec3f, device=device_obj)
+        carrier_values_15 = wp.array(vector_carrier.flat_anchor_15_vec3f, dtype=wp.vec3f, device=device_obj)
+        carrier_first_center = np.asarray(vector_carrier.first_center_m, dtype=np.float32)
+        carrier_spacing = np.asarray(vector_carrier.spacing_m, dtype=np.float32)
+        carrier_nx, carrier_ny, carrier_nz = vector_carrier.nx, vector_carrier.ny, vector_carrier.nz
     else:
-        teacher_values = wp.array(np.zeros((1, 3), dtype=np.float32), dtype=wp.vec3f, device=device_obj)
-        teacher_first_center = np.zeros(3, dtype=np.float32)
-        teacher_spacing = np.ones(3, dtype=np.float32)
-        teacher_nx, teacher_ny, teacher_nz = 2, 2, 2
-    teacher_upload_seconds = time.perf_counter() - teacher_upload_start
+        carrier_values_0 = wp.array(np.zeros((1, 3), dtype=np.float32), dtype=wp.vec3f, device=device_obj)
+        carrier_values_15 = wp.array(np.zeros((1, 3), dtype=np.float32), dtype=wp.vec3f, device=device_obj)
+        carrier_first_center = np.zeros(3, dtype=np.float32)
+        carrier_spacing = np.ones(3, dtype=np.float32)
+        carrier_nx, carrier_ny, carrier_nz = 2, 2, 2
+    carrier_upload_seconds = time.perf_counter() - carrier_upload_start
     x_axis, y_axis, z_axis = _frame_axes(config.incidence_angle_deg)
     origin = np.asarray(config.nozzle_origin_m, dtype=np.float32)
     gravity = np.asarray(config.gravity_m_s2, dtype=np.float32)
@@ -487,13 +542,15 @@ def run_warp_case(
                 float(config.target_extent_m),
                 float(config.stand_off_m + 0.05),
                 int(config.target_resolution),
-                teacher_values,
-                wp.vec3f(*teacher_first_center),
-                wp.vec3f(*teacher_spacing),
-                int(teacher_nx),
-                int(teacher_ny),
-                int(teacher_nz),
-                0 if mode == "ANALYTIC_AIR" else 1,
+                carrier_values_0,
+                carrier_values_15,
+                wp.vec3f(*carrier_first_center),
+                wp.vec3f(*carrier_spacing),
+                int(carrier_nx),
+                int(carrier_ny),
+                int(carrier_nz),
+                float(config.incidence_angle_deg / 15.0),
+                {"ANALYTIC_AIR": 0, "TEACHER_FORCED_U": 1, "COROTATING_VECTOR_INTERP": 2, "WORLD_LINEAR_DIAGNOSTIC": 3}[mode],
             ],
             device=device_obj,
         )
@@ -519,7 +576,8 @@ def run_warp_case(
     performance = {
         "device": str(device_obj),
         "carrier_mode": mode,
-        "teacher_field_upload_seconds": teacher_upload_seconds,
+        "teacher_field_upload_seconds": carrier_upload_seconds if mode == "TEACHER_FORCED_U" else 0.0,
+        "carrier_field_upload_seconds": carrier_upload_seconds if mode != "ANALYTIC_AIR" else 0.0,
         "particle_count": n,
         "particle_count_per_bin": config.particle_count_per_bin,
         "substeps": step_count,
@@ -546,6 +604,8 @@ def run_warp_case(
         "live_particle_count": int(np.count_nonzero(host_alive)),
         "teacher_out_of_field_particle_count": int(np.count_nonzero(host_teacher_out_of_field)),
         "teacher_out_of_field_mass_kg": float(np.sum(host_mass[host_teacher_out_of_field])),
+        "carrier_out_of_field_particle_count": int(np.count_nonzero(host_teacher_out_of_field)),
+        "carrier_out_of_field_mass_kg": float(np.sum(host_mass[host_teacher_out_of_field])),
     }
     return WarpCaseResult(
         incidence_angle_deg=config.incidence_angle_deg,
@@ -558,6 +618,7 @@ def run_warp_case(
         deposited_flags=host_deposited,
         escaped_flags=host_escaped,
         teacher_out_of_field_flags=host_teacher_out_of_field,
+        carrier_out_of_field_flags=host_teacher_out_of_field,
         alive_flags=host_alive,
         released_flags=host_released,
         performance=performance,

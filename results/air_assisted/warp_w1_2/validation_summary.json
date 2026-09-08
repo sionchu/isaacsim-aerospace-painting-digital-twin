@@ -1,0 +1,468 @@
+{
+  "angle_response": {
+    "0.0": {
+      "analytic_w1": {
+        "centroid_u_m": 1.6562299109719176e-05,
+        "centroid_v_m": -2.125009782481283e-05,
+        "deposited_mass_kg": 1.0000000466442451e-06,
+        "escaped_mass_kg": 0.0,
+        "nrmse": 0.022657683944015503,
+        "peak_density_kg_m2": 0.0006184008725540481,
+        "pearson_correlation": 0.9775167180210833,
+        "sigma_major_m": 0.0189105449234127,
+        "sigma_minor_m": 0.018870851017924392,
+        "transfer_efficiency": 1.0
+      },
+      "openfoam": {
+        "centroid_u_m": -0.0004935400618006563,
+        "sigma_major_m": 0.0207578207833454,
+        "transfer_efficiency": 1.0
+      },
+      "teacher_u_w1_1": {
+        "centroid_u_m": -2.0625051635064652e-05,
+        "centroid_v_m": 6.562351382020085e-06,
+        "deposited_mass_kg": 9.99998727296836e-07,
+        "escaped_mass_kg": 0.0,
+        "nrmse": 0.01893355754432972,
+        "peak_density_kg_m2": 0.00045023944039712665,
+        "pearson_correlation": 0.9819649123185317,
+        "sigma_major_m": 0.02244196662868382,
+        "sigma_minor_m": 0.022422414576298268,
+        "transfer_efficiency": 1.0
+      },
+      "vector_w1_2": {
+        "centroid_u_m": -2.0624951678228215e-05,
+        "centroid_v_m": 6.562429086071336e-06,
+        "deposited_mass_kg": 9.999987290731929e-07,
+        "escaped_mass_kg": 0.0,
+        "nrmse": 0.01893355729697826,
+        "peak_density_kg_m2": 0.00045023944039712665,
+        "pearson_correlation": 0.9819649128316854,
+        "sigma_major_m": 0.022441966611776807,
+        "sigma_minor_m": 0.02242241456889734,
+        "transfer_efficiency": 1.0
+      }
+    },
+    "7.5": {
+      "analytic_w1": {
+        "centroid_u_m": 0.03158281276825754,
+        "centroid_v_m": -3.2187790806648764e-05,
+        "deposited_mass_kg": 9.999995983084322e-07,
+        "escaped_mass_kg": 0.0,
+        "nrmse": 0.06286848451475467,
+        "peak_density_kg_m2": 0.0008481612894684077,
+        "pearson_correlation": 0.8355034514826513,
+        "sigma_major_m": 0.019200908712267484,
+        "sigma_minor_m": 0.018997285420284817,
+        "transfer_efficiency": 1.0
+      },
+      "openfoam": {
+        "centroid_u_m": 0.03998890569308883,
+        "centroid_v_m": -0.0004081613563283942,
+        "deposited_mass_kg": 1.000000000007e-06,
+        "escaped_mass_kg": 0.0,
+        "nrmse": 0.0,
+        "peak_density_kg_m2": 0.0005213423698559995,
+        "pearson_correlation": 1.0,
+        "sigma_major_m": 0.02276979292346974,
+        "sigma_minor_m": 0.01976210899709326,
+        "transfer_efficiency": 1.0
+      },
+      "teacher_u_w1_1": {
+        "centroid_u_m": 0.03999623967152963,
+        "centroid_v_m": -3.0312691581290255e-05,
+        "deposited_mass_kg": 9.999982520797481e-07,
+        "escaped_mass_kg": 0.0,
+        "nrmse": 0.02498044346783275,
+        "peak_density_kg_m2": 0.0003940783699363238,
+        "pearson_correlation": 0.9631044009566134,
+        "sigma_major_m": 0.02408927550134773,
+        "sigma_minor_m": 0.02250449624559657,
+        "transfer_efficiency": 1.0
+      },
+      "vector_w1_2": {
+        "centroid_u_m": 0.005337645278172244,
+        "centroid_v_m": -0.00022621906290720033,
+        "deposited_mass_kg": 1.671499541416877e-07,
+        "escaped_mass_kg": 8.328500000000003e-07,
+        "nrmse": 0.0887899038482443,
+        "peak_density_kg_m2": 9.02399222013628e-05,
+        "pearson_correlation": 0.24405824748109062,
+        "sigma_major_m": 0.025116940856928685,
+        "sigma_minor_m": 0.010479140605309216,
+        "transfer_efficiency": 0.16715
+      }
+    },
+    "15.0": {
+      "analytic_w1": {
+        "centroid_u_m": 0.06451406606587752,
+        "centroid_v_m": -4.00000224492645e-05,
+        "deposited_mass_kg": 9.9999999855771e-07,
+        "escaped_mass_kg": 0.0,
+        "nrmse": 0.08074474330131241,
+        "peak_density_kg_m2": 0.0007155219009291615,
+        "pearson_correlation": 0.7377502863464739,
+        "sigma_major_m": 0.020019217381289964,
+        "sigma_minor_m": 0.019346167039443425,
+        "transfer_efficiency": 1.0
+      },
+      "openfoam": {
+        "centroid_u_m": 0.07969718794914857,
+        "sigma_major_m": 0.026644874966677647,
+        "transfer_efficiency": 0.969281800814
+      },
+      "teacher_u_w1_1": {
+        "centroid_u_m": 0.0811902696810785,
+        "centroid_v_m": -4.9715124866094495e-05,
+        "deposited_mass_kg": 9.994485107162057e-07,
+        "escaped_mass_kg": 5.500000000000002e-10,
+        "nrmse": 0.026659904514813138,
+        "peak_density_kg_m2": 0.0003487983804006945,
+        "pearson_correlation": 0.9553035011845371,
+        "sigma_major_m": 0.02852323193694669,
+        "sigma_minor_m": 0.022646557613896803,
+        "transfer_efficiency": 0.9994499999999998
+      },
+      "vector_w1_2": {
+        "centroid_u_m": 0.08119026968076001,
+        "centroid_v_m": -4.971505848103809e-05,
+        "deposited_mass_kg": 9.994485053871351e-07,
+        "escaped_mass_kg": 5.500000000000002e-10,
+        "nrmse": 0.026659904787035227,
+        "peak_density_kg_m2": 0.0003487983804006945,
+        "pearson_correlation": 0.9553035006688809,
+        "sigma_major_m": 0.028523231983879224,
+        "sigma_minor_m": 0.02264655766969611,
+        "transfer_efficiency": 0.9994499999999998
+      }
+    }
+  },
+  "artifacts": {
+    "case_metrics": [
+      "results/air_assisted/warp_w1_2/case_0deg_metrics.json",
+      "results/air_assisted/warp_w1_2/case_7p5deg_metrics.json",
+      "results/air_assisted/warp_w1_2/case_15deg_metrics.json"
+    ],
+    "model_json": "models\\warp_vector_carrier_v2.json",
+    "model_npz": "models\\warp_vector_carrier_v2.npz",
+    "plots": [
+      "media/air_assisted_spray/warp_w1_2_carrier_holdout.png",
+      "media/air_assisted_spray/warp_w1_2_openfoam_7p5_comparison.png",
+      "media/air_assisted_spray/warp_w1_2_fidelity_hierarchy.png",
+      "media/air_assisted_spray/warp_w1_2_angle_response.png"
+    ],
+    "prediction_json": "results\\air_assisted\\warp_w1_2\\carrier_7p5_prediction.json",
+    "prediction_npz": "results\\air_assisted\\warp_w1_2\\carrier_7p5_prediction.npz"
+  },
+  "carrier_gate_pass": false,
+  "carrier_holdout": {
+    "actual_openfoam_version": "v2606",
+    "angle_deg": 7.5,
+    "carrier_gate": {
+      "median_direction_error_deg": 0.8313598165915016,
+      "median_direction_error_deg_max": 5.0,
+      "normalized_vector_rmse": 0.4016685607145606,
+      "normalized_vector_rmse_max": 0.2,
+      "pass": false,
+      "vector_correlation": 0.8775206285976778,
+      "vector_correlation_min": 0.9
+    },
+    "model_id": "warp_vector_carrier_v2",
+    "model_sha256": "eb2f29cc95a69b18877c6f01f7903c520ab8486977b2d584aedec04b140a2a22",
+    "prediction_inside_fraction": 0.8489583333333334,
+    "prediction_out_of_field_count": 4176,
+    "prediction_sha256": "12f7e684e76c722519fc3e18235e128562cefaeb63e056bbf282a3b29799294d",
+    "region_definitions": {
+      "high_speed_jet": "actual OpenFOAM speed >= 0.5 * whole-domain maximum speed",
+      "near_target_region": "cell-center z >= finite-volume upper z bound - 0.06 m"
+    },
+    "regions": {
+      "high_speed_jet": {
+        "Ux_rmse_m_s": 3.3347749973574694,
+        "Uy_rmse_m_s": 1.5958408488444726,
+        "Uz_rmse_m_s": 5.518747449961047,
+        "mean_direction_error_deg": 14.988958424749569,
+        "median_direction_error_deg": 0.6080791005915173,
+        "normalized_vector_rmse": 0.4042367574130158,
+        "p95_direction_error_deg": 90.0,
+        "predicted_out_of_field_count": 3790,
+        "region": "high_speed_jet",
+        "sample_count": 23994,
+        "speed_correlation": 0.18760061704186792,
+        "speed_rmse_m_s": 6.633849690794563,
+        "vector_component_correlation": 0.8719042361714596,
+        "vector_rmse_m_s": 3.8351012900266714
+      },
+      "near_target_region": {
+        "Ux_rmse_m_s": 5.79344864451737,
+        "Uy_rmse_m_s": 3.093966686938513,
+        "Uz_rmse_m_s": 3.771665331211286,
+        "mean_direction_error_deg": 25.94068276826055,
+        "median_direction_error_deg": 5.03958847145192,
+        "normalized_vector_rmse": 0.6089628671689581,
+        "p95_direction_error_deg": 90.0,
+        "predicted_out_of_field_count": 1728,
+        "region": "near_target_region",
+        "sample_count": 6912,
+        "speed_correlation": 0.0816786474374935,
+        "speed_rmse_m_s": 7.539054893443786,
+        "vector_component_correlation": 0.7612056099357469,
+        "vector_rmse_m_s": 4.372723652645132
+      },
+      "whole_flow_domain": {
+        "Ux_rmse_m_s": 3.1807562124960858,
+        "Uy_rmse_m_s": 1.5689188526537623,
+        "Uz_rmse_m_s": 5.179726965409558,
+        "mean_direction_error_deg": 14.835296529259907,
+        "median_direction_error_deg": 0.8313598165915016,
+        "normalized_vector_rmse": 0.4016685607145606,
+        "p95_direction_error_deg": 90.0,
+        "predicted_out_of_field_count": 4176,
+        "region": "whole_flow_domain",
+        "sample_count": 27648,
+        "speed_correlation": 0.3825051568106519,
+        "speed_rmse_m_s": 6.264758888414505,
+        "vector_component_correlation": 0.8775206285976778,
+        "vector_rmse_m_s": 3.6243752512553
+      }
+    },
+    "schema_version": "warp_w1_2_carrier_holdout_v1"
+  },
+  "deposition_gate_pass": false,
+  "deposition_gates_7p5": {
+    "centroid": false,
+    "correlation": false,
+    "deposited_mass": false,
+    "mass_balance": true,
+    "nrmse": true,
+    "sigma_major": true,
+    "sigma_minor": false
+  },
+  "endpoint_regression_vs_teacher_u": {
+    "0_deg": {
+      "centroid_u_delta_m": 9.99568364378953e-11,
+      "centroid_v_delta_m": 7.770405125123134e-11,
+      "deposited_mass_delta_kg": 1.7763568394002505e-15,
+      "escaped_mass_delta_kg": 0.0,
+      "sigma_major_delta_m": -1.6907013983269437e-11,
+      "sigma_minor_delta_m": -7.400927093392795e-12,
+      "transfer_efficiency_delta": 0.0
+    },
+    "15_deg": {
+      "centroid_u_delta_m": -3.1848135240153397e-13,
+      "centroid_v_delta_m": 6.638505640788354e-11,
+      "deposited_mass_delta_kg": -5.329070518200751e-15,
+      "escaped_mass_delta_kg": 0.0,
+      "sigma_major_delta_m": 4.6932534247812185e-11,
+      "sigma_minor_delta_m": 5.5799306147852334e-11,
+      "transfer_efficiency_delta": 0.0
+    }
+  },
+  "fidelity_boundary": {
+    "description": "W1.2 uses interpolated full-vector CFD anchor fields; it is not CFD solved online.",
+    "not_modeled": [
+      "primary atomization",
+      "breakup",
+      "evaporation",
+      "splash",
+      "wall film",
+      "curing",
+      "validated film thickness"
+    ]
+  },
+  "fifteen_degree_response": {
+    "centroid_u_error_m": 0.0014930817316114453,
+    "openfoam_deposited_mass_kg": 9.69281800814e-07,
+    "openfoam_escaped_mass_kg": 3.0718199183000004e-08,
+    "openfoam_transfer_efficiency": 0.969281800814,
+    "transfer_efficiency_error": 0.03016819918599989,
+    "w1_2_deposited_mass_kg": 9.994500000000002e-07,
+    "w1_2_escaped_mass_kg": 5.500000000000002e-10,
+    "w1_2_transfer_efficiency": 0.9994499999999998
+  },
+  "frozen_prediction": {
+    "angle_deg": 7.5,
+    "created_utc": "2026-09-08T14:19:35.017889+00:00",
+    "grid": {
+      "array_layout": "U[nz, ny, nx, 3]",
+      "dimensions_nx_ny_nz": [
+        24,
+        24,
+        48
+      ],
+      "first_center_m": [
+        -0.14375,
+        -0.14375,
+        0.0025
+      ],
+      "spacing_m": [
+        0.012499999999999983,
+        0.012499999999999983,
+        0.004999999999999999
+      ]
+    },
+    "holdout_policy": "frozen before reading the solved 7.5-degree OpenFOAM U field",
+    "inside_mask_array_sha256": "14f083a021b4c1d555d7a009665a2fd13860a8f7e6c5aeb5538d7ee1071c2a4a",
+    "interpolation_method": "COROTATING_VECTOR_INTERP",
+    "model_id": "warp_vector_carrier_v2",
+    "model_sha256": "eb2f29cc95a69b18877c6f01f7903c520ab8486977b2d584aedec04b140a2a22",
+    "prediction_array_sha256": "71a4b07aa192f7bceb5cf9187abd68399c2c2e4b9adb7402e2133193d045770b",
+    "prediction_npz_path": "carrier_7p5_prediction.npz",
+    "prediction_sha256": "12f7e684e76c722519fc3e18235e128562cefaeb63e056bbf282a3b29799294d",
+    "schema_version": "warp_w1_2_frozen_carrier_prediction_v1"
+  },
+  "model": {
+    "artifact_json": "models\\warp_vector_carrier_v2.json",
+    "artifact_npz": "models\\warp_vector_carrier_v2.npz",
+    "calibrated_angle_domain_deg": [
+      0.0,
+      15.0
+    ],
+    "endpoint_fields": {
+      "0_deg": "solved OpenFOAM U",
+      "15_deg": "solved OpenFOAM U"
+    },
+    "interpolation": "COROTATING_VECTOR_INTERP",
+    "model_id": "warp_vector_carrier_v2",
+    "model_json_sha256": "cd91b985ca12ab7abcaf3fdaf482ced23d4017cd897676963041e3f71812ee87",
+    "model_sha256": "eb2f29cc95a69b18877c6f01f7903c520ab8486977b2d584aedec04b140a2a22",
+    "npz_sha256": "f02b6d6ee664007f4c77cdd11dabb2ff6d6f7aecc0d1df0402793450dd75deb3",
+    "source_commit": "c6a17feab4d8850bf879dfe6b8ca8cc2ad2def02"
+  },
+  "overall_engineering_state": "WARP_VECTOR_CARRIER_NOT_VALIDATED",
+  "performance": {
+    "analytic_w1": {
+      "carrier_mode": "ANALYTIC_AIR",
+      "device": "cuda:0",
+      "mean_step_compute_seconds": 0.000645068168717747,
+      "model_upload_seconds": 0.0,
+      "p95_step_compute_seconds": 0.0011828051530756055,
+      "particle_count": 10000,
+      "substeps": 1200,
+      "wall_seconds": 0.7758182999677956
+    },
+    "openfoam_reference": {
+      "status": "NOT_MEASURED_IN_EXISTING_STATIC_ARTIFACTS"
+    },
+    "teacher_u_w1_1": {
+      "carrier_mode": "TEACHER_FORCED_U",
+      "device": "cuda:0",
+      "mean_step_compute_seconds": 0.00085567066736985,
+      "model_upload_seconds": 0.00020839995704591274,
+      "p95_step_compute_seconds": 0.0013498050277121363,
+      "particle_count": 10000,
+      "substeps": 1200,
+      "wall_seconds": 1.029044299852103
+    },
+    "vector_w1_2": {
+      "carrier_mode": "COROTATING_VECTOR_INTERP",
+      "device": "cuda:0",
+      "mean_step_compute_seconds": 0.0006101585847015182,
+      "model_upload_seconds": 0.00012429989874362946,
+      "p95_step_compute_seconds": 0.0009272000752389431,
+      "particle_count": 10000,
+      "substeps": 1200,
+      "wall_seconds": 0.7343268999829888
+    }
+  },
+  "primary_interpretation": "two-anchor co-rotating full-vector CFD surrogate evaluated on a blind 7.5-degree carrier and deposition hold-out",
+  "result": "PARTIAL",
+  "schema_version": "warp_w1_2_validation_summary_v1",
+  "seven5_fidelity_hierarchy": {
+    "Analytic W1": {
+      "centroid_u_m": 0.03158281276825754,
+      "centroid_v_m": -3.2187790806648764e-05,
+      "deposited_mass_kg": 9.999995983084322e-07,
+      "escaped_mass_kg": 0.0,
+      "nrmse": 0.06286848451475467,
+      "peak_density_kg_m2": 0.0008481612894684077,
+      "pearson_correlation": 0.8355034514826513,
+      "sigma_major_m": 0.019200908712267484,
+      "sigma_minor_m": 0.018997285420284817,
+      "transfer_efficiency": 1.0
+    },
+    "OpenFOAM": {
+      "centroid_u_m": 0.03998890569308883,
+      "centroid_v_m": -0.0004081613563283942,
+      "deposited_mass_kg": 1.000000000007e-06,
+      "escaped_mass_kg": 0.0,
+      "nrmse": 0.0,
+      "peak_density_kg_m2": 0.0005213423698559995,
+      "pearson_correlation": 1.0,
+      "sigma_major_m": 0.02276979292346974,
+      "sigma_minor_m": 0.01976210899709326,
+      "transfer_efficiency": 1.0
+    },
+    "S2": {
+      "centroid_u_m": 0.039601652736307086,
+      "centroid_v_m": -0.0002951559382736042,
+      "deposited_mass_kg": 9.846394659708499e-07,
+      "escaped_mass_kg": null,
+      "nrmse": 0.03316056809401697,
+      "peak_density_kg_m2": 0.0003093300427076654,
+      "pearson_correlation": 0.9306511870106534,
+      "sigma_major_m": 0.023881433106275343,
+      "sigma_minor_m": 0.02001404502526176,
+      "teacher_reference_centroid_u_m": 0.03998890569308883,
+      "teacher_reference_deposited_mass_kg": 1.000000000007e-06,
+      "transfer_efficiency": 0.98463946597085
+    },
+    "Teacher-U W1.1": {
+      "centroid_u_m": 0.03999623967152963,
+      "centroid_v_m": -3.0312691581290255e-05,
+      "deposited_mass_kg": 9.999982520797481e-07,
+      "escaped_mass_kg": 0.0,
+      "nrmse": 0.02498044346783275,
+      "peak_density_kg_m2": 0.0003940783699363238,
+      "pearson_correlation": 0.9631044009566134,
+      "sigma_major_m": 0.02408927550134773,
+      "sigma_minor_m": 0.02250449624559657,
+      "transfer_efficiency": 1.0
+    },
+    "Vector W1.2": {
+      "centroid_u_m": 0.005337645278172244,
+      "centroid_v_m": -0.00022621906290720033,
+      "deposited_mass_kg": 1.671499541416877e-07,
+      "escaped_mass_kg": 8.328500000000003e-07,
+      "nrmse": 0.0887899038482443,
+      "peak_density_kg_m2": 9.02399222013628e-05,
+      "pearson_correlation": 0.24405824748109062,
+      "sigma_major_m": 0.025116940856928685,
+      "sigma_minor_m": 0.010479140605309216,
+      "transfer_efficiency": 0.16715
+    }
+  },
+  "status": "WARP_VECTOR_CARRIER_NOT_VALIDATED",
+  "verification": {
+    "cpu_vs_warp_sampler": {
+      "0_deg": {
+        "comparison_tolerance_m_s": 2e-05,
+        "inside_mask_match": true,
+        "max_abs_velocity_error_m_s": 1.9073486328125e-06,
+        "pass": true,
+        "sample_count": 5
+      },
+      "15_deg": {
+        "comparison_tolerance_m_s": 2e-05,
+        "inside_mask_match": true,
+        "max_abs_velocity_error_m_s": 1.9073486328125e-06,
+        "pass": true,
+        "sample_count": 5
+      },
+      "7.5_deg": {
+        "comparison_tolerance_m_s": 2e-05,
+        "inside_mask_match": true,
+        "max_abs_velocity_error_m_s": 1.9073486328125e-06,
+        "pass": true,
+        "sample_count": 5
+      }
+    },
+    "particle_count_per_bin": 2000,
+    "particle_dt_s": 5e-05,
+    "prediction_reproducibility": true,
+    "source_hashes_verified": true,
+    "substeps": 1200,
+    "total_particles": 10000,
+    "warp_device": "cuda:0"
+  }
+}

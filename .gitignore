@@ -29,4 +29,7 @@ cache/
 reference_cfd/openfoam_v2606/flat_plate/*/constant/polyMesh/
 reference_cfd/openfoam_v2606/flat_plate/*/postProcessing/
 reference_cfd/openfoam_v2606/flat_plate/*/0.[0-9]*/
+
+# Regenerable native full-panel capture intermediates
+results/air_assisted/full_panel_film/_frames/
 reference_cfd/openfoam_v2606/flat_plate/*/log.*

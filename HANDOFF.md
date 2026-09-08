@@ -46,18 +46,21 @@ physics.
 
 ## Current level
 
-`S2 + native runtime + Warp W1 evaluated` — the CFD-calibrated
+`S2 + native runtime + Warp W1.1 diagnostic` — the CFD-calibrated
 covariance-moment deposition surrogate remains validated on the held-out
 7.5-degree OpenFOAM v2606 medium case and the native Isaac Sim integration
 checkpoint remains complete. The new static Warp transport solver executes on
-CUDA and closes its mass ledger, but its 7.5-degree major-width gate is just
-outside the acceptance band, so Warp transport is not yet validated.
+CUDA and closes its mass ledger. Teacher-forced vector-field transport passes
+the original W1 7.5-degree gates, isolating the compact analytic carrier field
+as the remaining W1 blocker; the deployable analytic W1 result remains
+unvalidated.
 
 ## Next checkpoint
 
-The next concrete action is to refine or re-audit the static Warp transport
-against the frozen teacher before any moving-scene integration. Isaac Lab and
-reinforcement learning remain out of scope for this checkpoint.
+The next concrete action is a separate compact full-vector carrier surrogate
+derived only from the solved 0°/15° velocity fields, followed by the original
+blind 7.5-degree W1 gate. Isaac Lab and reinforcement learning remain out of
+scope for this checkpoint.
 
 ## Native S2 runtime checkpoint (2026-09-08)
 
@@ -301,3 +304,113 @@ If refinement is authorized, audit the teacher-vs-Warp trajectory and
 major-width discrepancy without fitting to the 7.5° deposition target; only
 after all gates pass should Warp be considered for a separate moving-scene
 integration task.
+
+## NVIDIA Warp W1.1 teacher-forced vector-field diagnostic checkpoint (2026-09-08)
+
+### Objective
+
+Isolate the analytic carrier-field contribution to the W1 transport mismatch by
+replaying the same CUDA particle transport kernel against the actual solved
+OpenFOAM v2606 `U` fields for 0°, 7.5°, and 15°.
+
+### Scope
+
+- Diagnostic-only teacher-forced carrier mode; no production carrier surrogate
+  and no moving Isaac runtime integration.
+- Existing canonical OpenFOAM `C`/`U` outputs at time `0.06` only; no new CFD
+  case, deposition fit, or physics-parameter tuning.
+- Existing Warp 1.13.0/CUDA runtime and the frozen W1 high ensemble: 2,000
+  particles per bin, 10,000 total, `dt=5e-5 s`, 1,200 substeps.
+
+### Acceptance criteria
+
+Reconstruct each solved vector field safely as a regular Cartesian grid,
+confirm CPU/GPU trilinear agreement, preserve explicit out-of-field escape,
+and rerun the original W1 7.5° gates with the teacher-forced field.
+
+### Completed
+
+- Added `warp_teacher_flow.py` with coordinate-order reconstruction, grid
+  validation, finite-volume bounds, CPU trilinear sampling, and Warp GPU
+  sampling.
+- Added `TEACHER_FORCED_U` to the existing transport kernel while preserving
+  `ANALYTIC_AIR` as the default W1 path.
+- Added the W1.1 diagnostic validator, portable teacher-flow tests, compact
+  NPZ fields, manifest, per-angle metrics, summary, and comparison figures.
+- Used the actual installed v2606 fields. All three grids are `U[nz,ny,nx,3]`
+  with dimensions `(24, 24, 48)`, first center
+  `(-0.14375, -0.14375, 0.0025)`, and spacing approximately
+  `(0.0125, 0.0125, 0.005)` m.
+
+### Current checkpoint
+
+`W1_TRANSPORT_CORE_VALIDATED_WITH_TEACHER_U`.
+
+The teacher-forced 7.5° replay passes every original W1 gate: deposited-mass
+relative error `1.75503e-6`, centroid error `0.377920 mm`, major sigma error
+`5.79488%`, minor sigma error `13.876997%`, field correlation `0.963104`,
+field NRMSE `0.0249804`, and relative mass-balance error `0`.
+
+### Decisions and reasons
+
+- Teacher-forced `U` is a diagnostic control, not a deployable model; no
+  deposition or transport parameter was fitted to the 7.5° target.
+- The sampler uses finite-volume half-cell bounds and marks particles outside
+  the field as escaped instead of silently clamping them.
+- The original W1 evidence and failed analytic result remain unchanged; the
+  result isolates the primary discrepancy to the analytic carrier field.
+
+### Verification evidence
+
+- CUDA command: `C:\\isaacsim\\python.bat scripts/validate_warp_w1_1_teacher_u.py
+  --device cuda:0` -> exit `0`, Warp 1.13.0 on `cuda:0`, 10,000 particles per
+  angle, and status `W1_TRANSPORT_CORE_VALIDATED_WITH_TEACHER_U`.
+- CPU/GPU sampler agreement passed for all three fields. Maximum absolute
+  velocity errors were `1.335e-5`, `7.629e-6`, and `1.335e-5` m/s with
+  `inside_mask_match=true` and tolerance `2e-5` m/s.
+- At 7.5°, OpenFOAM / analytic Warp / teacher-forced Warp centroid U was
+  `0.0399889 / 0.0315828 / 0.0399962` m; major sigma was
+  `0.0227698 / 0.0192009 / 0.0240893` m; correlation was
+  `0.835503 / 0.835503 / 0.963104` and NRMSE was
+  `0.0628685 / 0.0628685 / 0.0249804` for the analytic and teacher maps.
+- Focused tests: `pytest -q tests/test_warp_teacher_flow.py
+  tests/test_warp_spray.py tests/test_spray_frames.py
+  tests/test_mass_accounting.py` -> `11 passed, 1 skipped`.
+- Compilation: `python -m compileall -q src scripts` passed; `git diff --check`
+  passed.
+- Evidence files: `results/air_assisted/warp_w1_1/diagnostic_summary.json`,
+  `teacher_flow_manifest.json`, three per-angle metrics JSON files, three
+  compact teacher-field NPZ files, and
+  `media/air_assisted_spray/warp_w1_1_teacher_u_7p5_comparison.png` plus
+  `warp_w1_1_angle_response.png`.
+
+### Not executed
+
+- No production compact carrier surrogate, moving Isaac integration, Isaac
+  Lab/RL, new CFD case, or deposition-model tuning was executed.
+- The full legacy `pytest -q` suite was not promoted: its pre-existing
+  collection errors reference missing `scripts.validate_s2_surrogate` and
+  `scripts.postprocess_openfoam_flat_plate` modules outside this diagnostic.
+
+### Blockers
+
+None for the W1.1 diagnostic. The deployable W1 path remains blocked by the
+analytic carrier field until a compact full-vector surrogate is built and
+blindly rechecked at 7.5°.
+
+### Modified files
+
+- `HANDOFF.md`
+- `src/aerospace_painting/warp_spray.py`
+- `src/aerospace_painting/warp_teacher_flow.py`
+- `scripts/validate_warp_w1_1_teacher_u.py`
+- `tests/test_warp_teacher_flow.py`
+- `results/air_assisted/warp_w1_1/`
+- `media/air_assisted_spray/warp_w1_1_teacher_u_7p5_comparison.png`
+- `media/air_assisted_spray/warp_w1_1_angle_response.png`
+
+### Next concrete action
+
+Build a compact full-vector carrier surrogate from the solved 0°/15° fields,
+then rerun the original blind 7.5° gate. Keep it as a separate diagnostic
+checkpoint and do not integrate it into the moving Isaac runtime yet.

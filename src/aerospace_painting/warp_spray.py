@@ -15,14 +15,18 @@ from typing import Any
 import numpy as np
 
 from .warp_air_field import AirFieldParameters
+from .warp_teacher_flow import TeacherFlowGrid
 
 
 try:  # Warp is optional for the portable test suite.
     import warp as wp
     from warp._src.lang import mesh_query_ray
+    from .warp_teacher_flow import teacher_flow_inside, teacher_flow_trilinear
 except ImportError:  # pragma: no cover - exercised only on non-Isaac hosts.
     wp = None  # type: ignore[assignment]
     mesh_query_ray = None  # type: ignore[assignment]
+    teacher_flow_inside = None  # type: ignore[assignment]
+    teacher_flow_trilinear = None  # type: ignore[assignment]
 
 
 class WarpUnavailable(RuntimeError):
@@ -215,6 +219,7 @@ if wp is not None:
         released: wp.array(dtype=wp.bool),
         deposited: wp.array(dtype=wp.bool),
         escaped: wp.array(dtype=wp.bool),
+        teacher_out_of_field: wp.array(dtype=wp.bool),
         deposition_mass: wp.array(dtype=wp.float32),
         mesh_id: wp.uint64,
         origin: wp.vec3f,
@@ -235,6 +240,13 @@ if wp is not None:
         target_extent: float,
         max_z: float,
         map_resolution: int,
+        teacher_values: wp.array(dtype=wp.vec3f),
+        teacher_first_center: wp.vec3f,
+        teacher_spacing: wp.vec3f,
+        teacher_nx: int,
+        teacher_ny: int,
+        teacher_nz: int,
+        carrier_mode: int,
     ):
         index = wp.tid()
         # Keep the discrete teacher bin as an explicit GPU state array.  All
@@ -254,18 +266,41 @@ if wp is not None:
 
         previous = positions[index]
         previous_positions[index] = previous
-        air = _air_velocity(
-            previous,
-            origin,
-            x_axis,
-            y_axis,
-            z_axis,
-            u0,
-            sigma0,
-            sigma_slope,
-            decay_z0,
-            decay_exponent,
-        )
+        if carrier_mode == 0:
+            air = _air_velocity(
+                previous,
+                origin,
+                x_axis,
+                y_axis,
+                z_axis,
+                u0,
+                sigma0,
+                sigma_slope,
+                decay_z0,
+                decay_exponent,
+            )
+        else:
+            if not teacher_flow_inside(
+                previous,
+                teacher_first_center,
+                teacher_spacing,
+                teacher_nx,
+                teacher_ny,
+                teacher_nz,
+            ):
+                teacher_out_of_field[index] = True
+                escaped[index] = True
+                alive[index] = False
+                return
+            air = teacher_flow_trilinear(
+                teacher_values,
+                previous,
+                teacher_first_center,
+                teacher_spacing,
+                teacher_nx,
+                teacher_ny,
+                teacher_nz,
+            )
         acceleration = _sphere_drag_acceleration(
             velocities[index],
             air,
@@ -330,10 +365,12 @@ class WarpCaseResult:
     represented_mass_kg: np.ndarray
     deposited_flags: np.ndarray
     escaped_flags: np.ndarray
+    teacher_out_of_field_flags: np.ndarray
     alive_flags: np.ndarray
     released_flags: np.ndarray
     performance: dict[str, Any]
     mass_ledger: dict[str, float]
+    carrier_mode: str = "ANALYTIC_AIR"
 
 
 def _make_target_mesh(config: WarpCaseConfig, device: str):
@@ -353,13 +390,24 @@ def _make_target_mesh(config: WarpCaseConfig, device: str):
     )
 
 
-def run_warp_case(config: WarpCaseConfig, *, device: str = "cuda:0") -> WarpCaseResult:
-    """Execute one actual GPU Warp transport case."""
+def run_warp_case(
+    config: WarpCaseConfig,
+    *,
+    device: str = "cuda:0",
+    carrier_mode: str = "ANALYTIC_AIR",
+    teacher_flow: TeacherFlowGrid | None = None,
+) -> WarpCaseResult:
+    """Execute one GPU transport case with an analytic or teacher-forced carrier."""
 
     if wp is None or mesh_query_ray is None:
         raise WarpUnavailable("NVIDIA Warp is not importable in this Python environment")
     if not str(device).startswith("cuda"):
         raise ValueError("W1 validation requires a CUDA device")
+    mode = str(carrier_mode).upper()
+    if mode not in {"ANALYTIC_AIR", "TEACHER_FORCED_U"}:
+        raise ValueError("carrier_mode must be ANALYTIC_AIR or TEACHER_FORCED_U")
+    if mode == "TEACHER_FORCED_U" and teacher_flow is None:
+        raise ValueError("TEACHER_FORCED_U requires a TeacherFlowGrid")
     wp.init()
     if wp.get_cuda_device_count() < 1:
         raise WarpUnavailable("Warp reports no usable CUDA device")
@@ -379,7 +427,21 @@ def run_warp_case(config: WarpCaseConfig, *, device: str = "cuda:0") -> WarpCase
     released = wp.zeros(n, dtype=wp.bool, device=device_obj)
     deposited = wp.zeros(n, dtype=wp.bool, device=device_obj)
     escaped = wp.zeros(n, dtype=wp.bool, device=device_obj)
+    teacher_out_of_field = wp.zeros(n, dtype=wp.bool, device=device_obj)
     deposition_mass = wp.zeros(config.target_resolution * config.target_resolution, dtype=wp.float32, device=device_obj)
+    teacher_upload_start = time.perf_counter()
+    if mode == "TEACHER_FORCED_U":
+        assert teacher_flow is not None
+        teacher_values = wp.array(teacher_flow.flat_values_vec3f, dtype=wp.vec3f, device=device_obj)
+        teacher_first_center = np.asarray(teacher_flow.first_center_m, dtype=np.float32)
+        teacher_spacing = np.asarray(teacher_flow.spacing_m, dtype=np.float32)
+        teacher_nx, teacher_ny, teacher_nz = teacher_flow.nx, teacher_flow.ny, teacher_flow.nz
+    else:
+        teacher_values = wp.array(np.zeros((1, 3), dtype=np.float32), dtype=wp.vec3f, device=device_obj)
+        teacher_first_center = np.zeros(3, dtype=np.float32)
+        teacher_spacing = np.ones(3, dtype=np.float32)
+        teacher_nx, teacher_ny, teacher_nz = 2, 2, 2
+    teacher_upload_seconds = time.perf_counter() - teacher_upload_start
     x_axis, y_axis, z_axis = _frame_axes(config.incidence_angle_deg)
     origin = np.asarray(config.nozzle_origin_m, dtype=np.float32)
     gravity = np.asarray(config.gravity_m_s2, dtype=np.float32)
@@ -404,6 +466,7 @@ def run_warp_case(config: WarpCaseConfig, *, device: str = "cuda:0") -> WarpCase
                 released,
                 deposited,
                 escaped,
+                teacher_out_of_field,
                 deposition_mass,
                 mesh.id,
                 wp.vec3f(*origin),
@@ -424,6 +487,13 @@ def run_warp_case(config: WarpCaseConfig, *, device: str = "cuda:0") -> WarpCase
                 float(config.target_extent_m),
                 float(config.stand_off_m + 0.05),
                 int(config.target_resolution),
+                teacher_values,
+                wp.vec3f(*teacher_first_center),
+                wp.vec3f(*teacher_spacing),
+                int(teacher_nx),
+                int(teacher_ny),
+                int(teacher_nz),
+                0 if mode == "ANALYTIC_AIR" else 1,
             ],
             device=device_obj,
         )
@@ -435,6 +505,7 @@ def run_warp_case(config: WarpCaseConfig, *, device: str = "cuda:0") -> WarpCase
     host_mass = samples["represented_mass"]
     host_deposited = deposited.numpy().astype(bool)
     host_escaped = escaped.numpy().astype(bool)
+    host_teacher_out_of_field = teacher_out_of_field.numpy().astype(bool)
     host_alive = alive.numpy().astype(bool)
     host_released = released.numpy().astype(bool)
     host_map_mass = deposition_mass.numpy().astype(np.float64)
@@ -447,6 +518,8 @@ def run_warp_case(config: WarpCaseConfig, *, device: str = "cuda:0") -> WarpCase
     residual = expected_mass - deposited_mass - escaped_mass - live_mass
     performance = {
         "device": str(device_obj),
+        "carrier_mode": mode,
+        "teacher_field_upload_seconds": teacher_upload_seconds,
         "particle_count": n,
         "particle_count_per_bin": config.particle_count_per_bin,
         "substeps": step_count,
@@ -471,6 +544,8 @@ def run_warp_case(config: WarpCaseConfig, *, device: str = "cuda:0") -> WarpCase
         "deposited_particle_count": int(np.count_nonzero(host_deposited)),
         "escaped_particle_count": int(np.count_nonzero(host_escaped)),
         "live_particle_count": int(np.count_nonzero(host_alive)),
+        "teacher_out_of_field_particle_count": int(np.count_nonzero(host_teacher_out_of_field)),
+        "teacher_out_of_field_mass_kg": float(np.sum(host_mass[host_teacher_out_of_field])),
     }
     return WarpCaseResult(
         incidence_angle_deg=config.incidence_angle_deg,
@@ -482,8 +557,10 @@ def run_warp_case(config: WarpCaseConfig, *, device: str = "cuda:0") -> WarpCase
         represented_mass_kg=host_mass,
         deposited_flags=host_deposited,
         escaped_flags=host_escaped,
+        teacher_out_of_field_flags=host_teacher_out_of_field,
         alive_flags=host_alive,
         released_flags=host_released,
         performance=performance,
         mass_ledger=ledger,
+        carrier_mode=mode,
     )

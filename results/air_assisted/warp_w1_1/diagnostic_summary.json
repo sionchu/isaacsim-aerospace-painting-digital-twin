@@ -1,0 +1,639 @@
+{
+  "15deg_diagnostic": {
+    "analytic_warp_centroid_u_m": 0.06451406599587099,
+    "analytic_warp_escaped_mass_kg": 0.0,
+    "openfoam_centroid_u_m": 0.07969718794914857,
+    "openfoam_escaped_mass_kg": 3.0718199183000004e-08,
+    "teacher_u_warp_centroid_u_m": 0.08119026971435049,
+    "teacher_u_warp_escaped_mass_kg": 5.500000000000002e-10
+  },
+  "7p5_comparison": {
+    "openfoam": {
+      "centroid_u_m": 0.03998890569308883,
+      "centroid_v_m": -0.0004081613563283942,
+      "covariance_uv_m2": [
+        [
+          0.0005139778704834797,
+          -2.3530587633355763e-05
+        ],
+        [
+          -2.3530587633355756e-05,
+          0.00039502655130720733
+        ]
+      ],
+      "deposited_mass_kg": 1.000000000007e-06,
+      "escaped_mass_kg": 0.0,
+      "peak_density_kg_m2": 0.0005213423698559995,
+      "sigma_major_m": 0.02276979292346974,
+      "sigma_minor_m": 0.01976210899709326,
+      "transfer_efficiency": 1.0
+    },
+    "teacher_forced_gate_metrics": {
+      "actual": {
+        "centroid_uv_m": [
+          0.03998890569308883,
+          -0.0004081613563283942
+        ],
+        "covariance_uv_m2": [
+          [
+            0.0005139778704834797,
+            -2.3530587633355763e-05
+          ],
+          [
+            -2.3530587633355756e-05,
+            0.00039502655130720733
+          ]
+        ],
+        "mass_kg": 1.000000000007e-06,
+        "peak_density_kg_m2": 0.0005213423698559995,
+        "sigma_major_m": 0.02276979292346974,
+        "sigma_minor_m": 0.01976210899709326
+      },
+      "centroid_error_m": 0.0003779198764888227,
+      "integrated_absolute_mass_density_error_kg": 3.1921288521018667e-07,
+      "integrated_mass_error_kg": -1.7550326792857633e-12,
+      "integrated_mass_relative_error": 1.755032679273478e-06,
+      "nrmse": 0.024980443006642424,
+      "pearson_correlation": 0.9631044028933615,
+      "predicted": {
+        "centroid_uv_m": [
+          0.03999623960044851,
+          -3.0312647387677328e-05
+        ],
+        "covariance_uv_m2": [
+          [
+            0.00058029269630308,
+            -1.9191443100172478e-07
+          ],
+          [
+            -1.9191443100171912e-07,
+            0.0005064528528275597
+          ]
+        ],
+        "mass_kg": 9.999982449743208e-07,
+        "peak_density_kg_m2": 0.0003940783699363238,
+        "sigma_major_m": 0.024089275520394436,
+        "sigma_minor_m": 0.022504496307030847
+      },
+      "rmse_kg_m2": 1.3023363357135691e-05,
+      "sigma_major_relative_error": 0.05794881847891791,
+      "sigma_minor_relative_error": 0.1387699718861462
+    },
+    "warp_analytic_air": {
+      "centroid_u_m": 0.03158281283398416,
+      "centroid_v_m": -3.218757422730588e-05,
+      "covariance_uv_m2": [
+        [
+          0.0003686743434301572,
+          -6.545842113875569e-08
+        ],
+        [
+          -6.545842113875604e-08,
+          0.0003608974031388908
+        ]
+      ],
+      "deposited_mass_kg": 9.999996009729675e-07,
+      "escaped_mass_kg": 0.0,
+      "mass_balance_relative_error": 0.0,
+      "nrmse": 0.06286848475121641,
+      "peak_density_kg_m2": 0.0008481613804178779,
+      "pearson_correlation": 0.8355034514847107,
+      "sigma_major_m": 0.019200908685631055,
+      "sigma_minor_m": 0.018997285390684265,
+      "teacher_out_of_field_mass_kg": 0.0,
+      "transfer_efficiency": 1.0
+    },
+    "warp_teacher_forced_u": {
+      "centroid_u_m": 0.03999623960044851,
+      "centroid_v_m": -3.0312647387677328e-05,
+      "covariance_uv_m2": [
+        [
+          0.00058029269630308,
+          -1.9191443100172478e-07
+        ],
+        [
+          -1.9191443100171912e-07,
+          0.0005064528528275597
+        ]
+      ],
+      "deposited_mass_kg": 9.999982449743208e-07,
+      "escaped_mass_kg": 0.0,
+      "mass_balance_relative_error": 0.0,
+      "nrmse": 0.024980443006642424,
+      "peak_density_kg_m2": 0.0003940783699363238,
+      "pearson_correlation": 0.9631044028933615,
+      "sigma_major_m": 0.024089275520394436,
+      "sigma_minor_m": 0.022504496307030847,
+      "teacher_out_of_field_mass_kg": 0.0,
+      "transfer_efficiency": 1.0
+    }
+  },
+  "angle_response": {
+    "0.0": {
+      "analytic_air": {
+        "centroid_u_m": 1.6562288154591945e-05,
+        "centroid_v_m": -2.1250064706862455e-05,
+        "covariance_uv_m2": [
+          [
+            0.00035655427172510956,
+            -6.851934572300374e-07
+          ],
+          [
+            -6.851934572300372e-07,
+            0.0003571634608078608
+          ]
+        ],
+        "deposited_mass_kg": 1.000000037762461e-06,
+        "escaped_mass_kg": 0.0,
+        "mass_balance_relative_error": 0.0,
+        "nrmse": 0.0226576819012193,
+        "peak_density_kg_m2": 0.0006184008725540481,
+        "pearson_correlation": 0.977516720997275,
+        "sigma_major_m": 0.018910544982174166,
+        "sigma_minor_m": 0.018870851093952753,
+        "teacher_out_of_field_mass_kg": 0.0,
+        "transfer_efficiency": 1.0
+      },
+      "openfoam": {
+        "centroid_u_m": -0.0004935400618006563,
+        "centroid_v_m": -3.623301208662972e-05,
+        "covariance_uv_m2": [
+          [
+            0.0004302575149976908,
+            -5.557545491797767e-06
+          ],
+          [
+            -5.557545491797764e-06,
+            0.00038183076044217114
+          ]
+        ],
+        "deposited_mass_kg": 1.000000000024e-06,
+        "escaped_mass_kg": 0.0,
+        "peak_density_kg_m2": 0.0005719174235519999,
+        "sigma_major_m": 0.0207578207833454,
+        "sigma_minor_m": 0.019524373274611807,
+        "transfer_efficiency": 1.0
+      },
+      "teacher_forced_u": {
+        "centroid_u_m": -2.0624940539346392e-05,
+        "centroid_v_m": 6.562462381146785e-06,
+        "covariance_uv_m2": [
+          [
+            0.0005027812046257552,
+            1.1927723855463295e-07
+          ],
+          [
+            1.192772385546281e-07,
+            0.0005036253347840219
+          ]
+        ],
+        "deposited_mass_kg": 9.999987308495497e-07,
+        "escaped_mass_kg": 0.0,
+        "mass_balance_relative_error": 0.0,
+        "nrmse": 0.01893355737054168,
+        "peak_density_kg_m2": 0.00045023944039712665,
+        "pearson_correlation": 0.9819649124800934,
+        "sigma_major_m": 0.022441966606780585,
+        "sigma_minor_m": 0.022422414549506532,
+        "teacher_out_of_field_mass_kg": 0.0,
+        "transfer_efficiency": 1.0
+      }
+    },
+    "7.5": {
+      "analytic_air": {
+        "centroid_u_m": 0.03158281283398416,
+        "centroid_v_m": -3.218757422730588e-05,
+        "covariance_uv_m2": [
+          [
+            0.0003686743434301572,
+            -6.545842113875569e-08
+          ],
+          [
+            -6.545842113875604e-08,
+            0.0003608974031388908
+          ]
+        ],
+        "deposited_mass_kg": 9.999996009729675e-07,
+        "escaped_mass_kg": 0.0,
+        "mass_balance_relative_error": 0.0,
+        "nrmse": 0.06286848475121641,
+        "peak_density_kg_m2": 0.0008481613804178779,
+        "pearson_correlation": 0.8355034514847107,
+        "sigma_major_m": 0.019200908685631055,
+        "sigma_minor_m": 0.018997285390684265,
+        "teacher_out_of_field_mass_kg": 0.0,
+        "transfer_efficiency": 1.0
+      },
+      "openfoam": {
+        "centroid_u_m": 0.03998890569308883,
+        "centroid_v_m": -0.0004081613563283942,
+        "covariance_uv_m2": [
+          [
+            0.0005139778704834797,
+            -2.3530587633355763e-05
+          ],
+          [
+            -2.3530587633355756e-05,
+            0.00039502655130720733
+          ]
+        ],
+        "deposited_mass_kg": 1.000000000007e-06,
+        "escaped_mass_kg": 0.0,
+        "peak_density_kg_m2": 0.0005213423698559995,
+        "sigma_major_m": 0.02276979292346974,
+        "sigma_minor_m": 0.01976210899709326,
+        "transfer_efficiency": 1.0
+      },
+      "teacher_forced_u": {
+        "centroid_u_m": 0.03999623960044851,
+        "centroid_v_m": -3.0312647387677328e-05,
+        "covariance_uv_m2": [
+          [
+            0.00058029269630308,
+            -1.9191443100172478e-07
+          ],
+          [
+            -1.9191443100171912e-07,
+            0.0005064528528275597
+          ]
+        ],
+        "deposited_mass_kg": 9.999982449743208e-07,
+        "escaped_mass_kg": 0.0,
+        "mass_balance_relative_error": 0.0,
+        "nrmse": 0.024980443006642424,
+        "peak_density_kg_m2": 0.0003940783699363238,
+        "pearson_correlation": 0.9631044028933615,
+        "sigma_major_m": 0.024089275520394436,
+        "sigma_minor_m": 0.022504496307030847,
+        "teacher_out_of_field_mass_kg": 0.0,
+        "transfer_efficiency": 1.0
+      }
+    },
+    "15.0": {
+      "analytic_air": {
+        "centroid_u_m": 0.06451406599587099,
+        "centroid_v_m": -4.000007223166501e-05,
+        "covariance_uv_m2": [
+          [
+            0.00040075590454988284,
+            5.903278714577313e-07
+          ],
+          [
+            5.903278714577328e-07,
+            0.0003742873385130055
+          ]
+        ],
+        "deposited_mass_kg": 1.000000002998602e-06,
+        "escaped_mass_kg": 0.0,
+        "mass_balance_relative_error": 0.0,
+        "nrmse": 0.0807447434321897,
+        "peak_density_kg_m2": 0.0007155219009291615,
+        "pearson_correlation": 0.7377502866729918,
+        "sigma_major_m": 0.020019217369252554,
+        "sigma_minor_m": 0.019346167036017888,
+        "teacher_out_of_field_mass_kg": 0.0,
+        "transfer_efficiency": 1.0
+      },
+      "openfoam": {
+        "centroid_u_m": 0.07969718794914857,
+        "centroid_v_m": -0.0005540851375074549,
+        "covariance_uv_m2": [
+          [
+            0.0007091386760671378,
+            -1.5316218873924092e-05
+          ],
+          [
+            -1.5316218873924092e-05,
+            0.00042058136630670904
+          ]
+        ],
+        "deposited_mass_kg": 9.69281800814e-07,
+        "escaped_mass_kg": 3.0718199183000004e-08,
+        "peak_density_kg_m2": 0.0004699668973440002,
+        "sigma_major_m": 0.026644874966677647,
+        "sigma_minor_m": 0.020488305942267696,
+        "transfer_efficiency": 0.969281800814
+      },
+      "teacher_forced_u": {
+        "centroid_u_m": 0.08119026971435049,
+        "centroid_v_m": -4.971510824774116e-05,
+        "covariance_uv_m2": [
+          [
+            0.0008135732346782953,
+            -6.771682270788457e-07
+          ],
+          [
+            -6.771682270788311e-07,
+            0.0005128680968323942
+          ]
+        ],
+        "deposited_mass_kg": 9.994485098280272e-07,
+        "escaped_mass_kg": 5.500000000000002e-10,
+        "mass_balance_relative_error": 1.4703135388130062e-16,
+        "nrmse": 0.02665990453301788,
+        "peak_density_kg_m2": 0.0003487983804006945,
+        "pearson_correlation": 0.9553035011305951,
+        "sigma_major_m": 0.028523231927832945,
+        "sigma_minor_m": 0.02264655761703621,
+        "teacher_out_of_field_mass_kg": 0.0,
+        "transfer_efficiency": 0.9994499999999998
+      }
+    }
+  },
+  "artifacts": {
+    "case_metrics": [
+      "results\\air_assisted\\warp_w1_1\\case_0deg_teacher_u_metrics.json",
+      "results\\air_assisted\\warp_w1_1\\case_7p5deg_teacher_u_metrics.json",
+      "results\\air_assisted\\warp_w1_1\\case_15deg_teacher_u_metrics.json"
+    ],
+    "plots": [
+      "media/air_assisted_spray/warp_w1_1_teacher_u_7p5_comparison.png",
+      "media/air_assisted_spray/warp_w1_1_angle_response.png"
+    ],
+    "teacher_flow_manifest": "results\\air_assisted\\warp_w1_1\\teacher_flow_manifest.json"
+  },
+  "baseline": {
+    "dt_s": 5e-05,
+    "gpu": "cuda:0 / NVIDIA GeForce RTX 4070 Ti",
+    "particles_per_bin": 2000,
+    "starting_commit": "519ee5425142c7c86056ece9dcc411e47474e3aa",
+    "steps": 1200,
+    "total_particles": 10000,
+    "warp": "1.13.0"
+  },
+  "diagnostic_interpretation": "teacher-forced U isolates the particle transport subsystem; 7.5-degree deposition remains a comparison target and was not used for fitting",
+  "original_w1_7p5_gates_with_teacher_u": {
+    "centroid": true,
+    "correlation": true,
+    "deposited_mass": true,
+    "mass_balance": true,
+    "nrmse": true,
+    "sigma_major": true,
+    "sigma_minor": true
+  },
+  "performance": {
+    "0_deg": {
+      "analytic_air": {
+        "carrier_mode": "ANALYTIC_AIR",
+        "device": "cuda:0",
+        "kernel_launch_count": 1200,
+        "max_step_compute_seconds": 0.015327600063756108,
+        "mean_step_compute_seconds": 0.00020884825052538267,
+        "p95_step_compute_seconds": 0.0005722451605834067,
+        "particle_count": 10000,
+        "particle_count_per_bin": 2000,
+        "particle_dt_s": 5e-05,
+        "simulated_duration_s": 0.06,
+        "substeps": 1200,
+        "teacher_field_upload_seconds": 6.230012513697147e-05,
+        "wall_seconds": 0.25149290007539093
+      },
+      "mean_step_overhead_seconds": -6.83435011887923e-05,
+      "p95_step_overhead_seconds": -0.0002621452324092388,
+      "teacher_forced_u": {
+        "carrier_mode": "TEACHER_FORCED_U",
+        "device": "cuda:0",
+        "kernel_launch_count": 1200,
+        "max_step_compute_seconds": 0.0010585000272840261,
+        "mean_step_compute_seconds": 0.00014050474933659037,
+        "p95_step_compute_seconds": 0.0003100999281741679,
+        "particle_count": 10000,
+        "particle_count_per_bin": 2000,
+        "particle_dt_s": 5e-05,
+        "simulated_duration_s": 0.06,
+        "substeps": 1200,
+        "teacher_field_upload_seconds": 7.900013588368893e-05,
+        "wall_seconds": 0.16942019993439317
+      },
+      "wall_overhead_seconds": -0.08207270014099777
+    },
+    "15_deg": {
+      "analytic_air": {
+        "carrier_mode": "ANALYTIC_AIR",
+        "device": "cuda:0",
+        "kernel_launch_count": 1200,
+        "max_step_compute_seconds": 0.001331700012087822,
+        "mean_step_compute_seconds": 0.0002643206643794353,
+        "p95_step_compute_seconds": 0.0007266699452884495,
+        "particle_count": 10000,
+        "particle_count_per_bin": 2000,
+        "particle_dt_s": 5e-05,
+        "simulated_duration_s": 0.06,
+        "substeps": 1200,
+        "teacher_field_upload_seconds": 0.00013870000839233398,
+        "wall_seconds": 0.31848590006120503
+      },
+      "mean_step_overhead_seconds": 4.14102530339733e-05,
+      "p95_step_overhead_seconds": 3.815506352111697e-05,
+      "teacher_forced_u": {
+        "carrier_mode": "TEACHER_FORCED_U",
+        "device": "cuda:0",
+        "kernel_launch_count": 1200,
+        "max_step_compute_seconds": 0.0011511000338941813,
+        "mean_step_compute_seconds": 0.0003057309174134086,
+        "p95_step_compute_seconds": 0.0007648250088095665,
+        "particle_count": 10000,
+        "particle_count_per_bin": 2000,
+        "particle_dt_s": 5e-05,
+        "simulated_duration_s": 0.06,
+        "substeps": 1200,
+        "teacher_field_upload_seconds": 0.0001292000524699688,
+        "wall_seconds": 0.36798480013385415
+      },
+      "wall_overhead_seconds": 0.04949890007264912
+    },
+    "7.5_deg": {
+      "analytic_air": {
+        "carrier_mode": "ANALYTIC_AIR",
+        "device": "cuda:0",
+        "kernel_launch_count": 1200,
+        "max_step_compute_seconds": 0.0003978000022470951,
+        "mean_step_compute_seconds": 0.00011987166712060571,
+        "p95_step_compute_seconds": 0.0002668199362233281,
+        "particle_count": 10000,
+        "particle_count_per_bin": 2000,
+        "particle_dt_s": 5e-05,
+        "simulated_duration_s": 0.06,
+        "substeps": 1200,
+        "teacher_field_upload_seconds": 5.720020271837711e-05,
+        "wall_seconds": 0.1448179001454264
+      },
+      "mean_step_overhead_seconds": -7.593340706080204e-07,
+      "p95_step_overhead_seconds": -2.3809948470443476e-05,
+      "teacher_forced_u": {
+        "carrier_mode": "TEACHER_FORCED_U",
+        "device": "cuda:0",
+        "kernel_launch_count": 1200,
+        "max_step_compute_seconds": 0.0005826998967677355,
+        "mean_step_compute_seconds": 0.00011911233304999769,
+        "p95_step_compute_seconds": 0.00024300998775288462,
+        "particle_count": 10000,
+        "particle_count_per_bin": 2000,
+        "particle_dt_s": 5e-05,
+        "simulated_duration_s": 0.06,
+        "substeps": 1200,
+        "teacher_field_upload_seconds": 0.00011090002954006195,
+        "wall_seconds": 0.14378460007719696
+      },
+      "wall_overhead_seconds": -0.0010333000682294369
+    }
+  },
+  "primary_blocker": "PRIMARY_BLOCKER = ANALYTIC_CARRIER_FIELD",
+  "result": "PASS",
+  "schema_version": "warp_w1_1_diagnostic_summary_v1",
+  "status": "W1_TRANSPORT_CORE_VALIDATED_WITH_TEACHER_U",
+  "teacher_flow": {
+    "cases": {
+      "0_deg": {
+        "angle_deg": 0.0,
+        "array_layout": "U[nz, ny, nx, 3]",
+        "dimensions_nx_ny_nz": [
+          24,
+          24,
+          48
+        ],
+        "finite_volume_bounds_max_m": [
+          0.14999999999999963,
+          0.14999999999999963,
+          0.23999999999999996
+        ],
+        "finite_volume_bounds_min_m": [
+          -0.14999999999999997,
+          -0.14999999999999997,
+          4.336808689942018e-19
+        ],
+        "first_center_m": [
+          -0.14375,
+          -0.14375,
+          0.0025
+        ],
+        "latest_time_s": 0.06,
+        "npz_path": "teacher_u_0deg.npz",
+        "npz_sha256": "0c18336a5c276aac37fd2cc37b8674e7c7239482c9db13723f082c3d2e8a4fbc",
+        "openfoam_version": "v2606",
+        "ordering_verified": true,
+        "source_c_path": "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0.06\\C",
+        "source_c_sha256": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+        "source_case": "reference_cfd\\openfoam_v2606\\flat_plate\\medium",
+        "source_u_path": "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0.06\\U",
+        "source_u_sha256": "b217fe99246518b85e0cadd5e5ad97ef40e44a58905b1e615e61618605f39f75",
+        "spacing_m": [
+          0.012499999999999983,
+          0.012499999999999983,
+          0.004999999999999999
+        ]
+      },
+      "15_deg": {
+        "angle_deg": 15.0,
+        "array_layout": "U[nz, ny, nx, 3]",
+        "dimensions_nx_ny_nz": [
+          24,
+          24,
+          48
+        ],
+        "finite_volume_bounds_max_m": [
+          0.14999999999999963,
+          0.14999999999999963,
+          0.23999999999999996
+        ],
+        "finite_volume_bounds_min_m": [
+          -0.14999999999999997,
+          -0.14999999999999997,
+          4.336808689942018e-19
+        ],
+        "first_center_m": [
+          -0.14375,
+          -0.14375,
+          0.0025
+        ],
+        "latest_time_s": 0.06,
+        "npz_path": "teacher_u_15deg.npz",
+        "npz_sha256": "9a0cf583e28600bf28adfd4ae7e3a184e9371b6db6ce8a3fd3603cf583b25d18",
+        "openfoam_version": "v2606",
+        "ordering_verified": true,
+        "source_c_path": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg\\0.06\\C",
+        "source_c_sha256": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+        "source_case": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg",
+        "source_u_path": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg\\0.06\\U",
+        "source_u_sha256": "521ad2a53ee0294b7e3e5029358789abb0febd9f79feef00800313f369e1b72d",
+        "spacing_m": [
+          0.012499999999999983,
+          0.012499999999999983,
+          0.004999999999999999
+        ]
+      },
+      "7.5_deg": {
+        "angle_deg": 7.5,
+        "array_layout": "U[nz, ny, nx, 3]",
+        "dimensions_nx_ny_nz": [
+          24,
+          24,
+          48
+        ],
+        "finite_volume_bounds_max_m": [
+          0.14999999999999963,
+          0.14999999999999963,
+          0.23999999999999996
+        ],
+        "finite_volume_bounds_min_m": [
+          -0.14999999999999997,
+          -0.14999999999999997,
+          4.336808689942018e-19
+        ],
+        "first_center_m": [
+          -0.14375,
+          -0.14375,
+          0.0025
+        ],
+        "latest_time_s": 0.06,
+        "npz_path": "teacher_u_7p5deg.npz",
+        "npz_sha256": "791d872417ba1f1400876f4a5c07fecb86ba8f2327f984d285234e7a58d14779",
+        "openfoam_version": "v2606",
+        "ordering_verified": true,
+        "source_c_path": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_7p5deg\\0.06\\C",
+        "source_c_sha256": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+        "source_case": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_7p5deg",
+        "source_u_path": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_7p5deg\\0.06\\U",
+        "source_u_sha256": "0e62dfb333728be18533945c5494c778f7466ae5366d2b895e0d0a8945d34357",
+        "spacing_m": [
+          0.012499999999999983,
+          0.012499999999999983,
+          0.004999999999999999
+        ]
+      }
+    },
+    "cpu_vs_warp_sampler": {
+      "0_deg": {
+        "comparison_tolerance_m_s": 2e-05,
+        "inside_mask_match": true,
+        "max_abs_velocity_error_m_s": 1.33514404296875e-05,
+        "pass": true,
+        "sample_count": 8
+      },
+      "15_deg": {
+        "comparison_tolerance_m_s": 2e-05,
+        "inside_mask_match": true,
+        "max_abs_velocity_error_m_s": 7.62939453125e-06,
+        "pass": true,
+        "sample_count": 8
+      },
+      "7.5_deg": {
+        "comparison_tolerance_m_s": 2e-05,
+        "inside_mask_match": true,
+        "max_abs_velocity_error_m_s": 1.33514404296875e-05,
+        "pass": true,
+        "sample_count": 8
+      }
+    },
+    "description": "Diagnostic teacher-forced carrier input; not a deployable runtime air model.",
+    "mode": "TEACHER_FORCED_U",
+    "openfoam_version_required": "v2606",
+    "schema_version": "warp_w1_1_teacher_flow_manifest_v1",
+    "structured_grid_checks": {
+      "boundary_policy": "finite-volume half-cell bounds with linear first/last-centre extension",
+      "c_u_ordering_reconstructed_by_coordinate_lookup": true,
+      "cartesian_regular": true,
+      "outside_domain_policy": "explicit teacher_out_of_field escape"
+    }
+  }
+}

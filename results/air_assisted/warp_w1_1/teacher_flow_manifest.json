@@ -1,0 +1,154 @@
+{
+  "cases": {
+    "0_deg": {
+      "angle_deg": 0.0,
+      "array_layout": "U[nz, ny, nx, 3]",
+      "dimensions_nx_ny_nz": [
+        24,
+        24,
+        48
+      ],
+      "finite_volume_bounds_max_m": [
+        0.14999999999999963,
+        0.14999999999999963,
+        0.23999999999999996
+      ],
+      "finite_volume_bounds_min_m": [
+        -0.14999999999999997,
+        -0.14999999999999997,
+        4.336808689942018e-19
+      ],
+      "first_center_m": [
+        -0.14375,
+        -0.14375,
+        0.0025
+      ],
+      "latest_time_s": 0.06,
+      "npz_path": "teacher_u_0deg.npz",
+      "npz_sha256": "0c18336a5c276aac37fd2cc37b8674e7c7239482c9db13723f082c3d2e8a4fbc",
+      "openfoam_version": "v2606",
+      "ordering_verified": true,
+      "source_c_path": "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0.06\\C",
+      "source_c_sha256": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+      "source_case": "reference_cfd\\openfoam_v2606\\flat_plate\\medium",
+      "source_u_path": "reference_cfd\\openfoam_v2606\\flat_plate\\medium\\0.06\\U",
+      "source_u_sha256": "b217fe99246518b85e0cadd5e5ad97ef40e44a58905b1e615e61618605f39f75",
+      "spacing_m": [
+        0.012499999999999983,
+        0.012499999999999983,
+        0.004999999999999999
+      ]
+    },
+    "15_deg": {
+      "angle_deg": 15.0,
+      "array_layout": "U[nz, ny, nx, 3]",
+      "dimensions_nx_ny_nz": [
+        24,
+        24,
+        48
+      ],
+      "finite_volume_bounds_max_m": [
+        0.14999999999999963,
+        0.14999999999999963,
+        0.23999999999999996
+      ],
+      "finite_volume_bounds_min_m": [
+        -0.14999999999999997,
+        -0.14999999999999997,
+        4.336808689942018e-19
+      ],
+      "first_center_m": [
+        -0.14375,
+        -0.14375,
+        0.0025
+      ],
+      "latest_time_s": 0.06,
+      "npz_path": "teacher_u_15deg.npz",
+      "npz_sha256": "9a0cf583e28600bf28adfd4ae7e3a184e9371b6db6ce8a3fd3603cf583b25d18",
+      "openfoam_version": "v2606",
+      "ordering_verified": true,
+      "source_c_path": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg\\0.06\\C",
+      "source_c_sha256": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+      "source_case": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg",
+      "source_u_path": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_15deg\\0.06\\U",
+      "source_u_sha256": "521ad2a53ee0294b7e3e5029358789abb0febd9f79feef00800313f369e1b72d",
+      "spacing_m": [
+        0.012499999999999983,
+        0.012499999999999983,
+        0.004999999999999999
+      ]
+    },
+    "7.5_deg": {
+      "angle_deg": 7.5,
+      "array_layout": "U[nz, ny, nx, 3]",
+      "dimensions_nx_ny_nz": [
+        24,
+        24,
+        48
+      ],
+      "finite_volume_bounds_max_m": [
+        0.14999999999999963,
+        0.14999999999999963,
+        0.23999999999999996
+      ],
+      "finite_volume_bounds_min_m": [
+        -0.14999999999999997,
+        -0.14999999999999997,
+        4.336808689942018e-19
+      ],
+      "first_center_m": [
+        -0.14375,
+        -0.14375,
+        0.0025
+      ],
+      "latest_time_s": 0.06,
+      "npz_path": "teacher_u_7p5deg.npz",
+      "npz_sha256": "791d872417ba1f1400876f4a5c07fecb86ba8f2327f984d285234e7a58d14779",
+      "openfoam_version": "v2606",
+      "ordering_verified": true,
+      "source_c_path": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_7p5deg\\0.06\\C",
+      "source_c_sha256": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+      "source_case": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_7p5deg",
+      "source_u_path": "reference_cfd\\openfoam_v2606\\flat_plate\\medium_incidence_7p5deg\\0.06\\U",
+      "source_u_sha256": "0e62dfb333728be18533945c5494c778f7466ae5366d2b895e0d0a8945d34357",
+      "spacing_m": [
+        0.012499999999999983,
+        0.012499999999999983,
+        0.004999999999999999
+      ]
+    }
+  },
+  "cpu_vs_warp_sampler": {
+    "0_deg": {
+      "comparison_tolerance_m_s": 2e-05,
+      "inside_mask_match": true,
+      "max_abs_velocity_error_m_s": 1.33514404296875e-05,
+      "pass": true,
+      "sample_count": 8
+    },
+    "15_deg": {
+      "comparison_tolerance_m_s": 2e-05,
+      "inside_mask_match": true,
+      "max_abs_velocity_error_m_s": 7.62939453125e-06,
+      "pass": true,
+      "sample_count": 8
+    },
+    "7.5_deg": {
+      "comparison_tolerance_m_s": 2e-05,
+      "inside_mask_match": true,
+      "max_abs_velocity_error_m_s": 1.33514404296875e-05,
+      "pass": true,
+      "sample_count": 8
+    }
+  },
+  "description": "Diagnostic teacher-forced carrier input; not a deployable runtime air model.",
+  "mode": "TEACHER_FORCED_U",
+  "openfoam_version_required": "v2606",
+  "schema_version": "warp_w1_1_teacher_flow_manifest_v1",
+  "structured_grid_checks": {
+    "boundary_policy": "finite-volume half-cell bounds with linear first/last-centre extension",
+    "c_u_ordering_reconstructed_by_coordinate_lookup": true,
+    "cartesian_regular": true,
+    "outside_domain_policy": "explicit teacher_out_of_field escape"
+  }
+}

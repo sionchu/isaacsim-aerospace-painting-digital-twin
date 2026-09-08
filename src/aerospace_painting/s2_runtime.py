@@ -438,3 +438,74 @@ class RuntimeSurfaceAccumulator:
             "surface_integration_error_kg": self.grid.integrated_mass_kg - self.deposited_mass_kg,
             "rejected_or_overspray_kg": self.out_of_domain_mass_kg,
         }
+
+
+class FiniteSurfaceQuadratureError(RuntimeError):
+    """Raised when a finite-surface quadrature captures more than the S2 plane."""
+
+    code = "BLOCKED_FINITE_SURFACE_QUADRATURE"
+
+
+class FiniteSurfaceAccumulator:
+    """Accumulate S2 density on a finite surface without footprint renormalisation.
+
+    ``StructuredSurfaceGrid.deposit`` deliberately preserves the historical
+    normalized-footprint behavior used by the validated W2 regression.  This
+    separate accumulator is the new full-panel mode: each vertex receives
+    ``density(du,dv) * projected_area`` and the missing plane mass is recorded
+    as geometric edge loss.
+    """
+
+    def __init__(self, grid: StructuredSurfaceGrid, *, tolerance_rel: float = 2.0e-3, tolerance_abs: float = 1.0e-15) -> None:
+        self.grid = grid
+        self.tolerance_rel = float(tolerance_rel)
+        self.tolerance_abs = float(tolerance_abs)
+        self.injected_mass_kg = 0.0
+        self.plane_deposited_mass_kg = 0.0
+        self.surface_captured_mass_kg = 0.0
+        self.process_overspray_mass_kg = 0.0
+        self.geometric_edge_loss_mass_kg = 0.0
+        self.rejected_or_overspray_mass_kg = 0.0
+
+    def apply(self, step: RuntimeStep, *, target_position: Iterable[float], frame: SurfaceFrame) -> None:
+        self.injected_mass_kg += float(step.injected_mass_kg)
+        self.process_overspray_mass_kg += float(step.overspray_mass_kg)
+        if step.moments is None or step.deposited_mass_kg <= 0.0:
+            self.rejected_or_overspray_mass_kg += float(step.overspray_mass_kg)
+            return
+        target = np.asarray(tuple(target_position), dtype=float)
+        if target.shape != (3,) or not np.all(np.isfinite(target)):
+            raise ValueError("target_position must be finite length-3")
+        displacement = self.grid.positions - target
+        uv = np.column_stack((displacement @ frame.u_fan_major, displacement @ frame.v_fan_minor))
+        projected_area = self.grid.area_weights_m2 * np.abs(self.grid.normals @ frame.w_inward)
+        raw_weights = np.asarray(step.moments.density(uv), dtype=float) * projected_area
+        captured = float(np.sum(raw_weights))
+        limit = float(step.deposited_mass_kg) + max(self.tolerance_abs, self.tolerance_rel * float(step.deposited_mass_kg))
+        if not np.isfinite(captured) or captured < -self.tolerance_abs:
+            raise FiniteSurfaceQuadratureError(f"non-finite or negative finite-surface capture: {captured!r}")
+        if captured > limit:
+            raise FiniteSurfaceQuadratureError(
+                f"finite-surface capture {captured:.9g} kg exceeds S2 plane {step.deposited_mass_kg:.9g} kg"
+            )
+        self.grid.cumulative_mass_kg += raw_weights
+        self.plane_deposited_mass_kg += float(step.deposited_mass_kg)
+        self.surface_captured_mass_kg += captured
+        self.geometric_edge_loss_mass_kg += float(step.deposited_mass_kg) - captured
+
+    @property
+    def combined_residual_kg(self) -> float:
+        return self.injected_mass_kg - self.process_overspray_mass_kg - self.surface_captured_mass_kg - self.geometric_edge_loss_mass_kg
+
+    def as_dict(self) -> dict[str, float]:
+        return {
+            "injected_kg": self.injected_mass_kg,
+            "plane_deposited_kg": self.plane_deposited_mass_kg,
+            "surface_captured_kg": self.surface_captured_mass_kg,
+            "process_overspray_kg": self.process_overspray_mass_kg,
+            "geometric_edge_loss_kg": self.geometric_edge_loss_mass_kg,
+            "combined_closure_error_kg": self.combined_residual_kg,
+            "surface_integrated_kg": self.grid.integrated_mass_kg,
+            "surface_integration_error_kg": self.grid.integrated_mass_kg - self.surface_captured_mass_kg,
+            "rejected_or_overspray_kg": self.rejected_or_overspray_mass_kg,
+        }

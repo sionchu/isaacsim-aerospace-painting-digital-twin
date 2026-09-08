@@ -1,0 +1,23 @@
+# Full-panel film demo configuration.  The WFT result is estimated from
+# deposited mass and this configured liquid density.  DFT is illustrative only.
+process:
+  fan_incidence_deg: 7.5
+  stand_off_m: 0.24
+  mass_flow_kg_s: 0.00010
+  speed_candidates_m_s: [0.25, 0.50, 0.75, 1.00]
+  overlap_candidates: [0.40, 0.50, 0.60, 0.65]
+  overscan_sigma_multiplier: 1.5
+  target_cycle_duration_s: [90.0, 150.0]
+  liquid:
+    density_kg_m3: 1000.0
+    source: configs/air_assisted_spray.yaml
+  illustrative_dft:
+    enabled: true
+    volume_solids_fraction: 0.50
+    label: "Illustrative DFT estimate — assumed 50% volume solids"
+
+analysis:
+  shape: [121, 37]
+  y_range_m: [-1.5, 1.5]
+  z_range_m: [1.65, 2.55]
+  fps: 30.0

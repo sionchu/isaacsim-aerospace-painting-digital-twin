@@ -24,3 +24,9 @@ cache/
 *.obj
 *.fbx
 !scenes/README.md
+
+# Regenerable OpenFOAM solver output; ledger/maps/plots are kept under results/
+reference_cfd/openfoam_v2606/flat_plate/*/constant/polyMesh/
+reference_cfd/openfoam_v2606/flat_plate/*/postProcessing/
+reference_cfd/openfoam_v2606/flat_plate/*/0.[0-9]*/
+reference_cfd/openfoam_v2606/flat_plate/*/log.*

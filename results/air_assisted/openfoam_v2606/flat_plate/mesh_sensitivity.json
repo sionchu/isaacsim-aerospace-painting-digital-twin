@@ -1,0 +1,26 @@
+{
+  "schema_version": "level1_flat_plate_mesh_sensitivity_v1",
+  "meshes": {
+    "coarse": {
+      "cell_count": 6144,
+      "transfer_efficiency": 1.0,
+      "centroid_uv_m": [
+        -0.00039314965111193355,
+        -0.000306767338456356
+      ]
+    },
+    "medium": {
+      "cell_count": 27648,
+      "transfer_efficiency": 1.0,
+      "centroid_uv_m": [
+        -0.0004935400618006563,
+        -3.623301208662972e-05
+      ]
+    }
+  },
+  "difference_medium_minus_coarse": {
+    "transfer_efficiency_abs": 0.0,
+    "centroid_distance_m": 0.0002885603165762264
+  },
+  "pass": true
+}

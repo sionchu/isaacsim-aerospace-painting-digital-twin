@@ -1,0 +1,76 @@
+{
+  "schema_version": "level1_flat_plate_v1",
+  "solver": "sprayFoam",
+  "openfoam_version": "v2606",
+  "case": "coarse",
+  "latest_time_s": 0.06,
+  "mesh": {
+    "cell_count": 6144,
+    "point_count": 7225,
+    "target_wall_face_count": 256
+  },
+  "inputs": {
+    "mass_flow_kg_s": 0.0001,
+    "injection_duration_s": 0.01,
+    "expected_injected_mass_kg": 1e-06,
+    "air_velocity_m_s": 18.0,
+    "droplet_initial_speed_m_s": 12.0,
+    "diameter_bins_m": [
+      4e-05,
+      7e-05,
+      0.0001,
+      0.00015,
+      0.00022
+    ],
+    "mass_fraction": [
+      0.1,
+      0.2,
+      0.3,
+      0.25,
+      0.15
+    ]
+  },
+  "mass_ledger": {
+    "injected_kg": 1e-06,
+    "deposited_kg": 1.0000000000078e-06,
+    "escaped_kg": 0.0,
+    "evaporated_kg": 0.0,
+    "residual_kg": -7.800114653028038e-18,
+    "relative_balance_error": -7.800114653028038e-12,
+    "transfer_efficiency": 1.0,
+    "bin_injected_kg": {
+      "bin40um": 1e-07,
+      "bin70um": 2e-07,
+      "bin100um": 3e-07,
+      "bin150um": 2.5e-07,
+      "bin220um": 1.5e-07
+    }
+  },
+  "deposition": {
+    "centroid_u_m": -0.00039314965111193355,
+    "centroid_v_m": -0.000306767338456356,
+    "covariance_uv_m2": [
+      [
+        0.00040435884459094683,
+        -2.0336520228731712e-05
+      ],
+      [
+        -2.0336520228731695e-05,
+        0.0004176687404570849
+      ]
+    ],
+    "nonzero_face_count": 41,
+    "peak_areal_mass_kg_m2": 0.0003741889968355556
+  },
+  "gas_velocity": {
+    "min_m_s": 1.8964935535850869,
+    "max_m_s": 21.8211987918162,
+    "mean_m_s": 15.378587020051802,
+    "mid_plane_cell_count": 384
+  },
+  "quality": {
+    "solver_end_marker": true,
+    "mass_balance_pass": true,
+    "deposition_present": true
+  }
+}

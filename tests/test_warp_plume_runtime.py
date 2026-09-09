@@ -3,6 +3,7 @@ import pytest
 
 from aerospace_painting.warp_plume_runtime import (
     WarpBatchFrame,
+    WarpHitEvent,
     batch_mass_kg,
     benchmark_to_world,
     world_to_benchmark,
@@ -58,3 +59,19 @@ def test_w2_mass_input_validation():
         batch_mass_kg(0.0, 15.0)
     with pytest.raises(ValueError):
         batch_mass_kg(1.0e-4, 0.0)
+
+
+def test_actual_warp_hit_event_is_visual_only_and_provenanced():
+    event = WarpHitEvent(
+        batch_id=7,
+        particle_index=12,
+        time_s=0.125,
+        position_world_m=(1.0, 2.0, 3.0),
+        represented_mass_kg=1.0e-9,
+    )
+    payload = event.as_dict()
+    assert payload["source"] == "NVIDIA Warp actual mesh hit"
+    assert payload["visual_only"] is True
+    assert payload["adds_mass"] is False
+    assert payload["adds_deposition"] is False
+    assert payload["position_world_m"] == [1.0, 2.0, 3.0]

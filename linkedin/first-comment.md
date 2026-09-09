@@ -2,7 +2,16 @@ GitHub repository:
 https://github.com/sionchu/isaacsim-aerospace-painting-digital-twin
 
 Demo video:
-https://github.com/sionchu/isaacsim-aerospace-painting-digital-twin/blob/feat/air-assisted-spray-physics/media/air_assisted_spray/isaac_warp_plume_demo.mp4
+https://github.com/sionchu/isaacsim-aerospace-painting-digital-twin/blob/feat/cfd-field-visualization/media/air_assisted_spray/isaac_spray_analysis_demo.mp4
+
+Technical stills:
+
+- https://github.com/sionchu/isaacsim-aerospace-painting-digital-twin/blob/feat/cfd-field-visualization/media/air_assisted_spray/isaac_cfd_flow_field.png
+- https://github.com/sionchu/isaacsim-aerospace-painting-digital-twin/blob/feat/cfd-field-visualization/media/air_assisted_spray/isaac_cfd_warp_combined.png
+- https://github.com/sionchu/isaacsim-aerospace-painting-digital-twin/blob/feat/cfd-field-visualization/media/air_assisted_spray/isaac_cfd_flow_slice.png
+- https://github.com/sionchu/isaacsim-aerospace-painting-digital-twin/blob/feat/cfd-field-visualization/media/air_assisted_spray/isaac_spray_analysis_closeup.png
+- https://github.com/sionchu/isaacsim-aerospace-painting-digital-twin/blob/feat/cfd-field-visualization/media/air_assisted_spray/isaac_spray_analysis_combined.png
+- https://github.com/sionchu/isaacsim-aerospace-painting-digital-twin/blob/feat/cfd-field-visualization/media/air_assisted_spray/isaac_progressive_wft.png
 
 Technical references:
 

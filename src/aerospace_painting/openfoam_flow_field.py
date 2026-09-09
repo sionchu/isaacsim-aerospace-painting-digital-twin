@@ -292,6 +292,86 @@ class OpenFOAMFlowField:
         return self.grid_centres_m[index, :, :, :], self.speed_magnitude_m_s[index, :, :], index
 
 
+@dataclass(frozen=True)
+class CFDDirectionReport:
+    """Numerical direction gate for a local OpenFOAM reference-field ROI."""
+
+    roi_min_m: tuple[float, float, float]
+    roi_max_m: tuple[float, float, float]
+    sample_count: int
+    mean_axial_velocity_m_s: float
+    min_axial_velocity_m_s: float
+    max_axial_velocity_m_s: float
+    positive_axial_fraction: float
+    status: str
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "roi_min_m": list(self.roi_min_m),
+            "roi_max_m": list(self.roi_max_m),
+            "sample_count": int(self.sample_count),
+            "mean_axial_velocity_m_s": float(self.mean_axial_velocity_m_s),
+            "min_axial_velocity_m_s": float(self.min_axial_velocity_m_s),
+            "max_axial_velocity_m_s": float(self.max_axial_velocity_m_s),
+            "positive_axial_fraction": float(self.positive_axial_fraction),
+            "status": self.status,
+        }
+
+
+def clip_flow_roi(
+    field: OpenFOAMFlowField,
+    roi_min_m: Iterable[float],
+    roi_max_m: Iterable[float],
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Return solved U samples clipped to one local benchmark process ROI."""
+
+    lower = np.asarray(tuple(roi_min_m), dtype=np.float64)
+    upper = np.asarray(tuple(roi_max_m), dtype=np.float64)
+    if lower.shape != (3,) or upper.shape != (3,) or not np.all(np.isfinite(lower)) or not np.all(np.isfinite(upper)):
+        raise ValueError("ROI bounds must be finite length-three vectors")
+    if not np.all(lower < upper):
+        raise ValueError("ROI lower bounds must be less than upper bounds")
+    points = field.grid_centres_m.reshape(-1, 3)
+    velocities = field.velocity_m_s.reshape(-1, 3)
+    speeds = field.speed_magnitude_m_s.reshape(-1)
+    mask = np.all((points >= lower[None, :]) & (points <= upper[None, :]), axis=1)
+    return points[mask], velocities[mask], speeds[mask], mask
+
+
+def evaluate_cfd_direction(
+    field: OpenFOAMFlowField,
+    *,
+    roi_min_m: Iterable[float],
+    roi_max_m: Iterable[float],
+    spray_axis_world: Iterable[float],
+    u_world: Iterable[float],
+    v_world: Iterable[float],
+    w_world: Iterable[float],
+) -> CFDDirectionReport:
+    """Evaluate ``dot(U_world, spray_axis_world)`` in a clipped jet-core ROI."""
+
+    _, velocities, _, _ = clip_flow_roi(field, roi_min_m, roi_max_m)
+    if len(velocities) == 0:
+        raise ValueError("CFD direction ROI contains no solved field samples")
+    axis = _unit(spray_axis_world, "spray_axis_world")
+    world_velocity = benchmark_vectors_to_world(velocities, u_world, v_world, w_world)
+    axial = np.asarray(world_velocity, dtype=np.float64) @ axis
+    positive_fraction = float(np.mean(axial > 0.0))
+    status = "CFD_DIRECTION_PASS" if bool(np.all(axial > 0.0)) else "BLOCKED_CFD_DIRECTION"
+    lower = tuple(float(value) for value in roi_min_m)
+    upper = tuple(float(value) for value in roi_max_m)
+    return CFDDirectionReport(
+        roi_min_m=lower,
+        roi_max_m=upper,
+        sample_count=int(len(axial)),
+        mean_axial_velocity_m_s=float(np.mean(axial)),
+        min_axial_velocity_m_s=float(np.min(axial)),
+        max_axial_velocity_m_s=float(np.max(axial)),
+        positive_axial_fraction=positive_fraction,
+        status=status,
+    )
+
+
 def benchmark_points_to_world(points_m: np.ndarray, origin_world_m: Iterable[float], u_world: Iterable[float], v_world: Iterable[float], w_world: Iterable[float]) -> np.ndarray:
     """Map benchmark +X/+Y/+Z into the current local process frame."""
 

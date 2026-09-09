@@ -29,6 +29,36 @@ class WarpPlumeUnavailable(RuntimeError):
     """Raised when native CUDA Warp execution is requested but unavailable."""
 
 
+@dataclass(frozen=True)
+class WarpHitEvent:
+    """One actual Warp mesh hit exposed for visual-only impact markers."""
+
+    batch_id: int
+    particle_index: int
+    time_s: float
+    position_world_m: tuple[float, float, float]
+    represented_mass_kg: float
+    previous_position_world_m: tuple[float, float, float] | None = None
+    source: str = "NVIDIA Warp actual mesh hit"
+    visual_only: bool = True
+    adds_mass: bool = False
+    adds_deposition: bool = False
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "batch_id": int(self.batch_id),
+            "particle_index": int(self.particle_index),
+            "time_s": float(self.time_s),
+            "position_world_m": list(self.position_world_m),
+            "represented_mass_kg": float(self.represented_mass_kg),
+            "previous_position_world_m": list(self.previous_position_world_m) if self.previous_position_world_m is not None else None,
+            "source": self.source,
+            "visual_only": bool(self.visual_only),
+            "adds_mass": bool(self.adds_mass),
+            "adds_deposition": bool(self.adds_deposition),
+        }
+
+
 def batch_mass_kg(mass_flow_kg_s: float, cadence_hz: float) -> float:
     """Return the exact represented mass of one quasi-steady emission batch."""
 
@@ -180,6 +210,7 @@ class _Batch:
     escaped: Any
     carrier_out_of_field: Any
     deposition_mass: Any
+    deposition_time_s: Any
     last_integrated_time_s: float
     initial_tool_origin_m: np.ndarray
     initial_tool_u: np.ndarray
@@ -187,6 +218,7 @@ class _Batch:
     initial_tool_w: np.ndarray
     max_tcp_translation_m: float = 0.0
     max_tcp_orientation_deg: float = 0.0
+    reported_deposited_indices: set[int] = field(default_factory=set, repr=False)
 
 
 @dataclass
@@ -224,6 +256,10 @@ class WarpPlumeRuntime:
     _max_origin_offset_m: float = field(default=0.0, init=False, repr=False)
     _max_target_plane_error_m: float = field(default=0.0, init=False, repr=False)
     _max_active_particles: int = field(default=0, init=False, repr=False)
+    _hit_events: list[WarpHitEvent] = field(default_factory=list, init=False, repr=False)
+    _actual_hit_count: int = field(default=0, init=False, repr=False)
+    _hit_event_sample_count: int = field(default=0, init=False, repr=False)
+    hit_event_stride: int = 64
 
     def __post_init__(self) -> None:
         if wp is None or mesh_query_ray is None or _advance_particles is None:
@@ -312,6 +348,7 @@ class WarpPlumeRuntime:
             escaped=wp.zeros(n, dtype=wp.bool, device=device_obj),
             carrier_out_of_field=wp.zeros(n, dtype=wp.bool, device=device_obj),
             deposition_mass=wp.zeros(config.target_resolution * config.target_resolution, dtype=wp.float32, device=device_obj),
+            deposition_time_s=wp.zeros(n, dtype=wp.float32, device=device_obj),
             last_integrated_time_s=float(created_time_s),
             initial_tool_origin_m=np.asarray(frame.origin_world_m, dtype=np.float64).copy(),
             initial_tool_u=np.asarray(frame.u_world, dtype=np.float64).copy(),
@@ -341,6 +378,7 @@ class WarpPlumeRuntime:
                 batch.escaped,
                 batch.carrier_out_of_field,
                 batch.deposition_mass,
+                batch.deposition_time_s,
                 self._mesh.id,
                 wp.vec3f(*origin),
                 wp.vec3f(*x_axis),
@@ -501,7 +539,11 @@ class WarpPlumeRuntime:
         observe_axes = actual_tool_axes if actual_tool_axes is not None else (frame.u_world, frame.v_world, frame.w_world)
         self.observe_live_tool(current, actual_tool_origin_m if actual_tool_origin_m is not None else frame.origin_world_m, *observe_axes)
         self._last_time_s = current
-        active_count = sum(int(np.count_nonzero(batch.alive.numpy())) for batch in self._active)
+        active_count = 0
+        for batch in self._active:
+            alive = batch.alive.numpy().astype(bool)
+            released = batch.released.numpy().astype(bool)
+            active_count += int(np.count_nonzero(alive | (~released)))
         self._max_active_particles = max(self._max_active_particles, active_count)
 
     def _advance_to(self, time_s: float) -> None:
@@ -510,6 +552,7 @@ class WarpPlumeRuntime:
         for batch in self._active:
             self._advance_batch_to(batch, time_s)
         wp.synchronize_device(wp.get_device(self.device))
+        self._collect_hit_events()
         remaining: list[_Batch] = []
         for batch in self._active:
             if time_s >= batch.created_time_s + self.maximum_flight_s - 1.0e-10:
@@ -518,22 +561,79 @@ class WarpPlumeRuntime:
                 remaining.append(batch)
         self._active = remaining
 
+    def _collect_hit_events(self) -> None:
+        """Record newly deposited particles from the actual Warp device state."""
+
+        for batch in self._active:
+            deposited = batch.deposited.numpy().astype(bool)
+            if not np.any(deposited):
+                continue
+            positions = batch.positions.numpy()
+            previous_positions = batch.previous_positions.numpy()
+            deposition_times = batch.deposition_time_s.numpy()
+            for particle_index in np.flatnonzero(deposited):
+                particle_index = int(particle_index)
+                if particle_index in batch.reported_deposited_indices:
+                    continue
+                batch.reported_deposited_indices.add(particle_index)
+                self._actual_hit_count += 1
+                if self.hit_event_stride < 1 or (int(batch.batch_id) * 1_000_000 + particle_index) % int(self.hit_event_stride) != 0:
+                    continue
+                world = benchmark_to_world(positions[particle_index][None, :], batch.frame)[0]
+                previous_world = benchmark_to_world(previous_positions[particle_index][None, :], batch.frame)[0]
+                self._hit_events.append(
+                    WarpHitEvent(
+                        batch_id=int(batch.batch_id),
+                        particle_index=particle_index,
+                        time_s=float(batch.created_time_s + float(deposition_times[particle_index])),
+                        position_world_m=tuple(float(value) for value in world),
+                        represented_mass_kg=float(batch.samples_mass_kg[particle_index]),
+                        previous_position_world_m=tuple(float(value) for value in previous_world),
+                    )
+                )
+                self._hit_event_sample_count += 1
+
+    def drain_hit_events(self) -> list[WarpHitEvent]:
+        """Return and clear actual Warp hit events observed so far."""
+
+        events = list(self._hit_events)
+        self._hit_events.clear()
+        return events
+
+    def active_particles(self) -> tuple[np.ndarray, np.ndarray]:
+        """Return stable IDs and actual current/staged Warp positions.
+
+        A newly emitted batch is staged with ``released=False`` until its
+        first kernel substep.  Those positions are already real Warp particle
+        state at the emission timestamp and are included for one synchronized
+        render sample, so a short-lived batch is not invisible between native
+        frames.  Deposited/escaped particles remain excluded.
+        """
+
+        if not self._active:
+            return np.empty((0,), dtype=np.int64), np.empty((0, 3), dtype=np.float32)
+        wp.synchronize_device(wp.get_device(self.device))
+        particle_ids: list[int] = []
+        positions_world: list[np.ndarray] = []
+        for batch in self._active:
+            alive = batch.alive.numpy().astype(bool)
+            released = batch.released.numpy().astype(bool)
+            visible = alive | (~released)
+            if not np.any(visible):
+                continue
+            indices = np.flatnonzero(visible)
+            local = batch.positions.numpy()[indices]
+            world = benchmark_to_world(local, batch.frame).astype(np.float32)
+            particle_ids.extend(int(batch.batch_id) * 1_000_000 + int(index) for index in indices)
+            positions_world.append(world)
+        if not positions_world:
+            return np.empty((0,), dtype=np.int64), np.empty((0, 3), dtype=np.float32)
+        return np.asarray(particle_ids, dtype=np.int64), np.concatenate(positions_world, axis=0)
+
     def active_world_positions(self) -> np.ndarray:
         """Return only currently alive particles in world coordinates."""
 
-        if not self._active:
-            return np.empty((0, 3), dtype=np.float32)
-        wp.synchronize_device(wp.get_device(self.device))
-        chunks: list[np.ndarray] = []
-        for batch in self._active:
-            alive = batch.alive.numpy().astype(bool)
-            if not np.any(alive):
-                continue
-            local = batch.positions.numpy()[alive]
-            chunks.append(benchmark_to_world(local, batch.frame).astype(np.float32))
-        if not chunks:
-            return np.empty((0, 3), dtype=np.float32)
-        return np.concatenate(chunks, axis=0)
+        return self.active_particles()[1]
 
     def shutdown(self, time_s: float | None = None) -> None:
         """Close all batches at the end of a native run."""
@@ -542,6 +642,7 @@ class WarpPlumeRuntime:
             self._advance_to(float(time_s))
         else:
             wp.synchronize_device(wp.get_device(self.device))
+            self._collect_hit_events()
         for batch in self._active:
             self._close_batch(batch, reason="runtime_shutdown")
         self._active.clear()
@@ -580,6 +681,9 @@ class WarpPlumeRuntime:
             "max_tcp_orientation_deg": float(max((row["max_tcp_orientation_deg"] for row in self._closed), default=0.0)),
             "max_target_plane_error_m": float(self._max_target_plane_error_m),
             "max_visual_origin_offset_m": float(self._max_origin_offset_m),
+            "actual_hit_event_count": int(self._actual_hit_count),
+            "hit_event_sample_count": int(self._hit_event_sample_count),
+            "pending_hit_event_count": len(self._hit_events),
             "carrier": {
                 "model_id": str(self.vector_carrier.model_id),
                 "interpolation_method": str(self.vector_carrier.interpolation_method),

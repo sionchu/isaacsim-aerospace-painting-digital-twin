@@ -196,6 +196,7 @@ def _create_plume_guide(stage):
     prim = points.GetPrim()
     prim.CreateAttribute("warp:diagnosticVisualGuide", Sdf.ValueTypeNames.Bool).Set(True)
     prim.CreateAttribute("warp:addsMass", Sdf.ValueTypeNames.Bool).Set(False)
+    prim.CreateAttribute("warp:addsDeposition", Sdf.ValueTypeNames.Bool).Set(False)
     prim.CreateAttribute("warp:source", Sdf.ValueTypeNames.String).Set("W1.3 live point-cloud readability guide")
     prim.CreateAttribute("warp:visualOnly", Sdf.ValueTypeNames.Bool).Set(True)
     UsdGeom.Imageable(prim).CreateVisibilityAttr().Set(UsdGeom.Tokens.invisible)
@@ -510,8 +511,23 @@ def run(args: argparse.Namespace) -> int:
         def _summary(values):
             return {"min": float(np.min(values)) if values else None, "max": float(np.max(values)) if values else None, "mean": float(np.mean(values)) if values else None, "p95": float(np.percentile(values, 95.0)) if values else None}
         warp_ledger = warp_runtime.as_dict() if warp_runtime is not None else None
+        warp_batch_count = int(warp_ledger.get("closed_batch_count", 0)) if warp_ledger else 0
+        warp_particles_per_batch = int(warp_ledger.get("particle_count_per_batch", 0)) if warp_ledger else 0
+        warp_particle_histories = warp_batch_count * warp_particles_per_batch
+        warp_reporting = {
+            "batch_count": warp_batch_count,
+            "particles_per_batch": warp_particles_per_batch,
+            "particle_histories": warp_particle_histories,
+        }
         if warp_ledger is not None:
-            warp_ledger["visual_guide"] = {"prim": WARP_GUIDE_PRIM, "adds_mass": False, "purpose": "legibility only for sub-pixel live Warp points"}
+            warp_ledger["visual_guide"] = {
+                "prim": WARP_GUIDE_PRIM,
+                "adds_mass": False,
+                "adds_deposition": False,
+                "visual_only": True,
+                "purpose": "legibility only for sub-pixel live Warp points",
+                "public_disclosure": "The native viewer renders actual live Warp particle positions and also uses a visual-only plume guide to keep the sub-pixel transport readable in the final 1080p capture. The guide does not affect transport, deposition, forces, or mass accounting.",
+            }
         metrics = {
             "status": status,
             "schema_version": "full_panel_film_metrics_v1",
@@ -526,11 +542,12 @@ def run(args: argparse.Namespace) -> int:
             "illustrative_dft": {"enabled": True, "volume_solids_fraction": 0.50, "stats": wft["dft_um"], "label": "Illustrative DFT estimate — assumed 50% volume solids; synthetic_demo_only"},
             "planner_vs_native": planner_compare,
             "warp_visual_layer": warp_ledger,
+            "warp_reporting": warp_reporting,
             "motion": {"measured_incidence_deg": _summary(measured_incidence), "measured_minor_incidence_deg": _summary(measured_minor), "stand_off_m": _summary(stand_offs), "tcp_error_m": _summary(tcp_errors), "minor_coherence_violations": violation_count},
-            "performance": {"simulated_duration_s": plan.duration_s, "frame_count": total_frames, "wall_seconds": performance_elapsed, "runtime_fps": total_frames / performance_elapsed if performance_elapsed else None, "real_time_ratio": plan.duration_s / performance_elapsed if performance_elapsed else None, "s2_update": _summary(s2_seconds), "warp_update": _summary(warp_seconds), "warp_peak_active_particles": warp_ledger.get("max_active_particles") if warp_ledger else None, "warp_parcel_histories": warp_ledger.get("closed_batch_count") if warp_ledger else 0, "grid_vertices": int(len(grid.positions))},
+            "performance": {"simulated_duration_s": plan.duration_s, "frame_count": total_frames, "wall_seconds": performance_elapsed, "runtime_fps": total_frames / performance_elapsed if performance_elapsed else None, "real_time_ratio": plan.duration_s / performance_elapsed if performance_elapsed else None, "s2_update": _summary(s2_seconds), "warp_update": _summary(warp_seconds), "warp_peak_active_particles": warp_ledger.get("max_active_particles") if warp_ledger else None, "warp_batch_count": warp_batch_count, "warp_particles_per_batch": warp_particles_per_batch, "warp_particle_histories": warp_particle_histories, "grid_vertices": int(len(grid.positions))},
             "media": media,
             "capture": {"resolution": list(RESOLUTION), "source_frame_count": len(captured_paths), "source_framerate_hz": FPS, "time_compressed": True, "final_overlay_hold_s": 8.0},
-            "fidelity_boundary": "The full-panel demo predicts surface deposited mass and estimated wet-film thickness from the CFD-calibrated S2 deposition model while visualizing GPU Lagrangian droplet transport with NVIDIA Warp. WFT is derived from deposited mass and configured liquid density, not measured; DFT is an illustrative assumption, not validated paint data. The moving Warp layer remains a quasi-steady local tangent-patch visualization.",
+            "fidelity_boundary": "The full-panel demo predicts surface deposited mass and estimated wet-film thickness from the CFD-calibrated S2 deposition model while visualizing GPU Lagrangian droplet transport with NVIDIA Warp. The native viewer renders actual live Warp particle positions and a separate visual-only plume guide; the guide does not affect transport, deposition, forces, or mass accounting. WFT is derived from deposited mass and configured liquid density, not measured; DFT is an illustrative assumption, not validated paint data. The moving Warp layer remains quasi-steady local tangent-patch transport.",
             "generated_at_epoch_s": time.time(),
         }
         RESULT_DIR.mkdir(parents=True, exist_ok=True)

@@ -33,7 +33,7 @@
       "total_mass_kg": 0.010388687225235022
     }
   },
-  "fidelity_boundary": "The full-panel demo predicts surface deposited mass and estimated wet-film thickness from the CFD-calibrated S2 deposition model while visualizing GPU Lagrangian droplet transport with NVIDIA Warp. WFT is derived from deposited mass and configured liquid density, not measured; DFT is an illustrative assumption, not validated paint data. The moving Warp layer remains a quasi-steady local tangent-patch visualization.",
+  "fidelity_boundary": "The full-panel demo predicts surface deposited mass and estimated wet-film thickness from the CFD-calibrated S2 deposition model while visualizing GPU Lagrangian droplet transport with NVIDIA Warp. The native viewer renders actual live Warp particle positions and a separate visual-only plume guide; the guide does not affect transport, deposition, forces, or mass accounting. WFT is derived from deposited mass and configured liquid density, not measured; DFT is an illustrative assumption, not validated paint data. The moving Warp layer remains quasi-steady local tangent-patch transport.",
   "generated_at_epoch_s": 1788892458.3298569,
   "illustrative_dft": {
     "enabled": true,
@@ -146,7 +146,9 @@
     },
     "simulated_duration_s": 119.44337443574842,
     "wall_seconds": 1004.6691695000045,
-    "warp_parcel_histories": 1722,
+    "warp_batch_count": 1722,
+    "warp_particle_histories": 4305000,
+    "warp_particles_per_batch": 2500,
     "warp_peak_active_particles": 2500,
     "warp_update": {
       "max": 0.12713959999382496,
@@ -204,6 +206,11 @@
     ],
     "source_path": "assets/course/generic_aircraft/generic_panel.usda",
     "source_sha256": "dc1135a9cd9584fa077aa6ad54eafec4aaae0890780f30bb6bcda9641130e048"
+  },
+  "warp_reporting": {
+    "batch_count": 1722,
+    "particle_histories": 4305000,
+    "particles_per_batch": 2500
   },
   "warp_visual_layer": {
     "active_batch_count": 0,
@@ -38136,9 +38143,12 @@
     "rejection_reasons": {},
     "relative_balance_error": 2.7955038593702118e-14,
     "visual_guide": {
+      "adds_deposition": false,
       "adds_mass": false,
       "prim": "/World/AerospacePaintingCell/WarpSprayPlumeGuide",
-      "purpose": "legibility only for sub-pixel live Warp points"
+      "public_disclosure": "The native viewer renders actual live Warp particle positions and also uses a visual-only plume guide to keep the sub-pixel transport readable in the final 1080p capture. The guide does not affect transport, deposition, forces, or mass accounting.",
+      "purpose": "legibility only for sub-pixel live Warp points",
+      "visual_only": true
     }
   }
 }

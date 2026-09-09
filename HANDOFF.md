@@ -46,21 +46,86 @@ physics.
 
 ## Current level
 
-`S2 + native runtime + Warp W1.3/W2` — S2 remains validated on the held-out
-7.5-degree OpenFOAM v2606 medium case.  W1.3 replaces the failed W1.2
-transformed-domain path with a fixed-grid full-vector carrier and passes a blind
-10-degree carrier/deposition hold-out.  Native W2 runs that validated carrier
-with Warp Lagrangian transport in the actual Isaac Sim painting scene while
-keeping S2 as the authoritative deposition overlay.
+`FULL_PANEL_PORTFOLIO_READY` — the full-panel native process is the public
+release path.  S2 remains the authoritative deposition layer, W1.3 supplies
+the validated fixed-grid carrier, and the native Warp integration provides
+quasi-steady local tangent-patch transport in the Isaac Sim scene.
 
 ## Next checkpoint
 
-The release-candidate documentation and reviewed media are ready for a pull
-request review.  No new CFD, Isaac Lab, reinforcement-learning, or production
-coating work is implied by this checkpoint.
+`PR → main review → merge → publish`.  No new CFD, Isaac Lab,
+reinforcement-learning, or production coating work is implied by this
+checkpoint.
 
 The checkpoint sections below retain the validation journey as historical
-evidence.  The W1.3 and W2 sections at the end are the current release path.
+evidence.  The full-panel release section at the end is the current release
+path.
+
+## Current full-panel release checkpoint (2026-09-09)
+
+### Result
+
+`FULL_PANEL_PORTFOLIO_READY`.  The committed native run remains
+`FULL_PANEL_FILM_ESTIMATION_VALIDATED`; this release fix changes reporting and
+public wording only.  No native Isaac rerun was performed.
+
+### Corrected Warp reporting
+
+The reporting artifact now keeps the reconstructable runtime fields together:
+
+- `batch_count = 1722`
+- `particles_per_batch = 2500`
+- `particle_histories = 4305000`
+- `warp_batch_count = 1722`
+- `warp_particles_per_batch = 2500`
+- `warp_particle_histories = 4305000`
+
+The derivation is `closed_batch_count * particle_count_per_batch`, taken from
+the committed native runtime ledger.  The source artifact is
+`results/air_assisted/full_panel_film/full_panel_metrics.json`; the generator
+now computes the same fields from `warp_runtime.as_dict()`.
+
+### Public visual disclosure
+
+The actual live Warp positions are rendered at
+`/World/AerospacePaintingCell/WarpSprayPlume`.  The separate
+`/World/AerospacePaintingCell/WarpSprayPlumeGuide` is visual-only with
+`adds_mass = false`, `adds_deposition = false`, and `visual_only = true`.
+The public wording states that the guide does not affect transport,
+deposition, forces, or mass accounting, so the visible orange plume is not
+described as all physical Warp parcels.
+
+### Public process result
+
+- Surface area: `2.846638288 m²`
+- Passes: `28`
+- Estimated WFT mean: `3.649458 µm`
+- Estimated WFT P05–P95: `2.120723–3.903405 µm`
+- Estimated WFT maximum: `3.907579 µm`
+- Estimated WFT standard deviation: `0.459557 µm`
+- Estimated WFT CV: `12.5925%`
+- Area within ±20% of predicted mean: `94.5946%`
+- Full-panel combined mass residual: `-8.8839526e-16 kg`
+
+Estimated WFT is `deposited mass / (surface area × configured liquid density)`
+and is model-derived, not measured.  DFT remains secondary and is labeled
+`Illustrative DFT estimate — assumed 50% volume solids; synthetic_demo_only`.
+
+### Verification evidence
+
+- `python -m pytest -q` → `49 passed, 2 skipped`
+- `python -m compileall -q src scripts tests` → passed
+- `git diff --check` → passed
+- Reporting arithmetic → `1722 × 2500 = 4305000`
+- Public safety scan → no machine-specific paths, credential material, or uncommitted USD
+
+### Release media
+
+- Hero: `media/air_assisted_spray/isaac_full_panel_film_hero.png`
+- Demo: `media/air_assisted_spray/isaac_full_panel_film_demo.mp4`
+- Final: `media/air_assisted_spray/isaac_full_panel_film_final.png`
+
+The former W2 media remain supporting and historical evidence.
 
 ## Native S2 runtime checkpoint (2026-09-08)
 
@@ -95,8 +160,8 @@ media must be recorded; and portable verification must remain Isaac-free.
   Isaac Sim. The validated branch/base remains
   `feat/air-assisted-spray-physics` / `ae724ac534c89a8d8ee9a3093608e6efcbea878c`.
 - Native Isaac Sim version `6.0.1-rc.7+release.42383.32955d8d.gl` executed on
-  the RTX 4070 Ti. The selected stage is
-  `../visual_prototypes/scenes/aircraft_painting_cell.usda`.
+  the RTX 4070 Ti. The selected stage is the composed aircraft painting-cell
+  scene.
 - Actual prims resolved: root `/World/AerospacePaintingCell`, carriage
   `/World/AerospacePaintingCell/LinearTrack/Carriage`, robot
   `/World/AerospacePaintingCell/LinearTrack/Carriage/PaintRobot/FANUC`,
@@ -180,9 +245,8 @@ None for this checkpoint.
 - `media/air_assisted_spray/isaac_s2_runtime_hero.png`
 - `media/air_assisted_spray/isaac_s2_runtime_deposition.png`
 - `media/air_assisted_spray/isaac_s2_runtime_demo.mp4`
-- Shared motion helper updated outside this repository at
-  `../visual_prototypes/aerospace_process_motion.py` to expose the S2 stand-off
-  and incidence frame while preserving its existing joint motion.
+- The shared motion helper exposes the S2 stand-off and incidence frame while
+  preserving its existing joint motion.
 
 ### Next concrete action
 
@@ -253,10 +317,11 @@ acceptance gate; this is not promoted to a transport validation.
 
 ### Verification evidence
 
-- Native probe: `C:\isaacsim\python.bat` reported `WARP_VERSION 1.13.0`,
+- Native probe through the Isaac Sim launcher reported `WARP_VERSION 1.13.0`,
   devices `['cpu', 'cuda:0']`, `DEFAULT_DEVICE cuda:0`, and `CUDA_COUNT 1`.
-- CUDA validation command:
-  `C:\isaacsim\python.bat scripts/validate_warp_spray.py --low-particles-per-bin 500 --high-particles-per-bin 2000`.
+- CUDA validation command: `scripts/validate_warp_spray.py
+  --low-particles-per-bin 500 --high-particles-per-bin 2000` through the Isaac
+  Sim launcher.
 - The run executed all six low/high angle cases, printed the Warp CUDA device,
   and produced zero mass residual for every case. The 7.5° high case measured
   mean step `0.000265265 s`, p95 `0.000743080 s`, wall `0.320110 s`, 1,200

@@ -1,18 +1,19 @@
 # Aerospace Robotic Painting Digital Twin with Isaac Sim, OpenFOAM, and NVIDIA Warp
 
-This portfolio project connects robot motion, CFD reference data, a fast
-deposition surrogate, and GPU droplet transport in one aerospace painting
-digital-twin workflow.  Native Isaac Sim provides the moving robot, scene, and
-process view; OpenFOAM v2606 supplies the offline reference; S2 and Warp make
-the validated process layers usable at runtime.
+A full-panel robotic painting digital twin combining OpenFOAM-referenced
+process modeling, CFD-calibrated S2 deposition, GPU Warp droplet transport,
+native Isaac Sim robot/process execution, and surface-wide estimated wet-film
+thickness.
 
-![Native Isaac Sim W2 Warp plume](media/air_assisted_spray/isaac_warp_plume_hero.png)
+## Full-panel release
 
-*Native Isaac Sim scene with the actual robot/TCP motion, active Warp plume,
-and the S2 deposition overlay.*
+![Full-panel Isaac Sim film hero](media/air_assisted_spray/isaac_full_panel_film_hero.png)
 
-[Watch the 24-second native W2 demo](media/air_assisted_spray/isaac_warp_plume_demo.mp4)
-or inspect the [W2 deposition view](media/air_assisted_spray/isaac_warp_plume_deposition.png).
+*Public hero: the native Isaac Sim full-panel process, active Warp transport
+view, and surface-wide estimated WFT overlay.*
+
+[Watch the full-panel demo](media/air_assisted_spray/isaac_full_panel_film_demo.mp4),
+or inspect the [final full-panel WFT view](media/air_assisted_spray/isaac_full_panel_film_final.png).
 
 ## What the release candidate demonstrates
 
@@ -39,17 +40,37 @@ plume context; it does not replace the S2 surface deposition overlay.
 
 ## Validation highlights
 
-The values below are read from the checked-in JSON evidence:
+The compact release table below uses the checked-in validation artifacts:
 
-| Checkpoint | Measured result |
+| Layer | Result |
 |---|---|
-| S2 7.5° hold-out | Centroid distance **0.403 mm**, field correlation **0.93065**, field NRMSE **0.03316** |
-| Warp W1.3 blind 10° hold-out | Carrier normalized vector RMSE **0.02580**, carrier correlation **0.99950**; deposition centroid error **1.585 mm**, correlation **0.95043**, NRMSE **0.02581** |
-| Native W2 runtime | **225** Warp batches, **2,500** parcels/batch, Warp mass-ledger residual **5.21e-18 kg**, S2 surface-map closure **1.95e-18 kg** |
+| S2 7.5° hold-out | Centroid error **0.403 mm**, correlation **0.93065**, NRMSE **0.03316** |
+| Warp W1.3 blind 10° | Carrier NRMSE **0.02580**, carrier correlation **0.99950**, deposition centroid **1.585 mm** |
+| Full-panel process | **28 passes** over **2.8466 m²** |
+| Estimated WFT | Mean **3.649 µm**, P05–P95 **2.121–3.903 µm**, CV **12.6%** |
+| Native Warp runtime | **1,722 batches × 2,500 parcels = 4,305,000 computational parcel histories** |
+| Mass accounting | Full-panel combined residual **~8.88e-16 kg** |
 
-Evidence: [S2 hold-out](results/air_assisted/s2/holdout_validation.json),
-[W1.3 validation](results/air_assisted/warp_w1_3/validation_summary.json), and
-[native W2 metrics](results/air_assisted/isaac_warp_runtime/runtime_metrics.json).
+Evidence: [full-panel metrics](results/air_assisted/full_panel_film/full_panel_metrics.json),
+[full-panel plan](results/air_assisted/full_panel_film/full_panel_plan.json),
+[S2 hold-out](results/air_assisted/s2/holdout_validation.json), and
+[W1.3 validation](results/air_assisted/warp_w1_3/validation_summary.json).
+
+## Full-panel process and estimated WFT
+
+The native process executes 28 passes over a `2.846638288 m²` panel.  Estimated
+WFT is computed as:
+
+`Estimated WFT = deposited mass / (surface area × configured liquid density)`
+
+Estimated WFT is model-derived, not measured.  The committed full-panel result
+has mean `3.649458 µm`, P05 `2.120723 µm`, P95 `3.903405 µm`, maximum
+`3.907579 µm`, standard deviation `0.459557 µm`, CV `12.5925%`, and
+`94.5946%` of area within ±20% of the predicted mean.
+
+DFT is secondary: **Illustrative DFT estimate**, assumed volume solids = 50%,
+`synthetic_demo_only`.  The illustrative mean `1.824729 µm` is not validated
+aircraft coating thickness.
 
 ## What is computed in the native viewer
 
@@ -58,21 +79,27 @@ Evidence: [S2 hold-out](results/air_assisted/s2/holdout_validation.json),
   OpenFOAM-anchor model.
 - Droplets follow actual Warp Lagrangian trajectories with drag, gravity, and
   mesh-collision handling.
-- Plume points are the active computational positions, enlarged only for
-  visibility.
 - The surface overlay is the S2 CFD-calibrated deposited-mass density map.
 
-The moving-scene Warp transport uses a quasi-steady local tangent-patch
-approximation.  The W2 metrics record transport and ledger behavior; projected
-Warp deposition is not used as the authoritative surface overlay.
+The native viewer renders actual live Warp particle positions and also uses a
+visual-only plume guide to keep the sub-pixel transport readable in the final
+1080p capture.  The guide does not affect transport, deposition, forces, or
+mass accounting.  The actual positions are at
+`/World/AerospacePaintingCell/WarpSprayPlume`; the guide is
+`/World/AerospacePaintingCell/WarpSprayPlumeGuide` with `adds_mass = false`,
+`adds_deposition = false`, and `visual_only = true`.  The visible orange plume
+is therefore a composite presentation, and not every visible orange point is a
+physical Warp parcel.
+
+The moving-scene Warp transport is quasi-steady local tangent-patch transport,
+not online CFD.  The S2 surface deposition overlay remains authoritative.
 
 ## Fidelity boundary
 
-This project does not claim primary atomization, breakup, evaporation,
-stochastic turbulent dispersion, splash/rebound, wall-film transport, curing,
-physical film thickness, or production coating quality.  Deposited mass and
-normalized deposited-mass density are not paint thickness.  See the canonical
-[spray fidelity boundary](docs/spray_fidelity_boundary.md).
+This project does not validate primary atomization, breakup, evaporation,
+stochastic turbulence, splash/rebound, wall-film transport, sagging, curing,
+physical film thickness measurement, production coating quality, or production
+qualification.  See the canonical [spray fidelity boundary](docs/spray_fidelity_boundary.md).
 
 ## Relationship to offline programming
 
@@ -85,10 +112,14 @@ one programmable Isaac Sim/OpenUSD environment.  See the
 
 ## Supporting media and portable demo
 
-The earlier [native S2 runtime hero](media/air_assisted_spray/isaac_s2_runtime_hero.png),
+The full-panel files above are the public hero, demo, and final capture.  The
+earlier [native W2 runtime hero](media/air_assisted_spray/isaac_warp_plume_hero.png),
+[W2 deposition view](media/air_assisted_spray/isaac_warp_plume_deposition.png),
+and [W2 runtime video](media/air_assisted_spray/isaac_warp_plume_demo.mp4) remain
+supporting and historical evidence.  The earlier [native S2 runtime hero](media/air_assisted_spray/isaac_s2_runtime_hero.png),
 [S2 deposition view](media/air_assisted_spray/isaac_s2_runtime_deposition.png),
 and [S2 runtime video](media/air_assisted_spray/isaac_s2_runtime_demo.mp4)
-remain supporting evidence.  The [W1.3 fidelity hierarchy](media/air_assisted_spray/warp_w1_3_fidelity_hierarchy.png)
+also remain supporting evidence.  The [W1.3 fidelity hierarchy](media/air_assisted_spray/warp_w1_3_fidelity_hierarchy.png)
 shows the measured comparison between OpenFOAM, S2, and the Warp transport
 checkpoints.
 
@@ -102,6 +133,12 @@ python -m venv .venv
 
 The original geometric coverage demo remains available through
 `scripts/run_demo.py`; its report is written to `outputs/coverage_metrics.json`.
+
+## Release status
+
+`FULL_PANEL_PORTFOLIO_READY`
+
+Next action: `PR → main review → merge → publish`.
 
 ## Scene and asset provenance
 

@@ -12,6 +12,14 @@
   uses a quasi-steady local tangent-patch approximation, while the S2 surface
   deposition overlay remains authoritative.
 
+The native viewer renders actual live Warp particle positions at
+`/World/AerospacePaintingCell/WarpSprayPlume` and also uses the visual-only
+`/World/AerospacePaintingCell/WarpSprayPlumeGuide` to keep sub-pixel transport
+readable in the final 1080p capture.  The guide has `adds_mass = false`,
+`adds_deposition = false`, and `visual_only = true`; it does not affect
+transport, deposition, forces, or mass accounting.  Not every visible orange
+plume point is therefore a physical Warp parcel.
+
 ## What these layers model
 
 - prescribed air-assisted carrier flow from the reference data;
@@ -22,19 +30,29 @@
 - robot and auxiliary-axis motion in the native Isaac Sim scene; and
 - a CFD-calibrated fast deposition footprint after held-out validation.
 
+## Full-panel WFT and DFT wording
+
+Estimated WFT is computed as `deposited mass / (surface area × configured
+liquid density)`.  Estimated WFT is model-derived, not measured.  DFT is only an
+**Illustrative DFT estimate**, with assumed volume solids = 50% and the label
+`synthetic_demo_only`; it is not validated aircraft coating thickness.
+
 ## Not automatically modeled or qualified
 
-- primary atomization or breakup from first principles;
+- primary atomization;
+- breakup;
 - calibration of real paint rheology or manufacturer gun internals;
 - stochastic turbulent dispersion;
-- droplet coalescence, splash, or rebound unless separately supported and
-  checked;
+- splash/rebound;
 - full two-way coupling;
-- evaporation, wet-film leveling, sagging, dripping, or re-entrainment;
-- wall-film transport, solvent chemistry, or curing;
-- orange peel, dry-film thickness, or physical film-thickness measurement; and
-- production coating quality or paint-quality certification.
+- evaporation;
+- wall-film transport;
+- sagging;
+- curing;
+- physical film thickness measurement;
+- production coating quality; and
+- production qualification.
 
 Deposited mass and normalized deposited-mass density are process-model
-quantities, not paint thickness.  The moving-scene Warp layer is a transport
-and plume visualization layer; it is not online CFD.
+quantities, not paint thickness.  The moving Warp integration remains
+quasi-steady local tangent-patch transport; it is not online CFD.

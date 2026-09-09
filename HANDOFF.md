@@ -78,9 +78,10 @@ inside Isaac Sim.
 - Native stills were opened and inspected: process, flow, combined, slice, and result captures exist at 1920×1080.
 - Public safety scan → no machine-specific paths or credential material in the public docs/artifact manifests; no machine-specific USD is part of the artifact set.
 
-Next action: run the complete verification suite and public safety scan, then
-commit `feat: add OpenFOAM flow visualization in Isaac Sim` and push only
-`feat/cfd-field-visualization`.  Do not merge `main` automatically.
+Verification and public safety scan are complete.  Commit
+`5807e7352d7cce979cafc60fe8fa0580ef976361` is pushed to
+`feat/cfd-field-visualization`.  Next action: open the PR to `main`, review the
+README/media diff once, and merge only after review; do not merge automatically.
 
 ## Completed checkpoint
 

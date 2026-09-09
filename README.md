@@ -54,6 +54,26 @@ view for readability.
 - [Progressive S2 WFT still](media/air_assisted_spray/isaac_progressive_wft.png)
 - [Synchronized spray-analysis demo — 85 s, H.264, 1920×1080, 30 fps](media/air_assisted_spray/isaac_spray_analysis_demo.mp4)
 
+## Synchronized spray analysis
+
+The canonical analysis view keeps the offline OpenFOAM reference flow, actual
+Warp particle positions, hit/impact markers, and the live S2 deposited-mass /
+Estimated WFT overlay on one simulated timeline.  During this technical view
+the visual-only `WarpSprayPlumeGuide` is OFF; the displayed particles and short
+trails come from recorded Warp positions and mesh-hit events.  S2 remains the
+authoritative thickness layer, while the Warp hit map is diagnostic only.
+
+The CFD direction gate reports a mean axial velocity of `12.7113 m/s`, a
+`0.0215–18.0025 m/s` axial range, and `100%` positive axial samples in the
+clipped nozzle-to-panel ROI.  The analysis view uses 80 sparse vectors, 20
+streamlines, 120 short-lived impact markers, and a bounded 160-segment trail
+view for readability.
+
+- [Synchronized spray-analysis close-up](media/air_assisted_spray/isaac_spray_analysis_closeup.png)
+- [Synchronized CFD + Warp combined still](media/air_assisted_spray/isaac_spray_analysis_combined.png)
+- [Progressive S2 WFT still](media/air_assisted_spray/isaac_progressive_wft.png)
+- [Synchronized spray-analysis demo — 85 s, H.264, 1920×1080, 30 fps](media/air_assisted_spray/isaac_spray_analysis_demo.mp4)
+
 ## What the release candidate demonstrates
 
 - A composed OpenUSD/Isaac Sim painting cell with a rail-mounted 6-axis robot,

@@ -12,8 +12,9 @@ thickness.
 *Public hero: the native Isaac Sim full-panel process, active Warp transport
 view, and surface-wide estimated WFT overlay.*
 
-[Watch the full-panel demo](media/air_assisted_spray/isaac_full_panel_film_demo.mp4),
+[Watch the synchronized spray-analysis demo](media/air_assisted_spray/isaac_spray_analysis_demo.mp4),
 or inspect the [final full-panel WFT view](media/air_assisted_spray/isaac_full_panel_film_final.png).
+The earlier full-panel film demo remains supporting process evidence.
 
 ## CFD flow visualization
 
@@ -31,7 +32,27 @@ FULL-PANEL PAINTING → ESTIMATED WFT**.
 - [CFD flow field still](media/air_assisted_spray/isaac_cfd_flow_field.png)
 - [CFD + Warp combined still](media/air_assisted_spray/isaac_cfd_warp_combined.png)
 - [CFD velocity slice still](media/air_assisted_spray/isaac_cfd_flow_slice.png)
-- [Full-panel CFD flow demo](media/air_assisted_spray/isaac_full_panel_cfd_flow_demo.mp4)
+- [Earlier static CFD flow demo (supporting)](media/air_assisted_spray/isaac_full_panel_cfd_flow_demo.mp4)
+
+## Synchronized spray analysis
+
+The canonical analysis view keeps the offline OpenFOAM reference flow, actual
+Warp particle positions, hit/impact markers, and the live S2 deposited-mass /
+Estimated WFT overlay on one simulated timeline.  During this technical view
+the visual-only `WarpSprayPlumeGuide` is OFF; the displayed particles and short
+trails come from recorded Warp positions and mesh-hit events.  S2 remains the
+authoritative thickness layer, while the Warp hit map is diagnostic only.
+
+The CFD direction gate reports a mean axial velocity of `12.7113 m/s`, a
+`0.0215–18.0025 m/s` axial range, and `100%` positive axial samples in the
+clipped nozzle-to-panel ROI.  The analysis view uses 80 sparse vectors, 20
+streamlines, 120 short-lived impact markers, and a bounded 160-segment trail
+view for readability.
+
+- [Synchronized spray-analysis close-up](media/air_assisted_spray/isaac_spray_analysis_closeup.png)
+- [Synchronized CFD + Warp combined still](media/air_assisted_spray/isaac_spray_analysis_combined.png)
+- [Progressive S2 WFT still](media/air_assisted_spray/isaac_progressive_wft.png)
+- [Synchronized spray-analysis demo — 85 s, H.264, 1920×1080, 30 fps](media/air_assisted_spray/isaac_spray_analysis_demo.mp4)
 
 ## What the release candidate demonstrates
 
@@ -154,13 +175,15 @@ The original geometric coverage demo remains available through
 
 ## Release status
 
-`ISAAC_CFD_FLOW_VISUALIZATION_VALIDATED`
+`SYNCHRONIZED_SPRAY_ANALYSIS_VALIDATED`
 
 The CFD field is solved offline in OpenFOAM v2606 and visualized in the
 current local tangent process frame; Isaac Sim is not an online CFD solver.
+Actual Warp droplet positions, impact events, and progressive S2 WFT are
+shown together during the native process run.
 
-Next action: freeze the painting technical stack, open the PR, and publish the
-FLOW → WARP → FULL-PANEL WFT sequence after review.
+Next action: use the synchronized spray-analysis video as the final portfolio
+demo.  No additional spray-physics checkpoint is required before publication.
 
 ## Scene and asset provenance
 

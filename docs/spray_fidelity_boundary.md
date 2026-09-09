@@ -20,6 +20,14 @@ readable in the final 1080p capture.  The guide has `adds_mass = false`,
 transport, deposition, forces, or mass accounting.  Not every visible orange
 plume point is therefore a physical Warp parcel.
 
+The synchronized technical analysis view is stricter: the guide is disabled,
+and the visible Warp particles, short trails, and impact markers are generated
+from actual recorded particle positions and Warp mesh-hit events.  Those
+markers and trails are display-only and add zero mass.  The live surface tint
+and WFT overlay are driven continuously by the authoritative S2 finite-surface
+accumulation; the projected Warp hit map is diagnostic and is not an alternate
+thickness model.
+
 ## What these layers model
 
 - prescribed air-assisted carrier flow from the reference data;
@@ -65,3 +73,8 @@ native viewer renders U-derived velocity vectors, a |U| magnitude slice, and
 deterministic streamlines after a quasi-steady rigid mapping into the current
 local tangent process frame.  This is a reference-field visualization, not a
 time-accurate full-aircraft CFD solve and not an Isaac Sim CFD solver.
+
+During the synchronized spray-analysis capture, the same simulated timestamp
+is used for spray state, Warp emission/hit observations, S2 deposition, and
+the WFT overlay.  This is synchronized visualization of an offline reference
+field and process model, not a live CFD solve.

@@ -8,7 +8,9 @@ from aerospace_painting.openfoam_flow_field import (
     VIEW_MODES,
     benchmark_points_to_world,
     benchmark_vectors_to_world,
+    clip_flow_roi,
     deterministic_streamlines,
+    evaluate_cfd_direction,
 )
 
 
@@ -85,3 +87,30 @@ def test_magnitude_slice_is_actual_field_data():
 def test_view_modes_have_explicit_public_contract():
     assert VIEW_MODES == ("process", "flow", "combined", "result")
     assert set(VIEW_MODES) == {"process", "flow", "combined", "result"}
+
+
+def test_cfd_direction_gate_and_roi_clipping_use_actual_u_field():
+    field = OpenFOAMFlowField.load(NPZ, MANIFEST)
+    roi_min = (-0.06, -0.06, 0.0)
+    roi_max = (0.06, 0.06, 0.24)
+    points, velocity, speed, mask = clip_flow_roi(field, roi_min, roi_max)
+    assert len(points) == len(velocity) == len(speed) > 0
+    assert mask.shape == (field.cell_count,)
+    assert np.all(points >= np.asarray(roi_min) - 1.0e-12)
+    assert np.all(points <= np.asarray(roi_max) + 1.0e-12)
+    angle = np.deg2rad(7.5)
+    report = evaluate_cfd_direction(
+        field,
+        roi_min_m=roi_min,
+        roi_max_m=roi_max,
+        spray_axis_world=(np.sin(angle), 0.0, np.cos(angle)),
+        u_world=(1.0, 0.0, 0.0),
+        v_world=(0.0, 1.0, 0.0),
+        w_world=(0.0, 0.0, 1.0),
+    )
+    assert report.status == "CFD_DIRECTION_PASS"
+    assert report.sample_count == len(points)
+    assert report.mean_axial_velocity_m_s > 0.0
+    assert report.min_axial_velocity_m_s > 0.0
+    assert report.max_axial_velocity_m_s >= report.min_axial_velocity_m_s
+    assert report.positive_axial_fraction == 1.0

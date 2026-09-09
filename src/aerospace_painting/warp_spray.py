@@ -225,6 +225,7 @@ if wp is not None:
         escaped: wp.array(dtype=wp.bool),
         teacher_out_of_field: wp.array(dtype=wp.bool),
         deposition_mass: wp.array(dtype=wp.float32),
+        deposition_time_s: wp.array(dtype=wp.float32),
         mesh_id: wp.uint64,
         origin: wp.vec3f,
         x_axis: wp.vec3f,
@@ -370,6 +371,7 @@ if wp is not None:
                     velocities[index] = velocity
                     deposited[index] = True
                     alive[index] = False
+                    deposition_time_s[index] = simulation_time + dt
                     cell_size = 2.0 * target_extent / float(map_resolution)
                     u_index = int(wp.floor((hit[0] + target_extent) / cell_size))
                     v_index = int(wp.floor((hit[1] + target_extent) / cell_size))
@@ -413,6 +415,7 @@ class WarpCaseResult:
     performance: dict[str, Any]
     mass_ledger: dict[str, float]
     carrier_mode: str = "ANALYTIC_AIR"
+    deposition_time_s: np.ndarray | None = None
 
 
 def _make_target_mesh(config: WarpCaseConfig, device: str):
@@ -475,6 +478,7 @@ def run_warp_case(
     escaped = wp.zeros(n, dtype=wp.bool, device=device_obj)
     teacher_out_of_field = wp.zeros(n, dtype=wp.bool, device=device_obj)
     deposition_mass = wp.zeros(config.target_resolution * config.target_resolution, dtype=wp.float32, device=device_obj)
+    deposition_time_s = wp.zeros(n, dtype=wp.float32, device=device_obj)
     carrier_upload_start = time.perf_counter()
     if mode == "TEACHER_FORCED_U":
         assert teacher_flow is not None
@@ -523,6 +527,7 @@ def run_warp_case(
                 escaped,
                 teacher_out_of_field,
                 deposition_mass,
+                deposition_time_s,
                 mesh.id,
                 wp.vec3f(*origin),
                 wp.vec3f(*x_axis),
@@ -565,6 +570,7 @@ def run_warp_case(
     host_teacher_out_of_field = teacher_out_of_field.numpy().astype(bool)
     host_alive = alive.numpy().astype(bool)
     host_released = released.numpy().astype(bool)
+    host_deposition_time = deposition_time_s.numpy().astype(np.float32)
     host_map_mass = deposition_mass.numpy().astype(np.float64)
     area = config.target_cell_size_m**2
     host_map_density = host_map_mass / area
@@ -621,6 +627,7 @@ def run_warp_case(
         carrier_out_of_field_flags=host_teacher_out_of_field,
         alive_flags=host_alive,
         released_flags=host_released,
+        deposition_time_s=host_deposition_time,
         performance=performance,
         mass_ledger=ledger,
         carrier_mode=mode,

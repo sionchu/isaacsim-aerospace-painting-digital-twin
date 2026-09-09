@@ -6,6 +6,67 @@ Extend the portable aerospace painting demo toward a multi-fidelity generic
 air-assisted spray workflow without overstating geometric coverage as paint
 physics.
 
+## Current synchronized spray-analysis checkpoint (2026-09-09)
+
+### Result
+
+`SYNCHRONIZED_SPRAY_ANALYSIS_VALIDATED` on `feat/cfd-field-visualization`.
+The change is synchronized visualization/runtime coupling only.  OpenFOAM
+remains offline reference CFD, Warp remains GPU Lagrangian transport, S2
+remains the authoritative deposited-mass/WFT model, and Isaac Sim is the
+native visualization/process host.  No CFD or spray-physics model was changed.
+
+### Native evidence
+
+- Command: `<ISAAC_SIM_ROOT>\python.bat scripts/run_isaac_synchronized_spray_analysis.py --headless --capture-media --capture-every 6 --deposition-view compare`
+- Native exit code: `0`
+- CFD direction: `CFD_DIRECTION_PASS`; mean/min/max axial velocity
+  `12.7113198763 / 0.0214972505 / 18.0025153407 m/s`; positive axial fraction
+  `1.0` in ROI `[-0.06,-0.06,0]` to `[0.06,0.06,0.24] m`
+- CFD geometry: 80 vectors and 20 streamlines, clipped to the
+  nozzle-to-panel process ROI
+- Warp: actual particle positions only in the technical combined view;
+  `WarpSprayPlumeGuide` is OFF; peak active particles `2,500`, peak trail
+  segments `160`, peak impact markers `120`
+- Runtime: `1,722` closed batches × `2,500` particles = `4,305,000` actual
+  computational parcel histories / hit events
+- Progressive WFT: final mean `3.6494581235 µm`, P05 `2.1207233838 µm`,
+  P95 `3.9034047317 µm`, CV `12.592484%`
+- Synchronization: maximum Warp↔S2 offset `0.0 s`, maximum hit↔overlay offset
+  `0.0155361358 s`, same simulated timeline `true`, spray-off batch violations `0`
+- Mass closure: S2 combined residual `-8.8839526e-16 kg`; Warp ledger balance
+  `3.2092384e-16 kg`; WFT reverse-mass gate passed; visual layers add zero mass
+- Performance means/p95: CFD `0.000569/0.000898 s`, Warp
+  `0.104145/0.133584 s`, impact visualization `0.009401/0.019868 s`, WFT
+  overlay `0.014458/0.017454 s`, combined analysis view
+  `0.244248/0.739306 s`
+
+### Media
+
+- `media/air_assisted_spray/isaac_spray_analysis_closeup.png`
+- `media/air_assisted_spray/isaac_spray_analysis_combined.png`
+- `media/air_assisted_spray/isaac_progressive_wft.png`
+- `media/air_assisted_spray/isaac_spray_analysis_demo.mp4`
+- Video evidence: H.264, `1920×1080`, `30 fps`, `85.0 s`; extracted frames at
+  5 s, 12 s, 25 s, 55 s, and 75 s were opened and show process, CFD direction,
+  actual particles/impacts, progressive full-panel tint, and result phases.
+
+### Verification
+
+- Portable tests: `60 passed, 2 skipped`; compileall and diff check passed
+- Native run: passed with the output above; one earlier unoptimized long run
+  hit an RTX device-loss error, then the bounded capture/hit-map settings were
+  revalidated through 40 s and the full 28-pass run completed successfully
+- Public wording now identifies offline CFD, actual Warp particles, guide OFF in
+  the technical view, diagnostic Warp hit map, and progressive authoritative S2
+  WFT.  No online-CFD, measured-thickness, or production-qualification claim.
+
+### Next action
+
+Commit `feat: synchronize spray physics and deposition visualization` and push
+only `feat/cfd-field-visualization`.  Open the PR to `main` for review; do not
+merge automatically.
+
 ## Current CFD field visualization checkpoint (2026-09-09)
 
 ### Result

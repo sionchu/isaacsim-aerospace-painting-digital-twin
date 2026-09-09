@@ -15,6 +15,24 @@ view, and surface-wide estimated WFT overlay.*
 [Watch the full-panel demo](media/air_assisted_spray/isaac_full_panel_film_demo.mp4),
 or inspect the [final full-panel WFT view](media/air_assisted_spray/isaac_full_panel_film_final.png).
 
+## CFD flow visualization
+
+The 7.5° OpenFOAM reference velocity field is compacted into a structured
+[vector artifact](models/openfoam_flow_field_7p5deg_v1.json) and mapped into
+the current local process frame in Isaac Sim.  Velocity vectors, a magnitude
+slice, and streamlines are shown for interpretation; the CFD solve remains
+offline.  The local mapping is quasi-steady: the solved field is rigidly
+remapped into the current tangent frame rather than solved around the moving
+aircraft.
+
+Public sequence: **PROCESS FRAME → CFD FLOW FIELD → WARP DROPLETS →
+FULL-PANEL PAINTING → ESTIMATED WFT**.
+
+- [CFD flow field still](media/air_assisted_spray/isaac_cfd_flow_field.png)
+- [CFD + Warp combined still](media/air_assisted_spray/isaac_cfd_warp_combined.png)
+- [CFD velocity slice still](media/air_assisted_spray/isaac_cfd_flow_slice.png)
+- [Full-panel CFD flow demo](media/air_assisted_spray/isaac_full_panel_cfd_flow_demo.mp4)
+
 ## What the release candidate demonstrates
 
 - A composed OpenUSD/Isaac Sim painting cell with a rail-mounted 6-axis robot,
@@ -136,9 +154,13 @@ The original geometric coverage demo remains available through
 
 ## Release status
 
-`FULL_PANEL_PORTFOLIO_READY`
+`ISAAC_CFD_FLOW_VISUALIZATION_VALIDATED`
 
-Next action: `PR → main review → merge → publish`.
+The CFD field is solved offline in OpenFOAM v2606 and visualized in the
+current local tangent process frame; Isaac Sim is not an online CFD solver.
+
+Next action: freeze the painting technical stack, open the PR, and publish the
+FLOW → WARP → FULL-PANEL WFT sequence after review.
 
 ## Scene and asset provenance
 

@@ -56,3 +56,12 @@ liquid density)`.  Estimated WFT is model-derived, not measured.  DFT is only an
 Deposited mass and normalized deposited-mass density are process-model
 quantities, not paint thickness.  The moving Warp integration remains
 quasi-steady local tangent-patch transport; it is not online CFD.
+
+## OpenFOAM flow visualization boundary
+
+The canonical 7.5° OpenFOAM v2606 `U`/`C` field is solved offline and stored
+as a compact, provenance-checked structured artifact for Isaac Sim.  The
+native viewer renders U-derived velocity vectors, a |U| magnitude slice, and
+deterministic streamlines after a quasi-steady rigid mapping into the current
+local tangent process frame.  This is a reference-field visualization, not a
+time-accurate full-aircraft CFD solve and not an Isaac Sim CFD solver.

@@ -1,0 +1,107 @@
+{
+  "field_artifact": {
+    "angle_deg": 7.5,
+    "artifact_sha256": "cc51dc50fb047cce4cd7a54c55603049771a89e29dce45c4daa587f3f4786b02",
+    "bounds_max_m": [
+      0.14999999999999963,
+      0.14999999999999963,
+      0.23999999999999996
+    ],
+    "bounds_min_m": [
+      -0.14999999999999997,
+      -0.14999999999999997,
+      4.336808689942018e-19
+    ],
+    "cells": 27648,
+    "dimensions_nx_ny_nz": [
+      24,
+      24,
+      48
+    ],
+    "latest_time_s": 0.06,
+    "manifest": "models/openfoam_flow_field_7p5deg_v1.json",
+    "npz": "models/openfoam_flow_field_7p5deg_v1.npz",
+    "openfoam_version": "v2606",
+    "source_c_sha256": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+    "source_case": "reference_cfd/openfoam_v2606/flat_plate/medium_incidence_7p5deg",
+    "source_u_sha256": "0e62dfb333728be18533945c5494c778f7466ae5366d2b895e0d0a8945d34357",
+    "spacing_m": [
+      0.012499999999999983,
+      0.012499999999999983,
+      0.004999999999999999
+    ],
+    "speed_magnitude_m_s": {
+      "max_m_s": 22.48091697692871,
+      "mean_m_s": 15.275812999259129,
+      "min_m_s": 1.110973834991455
+    }
+  },
+  "geometry": {
+    "mapping": "+X\u2192u fan-major, +Y\u2192v travel/fan-minor, +Z\u2192w inward process direction",
+    "slice_cells": 1081,
+    "slice_plane": "fan-major / spray-axis, y\u2248-0.006250 m",
+    "slice_speed_m_s": {
+      "max_m_s": 19.668119430541992,
+      "mean_m_s": 14.356910665623015,
+      "min_m_s": 1.110973834991455
+    },
+    "slice_vertices": 1152,
+    "streamline_count": 25,
+    "streamline_seed_rule": "5x5 deterministic seeds at z=0.006 m, truncated to target count",
+    "update_method": "precomputed local geometry + rigid transform per render update",
+    "vector_count": 512
+  },
+  "media": {
+    "combined": "media/air_assisted_spray/isaac_cfd_warp_combined.png",
+    "flow": "media/air_assisted_spray/isaac_cfd_flow_field.png",
+    "process": "media/air_assisted_spray/isaac_cfd_process_frame.png",
+    "result": "media/air_assisted_spray/isaac_cfd_result_frame.png",
+    "slice": "media/air_assisted_spray/isaac_cfd_flow_slice.png"
+  },
+  "performance": {
+    "cfd_visualization_update_s": {
+      "max": 0.2815311001613736,
+      "mean": 0.03248482667841017,
+      "min": 0.008642100030556321,
+      "p95": 0.09037832508329272
+    },
+    "combined_view_wall_seconds": 14.094291300047189,
+    "s2_update_s": {
+      "max": 0.0006704998668283224,
+      "mean": 0.00026982647718146576,
+      "min": 6.260001100599766e-05,
+      "p95": 0.0003753850469365716,
+      "source": "validated full-panel metrics; no S2 step executed by this visual-only capture"
+    },
+    "warp_update_s": {
+      "max": 0.08753639995120466,
+      "mean": 0.06548499991185963,
+      "min": 0.030107799917459488,
+      "p95": 0.08666383994277567
+    }
+  },
+  "process_frame": {
+    "incidence_deg": 7.499999999999998,
+    "origin_world_m": [
+      1.045567349619792,
+      -1.3771616331404741,
+      1.5984363754611872
+    ],
+    "stand_off_m": 0.24
+  },
+  "schema_version": "isaac_cfd_flow_visualization_v1",
+  "semantics": {
+    "cfd_solve": "offline OpenFOAM v2606 reference field",
+    "cfd_visual": "cool cyan/blue vectors, slice, and streamlines",
+    "mapping": "quasi-steady local tangent frame",
+    "online_cfd": false,
+    "warp_visual": "existing explicit W1.3 droplet transport; warm/orange"
+  },
+  "status": "ISAAC_CFD_FLOW_VISUALIZATION_VALIDATED",
+  "view_modes": {
+    "combined": "robot + CFD vectors/streamlines + Warp plume",
+    "flow": "robot + CFD vectors + slice + streamlines",
+    "process": "robot + Warp plume + minimal HUD",
+    "result": "final WFT overlay + summary"
+  }
+}

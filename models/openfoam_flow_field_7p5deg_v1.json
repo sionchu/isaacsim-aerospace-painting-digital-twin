@@ -1,0 +1,50 @@
+{
+  "angle_deg": 7.5,
+  "artifact_sha256": "cc51dc50fb047cce4cd7a54c55603049771a89e29dce45c4daa587f3f4786b02",
+  "field": "OpenFOAM cell-centre velocity reference field",
+  "float_dtype": "float32",
+  "grid": {
+    "array_layout": "U[nz, ny, nx, 3]",
+    "bounds_max_m": [
+      0.14999999999999963,
+      0.14999999999999963,
+      0.23999999999999996
+    ],
+    "bounds_min_m": [
+      -0.14999999999999997,
+      -0.14999999999999997,
+      4.336808689942018e-19
+    ],
+    "cells": 27648,
+    "centres_layout": "grid_centres_m[nz, ny, nx, 3]",
+    "dimensions_nx_ny_nz": [
+      24,
+      24,
+      48
+    ],
+    "spacing_m": [
+      0.012499999999999983,
+      0.012499999999999983,
+      0.004999999999999999
+    ]
+  },
+  "latest_time_s": 0.06,
+  "npz_path": "openfoam_flow_field_7p5deg_v1.npz",
+  "openfoam_version": "v2606",
+  "ordering_verified": true,
+  "schema_version": "openfoam_flow_field_v1",
+  "source_case": "reference_cfd/openfoam_v2606/flat_plate/medium_incidence_7p5deg",
+  "source_hashes": {
+    "C": "d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca",
+    "U": "0e62dfb333728be18533945c5494c778f7466ae5366d2b895e0d0a8945d34357"
+  },
+  "source_paths": {
+    "C": "reference_cfd/openfoam_v2606/flat_plate/medium_incidence_7p5deg/0.06/C",
+    "U": "reference_cfd/openfoam_v2606/flat_plate/medium_incidence_7p5deg/0.06/U"
+  },
+  "speed_magnitude_m_s": {
+    "max_m_s": 22.48091697692871,
+    "mean_m_s": 15.275812999259129,
+    "min_m_s": 1.110973834991455
+  }
+}

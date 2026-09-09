@@ -6,6 +6,82 @@ Extend the portable aerospace painting demo toward a multi-fidelity generic
 air-assisted spray workflow without overstating geometric coverage as paint
 physics.
 
+## Current CFD field visualization checkpoint (2026-09-09)
+
+### Result
+
+`ISAAC_CFD_FLOW_VISUALIZATION_VALIDATED` on `feat/cfd-field-visualization`.
+The implementation is visualization/integration only.  It does not alter the
+OpenFOAM teacher cases, S2 deposition, Warp W1.3 transport, full-panel plan,
+WFT calculation, or mass ledgers.
+
+### CFD source and compact artifact
+
+- OpenFOAM v2606 case: `reference_cfd/openfoam_v2606/flat_plate/medium_incidence_7p5deg/`
+- Latest time: `0.06`
+- Structured field: `24 × 24 × 48 = 27,648` cells, float32 U
+- Bounds: `[-0.15, -0.15, 0.0]` to `[0.15, 0.15, 0.24]` m
+- Spacing: `(0.0125, 0.0125, 0.005)` m
+- U SHA-256: `0e62dfb333728be18533945c5494c778f7466ae5366d2b895e0d0a8945d34357`
+- C SHA-256: `d8c4c949c047b2406c5490a8cc2cb75b6c99a609d432024b229eb0973cabecca`
+- Artifact: `models/openfoam_flow_field_7p5deg_v1.npz` plus manifest JSON
+- Artifact SHA-256: `cc51dc50fb047cce4cd7a54c55603049771a89e29dce45c4daa587f3f4786b02`
+- Speed range: `1.110974 / 15.275813 / 22.480917 m/s` (min/mean/max)
+
+The deterministic builder and provenance checks are in
+`scripts/build_openfoam_flow_field.py`; the artifact reconstructs the actual
+latest-time U/C grid and rejects hash, dimension, bounds, or finite-value
+mismatches.
+
+### Isaac Sim flow layer
+
+`scripts/run_isaac_cfd_flow_visualization.py` loads the compact artifact and
+maps benchmark `+X → u` fan-major, `+Y → v` travel/fan-minor, and `+Z → w`
+inward process direction into the current SprayGun/target tangent frame.  The
+native run produced 512 velocity vectors, a 1,152-vertex / 1,081-cell
+`y≈-0.006250 m` magnitude slice, and 25 deterministic RK2 streamlines.  The
+flow geometry is precomputed once and rigidly transformed per render update.
+
+View toggles are `--view process`, `--view flow`, `--view combined`, and
+`--view result`.  The FLOW/combined HUD labels the layer as
+`OPENFOAM REFERENCE FLOW — LOCAL TANGENT FRAME` and explicitly states
+`Offline CFD → Isaac visualization`.
+
+### Native evidence and performance
+
+- Native command: `Isaac Sim python.bat scripts/run_isaac_cfd_flow_visualization.py --headless --capture-stills --view combined`
+- Native result: `CFD_FLOW_PASS vectors=512 slice_vertices=1152 streamlines=25`
+- CFD visualization update: mean `0.032908 s`, p95 `0.091538 s`
+- Warp update: mean `0.064265 s`, p95 `0.087002 s`
+- S2 reference: mean `0.000270 s`, p95 `0.000375 s` (validated full-panel metrics; no S2 step in visual-only capture)
+- Combined capture wall time: `13.6580207 s`
+
+Media:
+
+- `media/air_assisted_spray/isaac_cfd_flow_field.png`
+- `media/air_assisted_spray/isaac_cfd_warp_combined.png`
+- `media/air_assisted_spray/isaac_cfd_flow_slice.png`
+- `media/air_assisted_spray/isaac_full_panel_cfd_flow_demo.mp4`
+
+The final demo is H.264, 1920×1080, 30 fps, 70.0 s.  It reuses the validated
+full-panel process segment; no CFD or painting rerun was used to assemble it.
+
+The CFD field is solved offline in OpenFOAM and mapped into the current local
+tangent process frame in Isaac Sim for visualization.  It is not solved live
+inside Isaac Sim.
+
+### Verification
+
+- `python -m pytest -q` → `55 passed, 2 skipped`
+- `python -m compileall -q src scripts tests` → passed
+- `git diff --check` → passed
+- Native stills were opened and inspected: process, flow, combined, slice, and result captures exist at 1920×1080.
+- Public safety scan → no machine-specific paths or credential material in the public docs/artifact manifests; no machine-specific USD is part of the artifact set.
+
+Next action: run the complete verification suite and public safety scan, then
+commit `feat: add OpenFOAM flow visualization in Isaac Sim` and push only
+`feat/cfd-field-visualization`.  Do not merge `main` automatically.
+
 ## Completed checkpoint
 
 - Feature branch: `feat/air-assisted-spray-physics`
